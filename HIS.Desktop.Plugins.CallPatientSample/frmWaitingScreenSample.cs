@@ -7,7 +7,7 @@ using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.LocalStorage.Location;
-using HIS.Desktop.Plugins.CallPatientSample.ADO;
+using HIS.Desktop.LocalStorage.BackendData.V2.ADO;
 using HIS.Desktop.Plugins.CallPatientSample.CallPatient;
 using HIS.Desktop.Plugins.CallPatientSample.Config;
 using HIS.Desktop.Utility;
@@ -36,7 +36,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
 {
     public partial class frmWaitingScreenSample22 : FormBase
     {
-        internal HIS.Desktop.Plugins.CallPatientSample.ADO.V_HIS_TREATMENT_SAMPLE_DESK lisSample;
+        internal HIS.Desktop.LocalStorage.BackendData.V2.ADO.V_HIS_TREATMENT_SAMPLE_DESK lisSample;
         const int STEP_NUMBER_ROW_GRID_SCROLL = 5;
         internal V_HIS_SAMPLE_ROOM room;
         private int scrll { get; set; }
@@ -51,7 +51,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
 
         private Inventec.Common.WebApiClient.ApiConsumer mosUserConsummer;
 
-        public frmWaitingScreenSample22(Inventec.Desktop.Common.Modules.Module module, HIS.Desktop.Plugins.CallPatientSample.ADO.V_HIS_TREATMENT_SAMPLE_DESK sample, V_HIS_SAMPLE_ROOM r, bool? _chkIsNotInDebt)
+        public frmWaitingScreenSample22(Inventec.Desktop.Common.Modules.Module module, HIS.Desktop.LocalStorage.BackendData.V2.ADO.V_HIS_TREATMENT_SAMPLE_DESK sample, V_HIS_SAMPLE_ROOM r, bool? _chkIsNotInDebt)
             : base(module)
         {
             InitializeComponent();
@@ -424,7 +424,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             {
                 if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound)
                 {
-                    HIS.Desktop.Plugins.CallPatientSample.ADO.V_HIS_TREATMENT_SAMPLE_DESK data = (HIS.Desktop.Plugins.CallPatientSample.ADO.V_HIS_TREATMENT_SAMPLE_DESK)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                    HIS.Desktop.LocalStorage.BackendData.V2.ADO.V_HIS_TREATMENT_SAMPLE_DESK data = (HIS.Desktop.LocalStorage.BackendData.V2.ADO.V_HIS_TREATMENT_SAMPLE_DESK)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
                     if (data != null)
                     {
                         DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
@@ -487,7 +487,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             try
             {
                 CommonParam param = new CommonParam();
-                HIS.Desktop.Plugins.CallPatientSample.ADO.HisTreatmentSampleDeskViewFilter filter = new HIS.Desktop.Plugins.CallPatientSample.ADO.HisTreatmentSampleDeskViewFilter();
+                HIS.Desktop.LocalStorage.BackendData.V2.ADO.HisTreatmentSampleDeskViewFilter filter = new HIS.Desktop.LocalStorage.BackendData.V2.ADO.HisTreatmentSampleDeskViewFilter();
 
                 if (room != null)
                 {
@@ -510,12 +510,12 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                 mosUserConsummer.SetTokenCode(HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer.GetTokenCode());
 
                 LogSystem.Debug(HisConfigCFG.MOS_USER_URI);
-                var result = new BackendAdapter(param).Get<List<HIS.Desktop.Plugins.CallPatientSample.ADO.V_HIS_TREATMENT_SAMPLE_DESK>>("api/HisTreatmentSampleDesk/GetView", mosUserConsummer, filter, param);
+                var result = new BackendAdapter(param).Get<List<HIS.Desktop.LocalStorage.BackendData.V2.ADO.V_HIS_TREATMENT_SAMPLE_DESK>>("api/HisTreatmentSampleDesk/GetView", mosUserConsummer, filter, param);
                 //Inventec.Common.Logging.LogSystem.Debug("Data Update." + result.Count);
                 if (result != null && result.Count > 0)
                 {
                     //Inventec.Common.Logging.LogSystem.Debug("Data Update.");
-                    //HIS.Desktop.Plugins.CallPatientSample.ADO.HIS_TREATMENT_SAMPLE_DESK update = new ADO.HIS_TREATMENT_SAMPLE_DESK();
+                    //HIS.Desktop.LocalStorage.BackendData.V2.ADO.HIS_TREATMENT_SAMPLE_DESK update = new ADO.HIS_TREATMENT_SAMPLE_DESK();
                     //update.ID = result.First().ID;
                     //update.SAMPLE_ROOM_ID = result.First().SAMPLE_ROOM_ID;
                     //update.TDL_IS_PRIORITY = result.First().TDL_IS_PRIORITY;
@@ -526,7 +526,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                     //update.SAMPLE_DESK_ID = 23758235;
                     //Inventec.Common.Logging.LogSystem.Debug("Data Update. " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => update), update));
                     //CommonParam param1 = new CommonParam();
-                    //var createResult = new BackendAdapter(param1).Post<HIS.Desktop.Plugins.CallPatientSample.ADO.HIS_TREATMENT_SAMPLE_DESK>(
+                    //var createResult = new BackendAdapter(param1).Post<HIS.Desktop.LocalStorage.BackendData.V2.ADO.HIS_TREATMENT_SAMPLE_DESK>(
                     //                       "/api/HisTreatmentSampleDesk/Update",
                     //                       mosUserConsummer,
                     //                       update,
@@ -548,7 +548,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             }
         }
 
-        private List<SrADO> ConnvertListServiceReq1ToADO(List<HIS.Desktop.Plugins.CallPatientSample.ADO.V_HIS_TREATMENT_SAMPLE_DESK> tsd)
+        private List<SrADO> ConnvertListServiceReq1ToADO(List<HIS.Desktop.LocalStorage.BackendData.V2.ADO.V_HIS_TREATMENT_SAMPLE_DESK> tsd)
         {
             List<SrADO> SrADOs = new List<SrADO>();
             try

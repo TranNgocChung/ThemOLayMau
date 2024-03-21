@@ -16,7 +16,7 @@ using MOS.EFMODEL.DataModels;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.Location;
 using System.Configuration;
-using HIS.Desktop.Plugins.CallPatientSample.ADO;
+using HIS.Desktop.LocalStorage.BackendData.V2.ADO;
 
 namespace HIS.Desktop.Plugins.CallPatientSample
 {
