@@ -8,7 +8,7 @@ using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.LocalStorage.Location;
 using HIS.Desktop.LocalStorage.BackendData.V2.ADO;
-using HIS.Desktop.Plugins.CallPatientSample.CallPatient;
+using HIS.Desktop.LocalStorage.BackendData.V2.CallPatient;
 using HIS.Desktop.Plugins.CallPatientSample.Config;
 using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
@@ -31,6 +31,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using HIS.Desktop.LocalStorage.BackendData.V2.Worker;
 
 namespace HIS.Desktop.Plugins.CallPatientSample
 {

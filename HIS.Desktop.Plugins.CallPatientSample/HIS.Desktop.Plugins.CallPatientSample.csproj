@@ -151,10 +151,8 @@
     <Compile Include="CallPatientSample\CallPatientSampleBehavior.cs" />
     <Compile Include="CallPatientSample\CallPatientSampleFactory.cs" />
     <Compile Include="CallPatientSample\ICallPatientSample.cs" />
-    <Compile Include="CallPatient\CallPatientDataWorker.cs" />
     <Compile Include="ChooseRoomForWaitingScreenProcess.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
-    <Compile Include="Worker\ServiceReq1ADOWorker.cs" />
     <Compile Include="frmChooseRoomForWaitingScreen.cs">
       <SubType>Form</SubType>
     </Compile>
