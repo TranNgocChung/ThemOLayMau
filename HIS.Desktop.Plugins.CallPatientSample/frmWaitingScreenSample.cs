@@ -37,7 +37,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
 {
     public partial class frmWaitingScreenSample22 : FormBase
     {
-        internal HIS.Desktop.LocalStorage.BackendData.V2.ADO.V_HIS_TREATMENT_SAMPLE_DESK lisSample;
+        internal HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK lisSample;
         const int STEP_NUMBER_ROW_GRID_SCROLL = 5;
         internal V_HIS_SAMPLE_ROOM room;
         private int scrll { get; set; }
@@ -52,7 +52,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
 
         private Inventec.Common.WebApiClient.ApiConsumer mosUserConsummer;
 
-        public frmWaitingScreenSample22(Inventec.Desktop.Common.Modules.Module module, HIS.Desktop.LocalStorage.BackendData.V2.ADO.V_HIS_TREATMENT_SAMPLE_DESK sample, V_HIS_SAMPLE_ROOM r, bool? _chkIsNotInDebt)
+        public frmWaitingScreenSample22(Inventec.Desktop.Common.Modules.Module module, HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK sample, V_HIS_SAMPLE_ROOM r, bool? _chkIsNotInDebt)
             : base(module)
         {
             InitializeComponent();
@@ -109,9 +109,9 @@ namespace HIS.Desktop.Plugins.CallPatientSample
         {
             try
             {
-                if (CallPtDataWorker.DicCallPatient != null && CallPtDataWorker.DicCallPatient.Count > 0 && CallPtDataWorker.DicCallPatient[room.ID] != null && CallPtDataWorker.DicCallPatient[room.ID].Count > 0)
+                if (CallPtDataWorker.DicCallPatient != null && CallPtDataWorker.DicCallPatient.Count > 0 && CallPtDataWorker.DicCallPatient[room.ROOM_ID] != null && CallPtDataWorker.DicCallPatient[room.ROOM_ID].Count > 0)
                 {
-                    foreach (var item in CallPtDataWorker.DicCallPatient[room.ID])
+                    foreach (var item in CallPtDataWorker.DicCallPatient[room.ROOM_ID])
                     {
                         item.CallPatientSTT = false;
                     }
@@ -136,15 +136,17 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                 timerForScrollListPatient.Interval = 2000;
                 timerForScrollListPatient.Enabled = true;
                 timerForScrollListPatient.Start();
-
+                if (WaitingScreenCFG.TIMER_FOR_AUTO_LOAD_WAITING_SCREENS>0)
                 timerSetDataToGridControl.Interval = WaitingScreenCFG.TIMER_FOR_AUTO_LOAD_WAITING_SCREENS * 1000;
                 timerSetDataToGridControl.Enabled = true;
                 timerSetDataToGridControl.Start();
 
+                if (WaitingScreenCFG.TIMER_FOR_SET_DATA_TO_GRID_PATIENTS > 0)
                 timerAutoLoadDataPatient.Interval = WaitingScreenCFG.TIMER_FOR_SET_DATA_TO_GRID_PATIENTS * 1000;
                 timerAutoLoadDataPatient.Enabled = true;
                 timerAutoLoadDataPatient.Start();
 
+                if (WaitingScreenCFG.TIMER_FOR_HIGHT_LIGHT_CALL_PATIENT > 0)
                 timerForHightLightCallPatientLayout.Interval = WaitingScreenCFG.TIMER_FOR_HIGHT_LIGHT_CALL_PATIENT * 1000;
                 timerForHightLightCallPatientLayout.Enabled = true;
                 timerForHightLightCallPatientLayout.Start();
@@ -425,7 +427,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             {
                 if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound)
                 {
-                    HIS.Desktop.LocalStorage.BackendData.V2.ADO.V_HIS_TREATMENT_SAMPLE_DESK data = (HIS.Desktop.LocalStorage.BackendData.V2.ADO.V_HIS_TREATMENT_SAMPLE_DESK)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                    HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK data = (HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
                     if (data != null)
                     {
                         DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
@@ -488,7 +490,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             try
             {
                 CommonParam param = new CommonParam();
-                HIS.Desktop.LocalStorage.BackendData.V2.ADO.HisTreatmentSampleDeskViewFilter filter = new HIS.Desktop.LocalStorage.BackendData.V2.ADO.HisTreatmentSampleDeskViewFilter();
+                HIS.Desktop.LocalStorage.BackendData.V2.Filter.HisTreatmentSampleDeskViewFilter filter = new HIS.Desktop.LocalStorage.BackendData.V2.Filter.HisTreatmentSampleDeskViewFilter();
 
                 if (room != null)
                 {
@@ -511,32 +513,16 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                 mosUserConsummer.SetTokenCode(HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer.GetTokenCode());
 
                 LogSystem.Debug(HisConfigCFG.MOS_USER_URI);
-                var result = new BackendAdapter(param).Get<List<HIS.Desktop.LocalStorage.BackendData.V2.ADO.V_HIS_TREATMENT_SAMPLE_DESK>>("api/HisTreatmentSampleDesk/GetView", mosUserConsummer, filter, param);
+                var result = new BackendAdapter(param).Get<List<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK>>("api/HisTreatmentSampleDesk/GetView", mosUserConsummer, filter, param);
                 //Inventec.Common.Logging.LogSystem.Debug("Data Update." + result.Count);
                 if (result != null && result.Count > 0)
                 {
-                    //Inventec.Common.Logging.LogSystem.Debug("Data Update.");
-                    //HIS.Desktop.LocalStorage.BackendData.V2.ADO.HIS_TREATMENT_SAMPLE_DESK update = new ADO.HIS_TREATMENT_SAMPLE_DESK();
-                    //update.ID = result.First().ID;
-                    //update.SAMPLE_ROOM_ID = result.First().SAMPLE_ROOM_ID;
-                    //update.TDL_IS_PRIORITY = result.First().TDL_IS_PRIORITY;
-                    //update.TDL_PATIENT_TYPE_ID = result.First().TDL_PATIENT_TYPE_ID;
-                    //update.TDL_TREATMENT_TYPE_ID = result.First().TDL_TREATMENT_TYPE_ID;
-                    //update.TREATMENT_ID = result.First().TREATMENT_ID;
-                    //update.CREATE_TIME = result.First().CREATE_TIME;
-                    //update.SAMPLE_DESK_ID = 23758235;
-                    //Inventec.Common.Logging.LogSystem.Debug("Data Update. " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => update), update));
-                    //CommonParam param1 = new CommonParam();
-                    //var createResult = new BackendAdapter(param1).Post<HIS.Desktop.LocalStorage.BackendData.V2.ADO.HIS_TREATMENT_SAMPLE_DESK>(
-                    //                       "/api/HisTreatmentSampleDesk/Update",
-                    //                       mosUserConsummer,
-                    //                       update,
-                    //                       param1);
-                    CallPtDataWorker.DicCallPatient[room.ID] = ConnvertListServiceReq1ToADO(result);
+
+                    CallPtDataWorker.DicCallPatient[room.ROOM_ID] = ConnvertListServiceReq1ToADO(result);
                 }
                 else
                 {
-                    CallPtDataWorker.DicCallPatient[room.ID] = new List<SrADO>();
+                    CallPtDataWorker.DicCallPatient[room.ROOM_ID] = new List<SrADO>();
                 }
 
                 #region Process has exception
@@ -549,33 +535,23 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             }
         }
 
-        private List<SrADO> ConnvertListServiceReq1ToADO(List<HIS.Desktop.LocalStorage.BackendData.V2.ADO.V_HIS_TREATMENT_SAMPLE_DESK> tsd)
+        private List<SrADO> ConnvertListServiceReq1ToADO(List<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK> tsd)
         {
             List<SrADO> SrADOs = new List<SrADO>();
             try
             {
                 List<SrADO> lisAdos = null;
-                if (CallPtDataWorker.DicCallPatient != null && CallPtDataWorker.DicCallPatient.ContainsKey(room.ID))
+                if (CallPtDataWorker.DicCallPatient != null && CallPtDataWorker.DicCallPatient.ContainsKey(room.ROOM_ID))
                 {
-                    lisAdos = CallPtDataWorker.DicCallPatient[room.ID];
+                    lisAdos = CallPtDataWorker.DicCallPatient[room.ROOM_ID];
                 }
                 foreach (var item in tsd)
                 {
                     SrADO ado = null;
                     ado = lisAdos != null ? lisAdos.FirstOrDefault(o =>o.ID == item.ID) : null;
                     SrADO SrADO = new SrADO();
-                    SrADO.PATIENT_TYPE_NAME = item.PATIENT_TYPE_NAME;
-                    SrADO.SAMPLE_DESK_NAME = item.SAMPLE_DESK_NAME;
-                    SrADO.TDL_IS_PRIORITY = item.TDL_IS_PRIORITY;
-                    SrADO.TDL_PATIENT_DOB = item.TDL_PATIENT_DOB;
-                    SrADO.TDL_PATIENT_CODE = item.TDL_PATIENT_CODE;
-                    SrADO.TDL_PATIENT_NAME = item.TDL_PATIENT_NAME;
-                    SrADO.TREATMENT_CODE = item.TREATMENT_CODE;
-                    SrADO.VIR_CREATE_DATE = item.VIR_CREATE_DATE;
-                    SrADO.TREATMENT_TYPE_NAME = item.TREATMENT_TYPE_NAME;
-                    SrADO.TREATMENT_ID = item.TREATMENT_ID;
-                    SrADO.SAMPLE_ROOM_ID = item.SAMPLE_ROOM_ID;
-                    SrADO.SAMPLE_DESK_ID = item.SAMPLE_DESK_ID;
+                    AutoMapper.Mapper.CreateMap<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK, SrADO>();
+                    SrADO = AutoMapper.Mapper.Map<SrADO>(item);
 
                     if (ado != null && ado.CallPatientSTT)
                     {
@@ -643,9 +619,9 @@ namespace HIS.Desktop.Plugins.CallPatientSample
         {
             try
             {
-                if (CallPtDataWorker.DicCallPatient != null && CallPtDataWorker.DicCallPatient.Count > 0 && CallPtDataWorker.DicCallPatient[room.ID] != null && CallPtDataWorker.DicCallPatient[room.ID].Count > 0)
+                if (CallPtDataWorker.DicCallPatient != null && CallPtDataWorker.DicCallPatient.Count > 0 && CallPtDataWorker.DicCallPatient[room.ROOM_ID] != null && CallPtDataWorker.DicCallPatient[room.ROOM_ID].Count > 0)
                 {
-                    SrADO PatientIsCall = CallPtDataWorker.DicCallPatient[room.ID].FirstOrDefault(o => o.CallPatientSTT);
+                    SrADO PatientIsCall = CallPtDataWorker.DicCallPatient[room.ROOM_ID].FirstOrDefault(o => o.CallPatientSTT);
                     Inventec.Common.Logging.LogSystem.Info("SetDataToCurrentCallPatient() tDu lieu PatientIsCall:" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => PatientIsCall), PatientIsCall));
 
                     if (PatientIsCall != null)
@@ -669,11 +645,18 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                                 Inventec.Common.Logging.LogSystem.Debug("PatientIsCall step 4");
                             }
                         }
+
+                        //neu co 2 benh nhan duoc gan thi bo benh nhan hien tai de hien benh nhan sau
+                        SrADO PatientIsCallSecond = CallPtDataWorker.DicCallPatient[room.ROOM_ID].LastOrDefault(o => o.CallPatientSTT);
+                        if (PatientIsCall.ID != PatientIsCallSecond.ID)
+                        {
+                            PatientIsCall.CallPatientSTT = false;
+                        }
                     }
                     else
                     {
                         Inventec.Common.Logging.LogSystem.Info("PatientIsCall step 5");
-                        SrAdoWorker.SrAdo = null;
+                        //SrAdoWorker.SrAdo = null;
                     }
                 }
                 else
@@ -692,21 +675,21 @@ namespace HIS.Desktop.Plugins.CallPatientSample
         {
             try
             {
-                if (CallPtDataWorker.DicCallPatient != null && CallPtDataWorker.DicCallPatient.Count > 0 && CallPtDataWorker.DicCallPatient[room.ID] != null && CallPtDataWorker.DicCallPatient[room.ID].Count > 0)
+                if (CallPtDataWorker.DicCallPatient != null && CallPtDataWorker.DicCallPatient.Count > 0 && CallPtDataWorker.DicCallPatient[room.ROOM_ID] != null && CallPtDataWorker.DicCallPatient[room.ROOM_ID].Count > 0)
                 {
                     int countPatient = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<int>(AppConfigKeys.CONFIG_KEY__SO_BENH_NHAN_TREN_DANH_SACH_CHO_KHAM_VA_CLS);
                     if (countPatient == 0)
                         countPatient = 10;
 
                     // danh sách chờ kết quả cận lâm sàng
-                    var ServiceReqFilterSTTs = CallPtDataWorker.DicCallPatient[room.ID];
+                    var ServiceReqFilterSTTs = CallPtDataWorker.DicCallPatient[room.ROOM_ID];
                     gridControlWaitingCls.Invoke(new MethodInvoker(delegate
                     {
                         gridControlWaitingCls.BeginUpdate();
                         gridControlWaitingCls.DataSource = ServiceReqFilterSTTs;
                         gridControlWaitingCls.EndUpdate();
                     }));
-                    Inventec.Common.Logging.LogSystem.Info("Du lieu DicCallPatient:" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => CallPtDataWorker.DicCallPatient[room.ID].Take(countPatient).ToList()), CallPtDataWorker.DicCallPatient[room.ID].Take(countPatient).ToList()));
+                    Inventec.Common.Logging.LogSystem.Info("Du lieu DicCallPatient:" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => CallPtDataWorker.DicCallPatient[room.ROOM_ID].Take(countPatient).ToList()), CallPtDataWorker.DicCallPatient[room.ROOM_ID].Take(countPatient).ToList()));
                 }
                 else
                 {
@@ -883,9 +866,9 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             try
             {
                 isSetNum = true;
-                if (CallPtDataWorker.DicCallPatient != null && CallPtDataWorker.DicCallPatient.ContainsKey(room.ID))
+                if (CallPtDataWorker.DicCallPatient != null && CallPtDataWorker.DicCallPatient.ContainsKey(room.ROOM_ID))
                 {
-                    CallPtDataWorker.DicCallPatient[room.ID].ForEach(o => o.CallPatientSTT = false);
+                    CallPtDataWorker.DicCallPatient[room.ROOM_ID].ForEach(o => o.CallPatientSTT = false);
                 }
                 if (SrAdoWorker.SrAdo != null)
                 {

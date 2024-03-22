@@ -35,7 +35,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
         bool isInit = true;
         const string frmWaitingScreenStr = "frmWaitingScreenSample22";
         int positionHandleControl;
-        internal HIS.Desktop.LocalStorage.BackendData.V2.ADO.V_HIS_TREATMENT_SAMPLE_DESK listSample = null;
+        internal HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK listSample = null;
         string ModuleLinkName = "HIS.Desktop.Plugins.CallPatientSample";
         V_HIS_SAMPLE_ROOM room;
         long roomId = 0;

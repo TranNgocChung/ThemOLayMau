@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HIS.Desktop.LocalStorage.BackendData.V2.ADO
 {
-    public class SrADO : HIS.Desktop.LocalStorage.BackendData.V2.ADO.V_HIS_TREATMENT_SAMPLE_DESK
+    public class SrADO : HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK
     {
         public bool CallPatientSTT { get; set; }
 
