@@ -605,7 +605,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                 {
                     Inventec.Common.Logging.LogSystem.Debug("PatientIsCall step 7");
                     lblPatientName.Text = SrAdo.TDL_PATIENT_NAME;
-                    //lblSoThuTuBenhNhan.Text = SrAdo.NUM_ORDER + "";
+                    lblSoThuTuBenhNhan.Text = SrAdo.SAMPLE_DESK_NAME + "";
                 }
                 else if (!isSetNum)
                 {
