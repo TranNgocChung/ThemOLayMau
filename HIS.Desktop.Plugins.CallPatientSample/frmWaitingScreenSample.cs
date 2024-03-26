@@ -7,7 +7,6 @@ using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.LocalStorage.Location;
-using HIS.Desktop.LocalStorage.BackendData.V2.ADO;
 using HIS.Desktop.LocalStorage.BackendData.V2.CallPatient;
 using HIS.Desktop.Plugins.CallPatientSample.Config;
 using HIS.Desktop.Utility;
@@ -31,7 +30,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using HIS.Desktop.LocalStorage.BackendData.V2.Worker;
 
 namespace HIS.Desktop.Plugins.CallPatientSample
 {
@@ -47,7 +45,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
         List<int> gridpatientBodyForceColorCodes;
         int index = 0;
         int rowCount = 0;
-        bool isSetNum = false; 
+        bool isSetNum = false;
         bool? chkIsNotInDebt;
 
         private Inventec.Common.WebApiClient.ApiConsumer mosUserConsummer;
@@ -67,8 +65,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             {
                 HisConfigCFG.LoadConfig();
                 SetDataToRoom(this.room);
-                FillDataToDictionaryWaitingPatient();
-                UpdateDefaultListPatientSTT();
+                GetCallTime();
                 SetDataToGridControlWaitingCLSs();
                 GetFilePath();
                 StartAllTimer();
@@ -77,11 +74,6 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                 lblDoctorName.Text = string.Format("{0} {1}", emp != null ? (emp.TITLE != null ? emp.TITLE + ": " : "") : "", Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName().ToUpper());
                 rowCount = gridViewWaitingCls.RowCount - 1;
                 SetFormFrontOfAll();
-                timer1.Interval = 2000;
-                timer1.Enabled = true;
-                timer1.Start();
-                //RegisterTimer(ModuleLink, "timer1", 2000, SetDataToLabelMoiBenhNhan);
-                //StartTimer(ModuleLink, "timer1");
                 SetIcon();
             }
             catch (Exception ex)
@@ -105,51 +97,18 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             }
         }
 
-        private void UpdateDefaultListPatientSTT()
-        {
-            try
-            {
-                if (CallPtDataWorker.DicCallPatient != null && CallPtDataWorker.DicCallPatient.Count > 0 && CallPtDataWorker.DicCallPatient[room.ROOM_ID] != null && CallPtDataWorker.DicCallPatient[room.ROOM_ID].Count > 0)
-                {
-                    foreach (var item in CallPtDataWorker.DicCallPatient[room.ROOM_ID])
-                    {
-                        item.CallPatientSTT = false;
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
         private void StartAllTimer()
         {
             try
             {
-                //RegisterTimer(ModuleLink, "timerForScrollListPatient", 2000, timerForScrollListPatientProcess);
-                //RegisterTimer(ModuleLink, "timerSetDataToGridControl", WaitingScreenCFG.TIMER_FOR_AUTO_LOAD_WAITING_SCREENS * 1000, SetDataToGridControlCLS);
-                //RegisterTimer(ModuleLink, "timerAutoLoadDataPatient", WaitingScreenCFG.TIMER_FOR_SET_DATA_TO_GRID_PATIENTS * 1000, LoadWaitingPatientForWaitingScreen);
-                //RegisterTimer(ModuleLink, "timerForHightLightCallPatientLayout", WaitingScreenCFG.TIMER_FOR_HIGHT_LIGHT_CALL_PATIENT * 1000, SetDataToCurentCallPatientUsingThread);
 
                 timerForScrollListPatient.Interval = 2000;
                 timerForScrollListPatient.Enabled = true;
                 timerForScrollListPatient.Start();
-                if (WaitingScreenCFG.TIMER_FOR_AUTO_LOAD_WAITING_SCREENS>0)
-                timerSetDataToGridControl.Interval = WaitingScreenCFG.TIMER_FOR_AUTO_LOAD_WAITING_SCREENS * 1000;
+                if (WaitingScreenCFG.TIMER_FOR_AUTO_LOAD_WAITING_SCREENS > 0)
+                    timerSetDataToGridControl.Interval = WaitingScreenCFG.TIMER_FOR_AUTO_LOAD_WAITING_SCREENS * 1000;
                 timerSetDataToGridControl.Enabled = true;
                 timerSetDataToGridControl.Start();
-
-                if (WaitingScreenCFG.TIMER_FOR_SET_DATA_TO_GRID_PATIENTS > 0)
-                timerAutoLoadDataPatient.Interval = WaitingScreenCFG.TIMER_FOR_SET_DATA_TO_GRID_PATIENTS * 1000;
-                timerAutoLoadDataPatient.Enabled = true;
-                timerAutoLoadDataPatient.Start();
-
-                if (WaitingScreenCFG.TIMER_FOR_HIGHT_LIGHT_CALL_PATIENT > 0)
-                timerForHightLightCallPatientLayout.Interval = WaitingScreenCFG.TIMER_FOR_HIGHT_LIGHT_CALL_PATIENT * 1000;
-                timerForHightLightCallPatientLayout.Enabled = true;
-                timerForHightLightCallPatientLayout.Start();
             }
             catch (Exception ex)
             {
@@ -236,54 +195,6 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             }
         }
 
-        private void timerAutoLoadDataPatient_Tick(object sender, EventArgs e)
-        {
-            try
-            {
-                LoadWaitingPatientForWaitingScreen();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
-        void LoadWaitingPatientForWaitingScreen()
-        {
-            try
-            {
-                Task ts = Task.Factory.StartNew(ExecuteThreadWaitingPatientToCall);
-            }
-            catch (Exception ex)
-            {
-                LogSystem.Error(ex);
-            }
-        }
-
-        void ExecuteThreadWaitingPatientToCall()
-        {
-            try
-            {
-                //if (this.InvokeRequired)
-                //{
-                //    this.Invoke(new MethodInvoker(delegate { StartTheadWaitingPatientToCall(); }));
-                //}
-                //else
-                //{
-                StartTheadWaitingPatientToCall();
-                //}
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        void StartTheadWaitingPatientToCall()
-        {
-            FillDataToDictionaryWaitingPatient();
-        }
-
         private void SetFromConfigToControl()
         {
             try
@@ -293,17 +204,31 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                 List<int> roomNameColorCodes = WaitingScreenCFG.ROOM_NAME_FORCE_COLOR_CODES;
                 if (roomNameColorCodes != null && roomNameColorCodes.Count == 3)
                 {
-                    lblRoomName.ForeColor = System.Drawing.Color.FromArgb(roomNameColorCodes[0], roomNameColorCodes[1], roomNameColorCodes[2]);
-                    lblMoiNguoiBenh.ForeColor = System.Drawing.Color.FromArgb(roomNameColorCodes[0], roomNameColorCodes[1], roomNameColorCodes[2]);
-                    lblSo.ForeColor = System.Drawing.Color.FromArgb(roomNameColorCodes[0], roomNameColorCodes[1], roomNameColorCodes[2]);
+                    lblRoomName.Appearance.ForeColor = System.Drawing.Color.FromArgb(roomNameColorCodes[0], roomNameColorCodes[1], roomNameColorCodes[2]);
+                    lblMoiNguoiBenh.Appearance.ForeColor = System.Drawing.Color.FromArgb(roomNameColorCodes[0], roomNameColorCodes[1], roomNameColorCodes[2]);
+                    lblSo.Appearance.ForeColor = System.Drawing.Color.FromArgb(roomNameColorCodes[0], roomNameColorCodes[1], roomNameColorCodes[2]);
+                }
+                // co chu phong xu ly
+                int roomNameSizeCodes = WaitingScreenCFG.ROOM_NAME_SIZE_CODES;
+                if (roomNameSizeCodes != null && roomNameSizeCodes > 0)
+                {
+                    this.lblRoomName.Appearance.Font = new System.Drawing.Font("Arial", roomNameSizeCodes, System.Drawing.FontStyle.Bold);
                 }
 
                 // màu tên bác sĩ
                 List<int> userNameColorCodes = WaitingScreenCFG.USER_NAME_FORCE_COLOR_CODES;
                 if (userNameColorCodes != null && userNameColorCodes.Count == 3)
                 {
-                    lblDoctorName.ForeColor = System.Drawing.Color.FromArgb(userNameColorCodes[0], userNameColorCodes[1], userNameColorCodes[2]);
+                    lblDoctorName.Appearance.ForeColor = System.Drawing.Color.FromArgb(userNameColorCodes[0], userNameColorCodes[1], userNameColorCodes[2]);
                 }
+
+                // co chu ten bac si
+                int userSizeCodes = WaitingScreenCFG.USER_NAME_SIZE_CODES;
+                if (userSizeCodes != null && userSizeCodes > 0)
+                {
+                    this.lblDoctorName.Appearance.Font = new System.Drawing.Font("Arial", userSizeCodes, System.Drawing.FontStyle.Bold);
+                }
+
 
                 //mau background
                 List<int> parentBackColorCodes = WaitingScreenCFG.PARENT_BACK_COLOR_CODES;
@@ -331,10 +256,19 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                 //}
                 //gridControlWaitngCls
                 //màu nền grid patients
-                List<int> gridpatientBackColorCodes = WaitingScreenCFG.GRID_PATIENTS_BACK_COLOR_CODES;
+                List<int> gridpatientBackColorCodes = WaitingScreenCFG.GRID_PATIENTS_BACK_COLOR_CODES;//gridControlWaitingCls
                 if (gridpatientBackColorCodes != null && gridpatientBackColorCodes.Count == 3)
                 {
                     gridViewWaitingCls.Appearance.Empty.BackColor = System.Drawing.Color.FromArgb(gridpatientBackColorCodes[0], gridpatientBackColorCodes[1], gridpatientBackColorCodes[2]);
+                    gridColumnSTT.AppearanceCell.BackColor = System.Drawing.Color.FromArgb(gridpatientBackColorCodes[0], gridpatientBackColorCodes[1], gridpatientBackColorCodes[2]);
+                    gridColumnLastName.AppearanceCell.BackColor = System.Drawing.Color.FromArgb(gridpatientBackColorCodes[0], gridpatientBackColorCodes[1], gridpatientBackColorCodes[2]);
+                    gridColumnAge.AppearanceCell.BackColor = System.Drawing.Color.FromArgb(gridpatientBackColorCodes[0], gridpatientBackColorCodes[1], gridpatientBackColorCodes[2]);
+                    gridColumnAddress.AppearanceCell.BackColor = System.Drawing.Color.FromArgb(gridpatientBackColorCodes[0], gridpatientBackColorCodes[1], gridpatientBackColorCodes[2]);
+                    gridColumnFirstName.AppearanceCell.BackColor = System.Drawing.Color.FromArgb(gridpatientBackColorCodes[0], gridpatientBackColorCodes[1], gridpatientBackColorCodes[2]);
+                    gridColumnServiceReqStt.AppearanceCell.BackColor = System.Drawing.Color.FromArgb(gridpatientBackColorCodes[0], gridpatientBackColorCodes[1], gridpatientBackColorCodes[2]);
+                    gridColumnInstructionTime.AppearanceCell.BackColor = System.Drawing.Color.FromArgb(gridpatientBackColorCodes[0], gridpatientBackColorCodes[1], gridpatientBackColorCodes[2]);
+                    gridColumnServiceReqType.AppearanceCell.BackColor = System.Drawing.Color.FromArgb(gridpatientBackColorCodes[0], gridpatientBackColorCodes[1], gridpatientBackColorCodes[2]);
+
                 }
 
 
@@ -485,30 +419,55 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             }
         }
 
-        void FillDataToDictionaryWaitingPatient()
+        private void SetDataToGridControlWaitingCLSs()
+        {
+            try
+            {
+
+                // danh sách chờ kết quả cận lâm sàng
+                
+                if (CallPtDataWorker.DicCallPatient != null && CallPtDataWorker.DicCallPatient.Count > 0 && CallPtDataWorker.DicCallPatient[room.ROOM_ID] != null && CallPtDataWorker.DicCallPatient[room.ROOM_ID].Count > 0)
+                {
+                    int countPatient = 0;
+                    try { countPatient = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<int>(AppConfigKeys.CONFIG_KEY__SO_BENH_NHAN_TREN_DANH_SACH_CHO_KHAM_VA_CLS); }
+                    catch (Exception) { };
+                    if (countPatient == 0)
+                        countPatient = 10;
+                    var lisCallNew = CallPtDataWorker.DicCallPatient[room.ROOM_ID].Where(o => o.CALL_TIME > 0).OrderByDescending(p=>p.CALL_TIME).GroupBy(g=>g.ID).Select(q=>q.First()).Take(countPatient).ToList();
+                    gridControlWaitingCls.Invoke(new MethodInvoker(delegate
+                    {
+                        gridControlWaitingCls.BeginUpdate();
+                        gridControlWaitingCls.DataSource = lisCallNew;
+                        gridControlWaitingCls.EndUpdate();
+                    }));
+                    Inventec.Common.Logging.LogSystem.Info("Du lieu DicCallPatient:" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => CallPtDataWorker.DicCallPatient[room.ROOM_ID].Take(countPatient).ToList()), CallPtDataWorker.DicCallPatient[room.ROOM_ID].Take(countPatient).ToList()));
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
+
+        private void GetCallTime()
         {
             try
             {
                 CommonParam param = new CommonParam();
                 HIS.Desktop.LocalStorage.BackendData.V2.Filter.HisTreatmentSampleDeskViewFilter filter = new HIS.Desktop.LocalStorage.BackendData.V2.Filter.HisTreatmentSampleDeskViewFilter();
+                filter.SAMPLE_ROOM_ID = room.ID;
+                filter.CALL_TIME_FROM = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Today);
+                filter.CALL_TIME_TO = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Today) + 235959;
+                filter.ORDER_FIELD = "CALL_TIME";
+                filter.ORDER_DIRECTION = "DESC";
 
-                if (room != null)
-                {
-                    filter.SAMPLE_ROOM_ID = room.ID;
-                }
-
-                List<long> lstServiceReqSTT = new List<long>();
-                long startDay = Inventec.Common.TypeConvert.Parse.ToInt64((Inventec.Common.DateTime.Get.StartDay() ?? 0).ToString());//20181212121527
-                long endDay = Inventec.Common.TypeConvert.Parse.ToInt64((Inventec.Common.DateTime.Get.EndDay() ?? 0).ToString());
-                filter.CREATE_DATE_FROM = startDay;
-                filter.CREATE_DATE_TO = endDay;
-                filter.ORDER_FIELD = "TDL_IS_PRIORITY";
-                filter.ORDER_DIRECTION = "DESC NULLS LAST";
-                filter.ORDER_FIELD1 = "CREATE_TIME";
-                filter.ORDER_DIRECTION1 = "ASC";
-                filter.HASNT_SAMPLE_DESK = true;
-                filter.IS_BHYT_OR_PAID = this.chkIsNotInDebt;
-
+                int countPatient = 0;
+                try { countPatient = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<int>(AppConfigKeys.CONFIG_KEY__SO_BENH_NHAN_TREN_DANH_SACH_CHO_KHAM_VA_CLS); }
+                catch (Exception) { };
+                if (countPatient == 0)
+                    countPatient = 10;
+                param.Limit = countPatient;
+                param.Start = 0;
                 mosUserConsummer = new Inventec.Common.WebApiClient.ApiConsumer(HisConfigCFG.MOS_USER_URI, GlobalVariables.APPLICATION_CODE);
                 mosUserConsummer.SetTokenCode(HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer.GetTokenCode());
 
@@ -517,189 +476,11 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                 //Inventec.Common.Logging.LogSystem.Debug("Data Update." + result.Count);
                 if (result != null && result.Count > 0)
                 {
-
-                    CallPtDataWorker.DicCallPatient[room.ROOM_ID] = ConnvertListServiceReq1ToADO(result);
-                }
-                else
-                {
-                    CallPtDataWorker.DicCallPatient[room.ROOM_ID] = new List<SrADO>();
+                    CallPtDataWorker.DicCallPatient[room.ROOM_ID] = result;
+                   
                 }
 
-                #region Process has exception
-                SessionManager.ProcessTokenLost(param);
-                #endregion
-            }
-            catch (Exception ex)
-            {
-                LogSystem.Error(ex);
-            }
-        }
 
-        private List<SrADO> ConnvertListServiceReq1ToADO(List<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK> tsd)
-        {
-            List<SrADO> SrADOs = new List<SrADO>();
-            try
-            {
-                List<SrADO> lisAdos = null;
-                if (CallPtDataWorker.DicCallPatient != null && CallPtDataWorker.DicCallPatient.ContainsKey(room.ROOM_ID))
-                {
-                    lisAdos = CallPtDataWorker.DicCallPatient[room.ROOM_ID];
-                }
-                foreach (var item in tsd)
-                {
-                    SrADO ado = null;
-                    ado = lisAdos != null ? lisAdos.FirstOrDefault(o =>o.ID == item.ID) : null;
-                    SrADO SrADO = new SrADO();
-                    AutoMapper.Mapper.CreateMap<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK, SrADO>();
-                    SrADO = AutoMapper.Mapper.Map<SrADO>(item);
-
-                    if (ado != null && ado.CallPatientSTT)
-                    {
-                        SrADO.CallPatientSTT = true;
-                    }
-                    else
-                    {
-                        SrADO.CallPatientSTT = false;
-                    }
-
-                    SrADOs.Add(SrADO);
-                }
-                SrADOs = SrADOs.OrderByDescending(o => o.CallPatientSTT).ToList();
-            }
-            catch (Exception ex)
-            {
-                LogSystem.Error(ex);
-            }
-            return SrADOs;
-        }
-
-        private void SetDataToCurrentPatientCall(SrADO SrAdo)
-        {
-            try
-            {
-                if (SrAdo != null)
-                {
-                    Inventec.Common.Logging.LogSystem.Debug("PatientIsCall step 7");
-                    lblPatientName.Text = SrAdo.TDL_PATIENT_NAME;
-                    lblSoThuTuBenhNhan.Text = SrAdo.SAMPLE_DESK_NAME + "";
-                }
-                else if (!isSetNum)
-                {
-                    Inventec.Common.Logging.LogSystem.Debug("PatientIsCall step 8");
-                    lblPatientName.Text = "";
-                    lblSoThuTuBenhNhan.Text = "";
-                }
-            }
-            catch (Exception ex)
-            {
-                LogSystem.Error(ex);
-            }
-        }
-
-        private void SetDataToLabelMoiBenhNhanChild()
-        {
-            try
-            {
-                if (SrAdoWorker.SrAdo != null && SrAdoWorker.SrAdo.CallPatientSTT)
-                {
-                    SetDataToCurrentPatientCall(SrAdoWorker.SrAdo);
-                }
-                else if (!isSetNum)
-                {
-                    SetDataToCurrentPatientCall(null);
-                }
-            }
-            catch (Exception ex)
-            {
-                LogSystem.Error(ex);
-            }
-        }
-
-        private void SetDataToCurrentCallPatient()
-        {
-            try
-            {
-                if (CallPtDataWorker.DicCallPatient != null && CallPtDataWorker.DicCallPatient.Count > 0 && CallPtDataWorker.DicCallPatient[room.ROOM_ID] != null && CallPtDataWorker.DicCallPatient[room.ROOM_ID].Count > 0)
-                {
-                    SrADO PatientIsCall = CallPtDataWorker.DicCallPatient[room.ROOM_ID].FirstOrDefault(o => o.CallPatientSTT);
-                    Inventec.Common.Logging.LogSystem.Info("SetDataToCurrentCallPatient() tDu lieu PatientIsCall:" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => PatientIsCall), PatientIsCall));
-
-                    if (PatientIsCall != null)
-                    {
-                        isSetNum = false;
-                        Inventec.Common.Logging.LogSystem.Debug("PatientIsCall step 1");
-                        if (SrAdoWorker.SrAdo == null)
-                        {
-                            Inventec.Common.Logging.LogSystem.Debug("PatientIsCall step 2");
-                            SrAdoWorker.SrAdo = PatientIsCall;
-                        }
-                        else
-                        {
-                            if (PatientIsCall.TDL_PATIENT_NAME != SrAdoWorker.SrAdo.TDL_PATIENT_NAME || PatientIsCall.CREATE_TIME != SrAdoWorker.SrAdo.CREATE_TIME)
-                            {
-                                Inventec.Common.Logging.LogSystem.Debug("PatientIsCall step 3");
-                                SrAdoWorker.SrAdo = PatientIsCall;
-                            }
-                            else
-                            {
-                                Inventec.Common.Logging.LogSystem.Debug("PatientIsCall step 4");
-                            }
-                        }
-
-                        //neu co 2 benh nhan duoc gan thi bo benh nhan hien tai de hien benh nhan sau
-                        SrADO PatientIsCallSecond = CallPtDataWorker.DicCallPatient[room.ROOM_ID].LastOrDefault(o => o.CallPatientSTT);
-                        if (PatientIsCall.ID != PatientIsCallSecond.ID)
-                        {
-                            PatientIsCall.CallPatientSTT = false;
-                        }
-                    }
-                    else
-                    {
-                        Inventec.Common.Logging.LogSystem.Info("PatientIsCall step 5");
-                        //SrAdoWorker.SrAdo = null;
-                    }
-                }
-                else
-                {
-                    Inventec.Common.Logging.LogSystem.Info("PatientIsCall step 6");
-                    SrAdoWorker.SrAdo = null;
-                }
-            }
-            catch (Exception ex)
-            {
-                LogSystem.Error(ex);
-            }
-        }
-
-        private void SetDataToGridControlWaitingCLSs()
-        {
-            try
-            {
-                if (CallPtDataWorker.DicCallPatient != null && CallPtDataWorker.DicCallPatient.Count > 0 && CallPtDataWorker.DicCallPatient[room.ROOM_ID] != null && CallPtDataWorker.DicCallPatient[room.ROOM_ID].Count > 0)
-                {
-                    int countPatient = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<int>(AppConfigKeys.CONFIG_KEY__SO_BENH_NHAN_TREN_DANH_SACH_CHO_KHAM_VA_CLS);
-                    if (countPatient == 0)
-                        countPatient = 10;
-
-                    // danh sách chờ kết quả cận lâm sàng
-                    var ServiceReqFilterSTTs = CallPtDataWorker.DicCallPatient[room.ROOM_ID];
-                    gridControlWaitingCls.Invoke(new MethodInvoker(delegate
-                    {
-                        gridControlWaitingCls.BeginUpdate();
-                        gridControlWaitingCls.DataSource = ServiceReqFilterSTTs;
-                        gridControlWaitingCls.EndUpdate();
-                    }));
-                    Inventec.Common.Logging.LogSystem.Info("Du lieu DicCallPatient:" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => CallPtDataWorker.DicCallPatient[room.ROOM_ID].Take(countPatient).ToList()), CallPtDataWorker.DicCallPatient[room.ROOM_ID].Take(countPatient).ToList()));
-                }
-                else
-                {
-                    gridControlWaitingCls.Invoke(new MethodInvoker(delegate
-                       {
-                           gridControlWaitingCls.BeginUpdate();
-                           gridControlWaitingCls.DataSource = null;
-                           gridControlWaitingCls.EndUpdate();
-                       }));
-                }
             }
             catch (Exception ex)
             {
@@ -744,73 +525,6 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             }
         }
 
-        void SetDataToCurentCallPatientUsingThread()
-        {
-            try
-            {
-                Task ts = Task.Factory.StartNew(executeThreadSetDataToCurentCallPatient);
-            }
-            catch (Exception ex)
-            {
-                LogSystem.Error(ex);
-            }
-        }
-
-        void SetDataToLabelMoiBenhNhan()
-        {
-            try
-            {
-                Task ts = Task.Factory.StartNew(executeThreadSetDataToLabelMoiBenhNhan);
-            }
-            catch (Exception ex)
-            {
-                LogSystem.Error(ex);
-            }
-        }
-
-        void StartTheadSetDataToCurentCallPatient()
-        {
-            SetDataToCurentCallPatientUsingThread();
-        }
-
-        void executeThreadSetDataToCurentCallPatient()
-        {
-            try
-            {
-                if (this.InvokeRequired)
-                {
-                    this.Invoke(new MethodInvoker(delegate { SetDataToCurrentCallPatient(); }));
-                }
-                else
-                {
-                    SetDataToCurrentCallPatient();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        void executeThreadSetDataToLabelMoiBenhNhan()
-        {
-            try
-            {
-                if (this.InvokeRequired)
-                {
-                    this.Invoke(new MethodInvoker(delegate { SetDataToLabelMoiBenhNhanChild(); }));
-                }
-                else
-                {
-                    SetDataToLabelMoiBenhNhanChild();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
         void executeThreadSetDataToGridControl()
         {
             try
@@ -835,45 +549,11 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             SetDataToGridControlWaitingCLSs();
         }
 
-        private void timerForHightLightCallPatientLayout_Tick(object sender, EventArgs e)
-        {
-            try
-            {
-
-                //SetDataToCurrentCallPatient();
-                SetDataToCurentCallPatientUsingThread();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            try
-            {
-                SetDataToLabelMoiBenhNhan();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
         public void CallNumOrder(int min, int max)
         {
             try
             {
                 isSetNum = true;
-                if (CallPtDataWorker.DicCallPatient != null && CallPtDataWorker.DicCallPatient.ContainsKey(room.ROOM_ID))
-                {
-                    CallPtDataWorker.DicCallPatient[room.ROOM_ID].ForEach(o => o.CallPatientSTT = false);
-                }
-                if (SrAdoWorker.SrAdo != null)
-                {
-                    SrAdoWorker.SrAdo.CallPatientSTT = false;
-                }
                 if (min == max)
                 {
                     lblPatientName.Invoke(new MethodInvoker(delegate
@@ -907,25 +587,14 @@ namespace HIS.Desktop.Plugins.CallPatientSample
         {
             try
             {
-                timerAutoLoadDataPatient.Enabled = false;
-                timerForHightLightCallPatientLayout.Enabled = false;
                 timerForScrollListPatient.Enabled = false;
                 timerSetDataToGridControl.Enabled = false;
-                timer1.Enabled = false;
 
-                timerAutoLoadDataPatient.Stop();
-                timerForHightLightCallPatientLayout.Stop();
                 timerForScrollListPatient.Stop();
                 timerSetDataToGridControl.Stop();
-                timer1.Stop();
 
-                timerAutoLoadDataPatient.Dispose();
-                timerForHightLightCallPatientLayout.Dispose();
                 timerForScrollListPatient.Dispose();
                 timerSetDataToGridControl.Dispose();
-                timer1.Dispose();
-
-                SrAdoWorker.SrAdo = new SrADO();
             }
             catch (Exception ex)
             {

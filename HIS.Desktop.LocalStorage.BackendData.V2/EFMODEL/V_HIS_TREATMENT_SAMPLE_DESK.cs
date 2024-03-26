@@ -27,6 +27,7 @@ namespace HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL
         public string SAMPLE_ROOM_NAME { get; set; }
         public short? TDL_IS_PRIORITY { get; set; }
         public string TDL_PATIENT_CODE { get; set; }
+        public string TDL_PATIENT_ADDRESS { get; set; }
         public long TDL_PATIENT_DOB { get; set; }
         public string TDL_PATIENT_NAME { get; set; }
         public long? TDL_PATIENT_TYPE_ID { get; set; }

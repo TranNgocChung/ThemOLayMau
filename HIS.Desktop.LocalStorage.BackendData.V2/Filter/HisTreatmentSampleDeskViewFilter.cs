@@ -25,6 +25,8 @@ namespace HIS.Desktop.LocalStorage.BackendData.V2.Filter
         public string ORDER_DIRECTION4 { get; set; }
         public long? CREATE_DATE_FROM { get; set; }
         public long? CREATE_DATE_TO { get; set; }
+        public long? CALL_TIME_FROM { get; set; }
+        public long? CALL_TIME_TO { get; set; }
 
 
         public string PATIENT_CODE__EXACT { get; set; }

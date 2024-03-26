@@ -9,7 +9,6 @@ using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.LocalStorage.Location;
-using HIS.Desktop.LocalStorage.BackendData.V2.ADO;
 using Inventec.Desktop.Common.Message;
 using LIS.EFMODEL.DataModels;
 using MOS.EFMODEL.DataModels;

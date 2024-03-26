@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl5 = new DevExpress.XtraLayout.LayoutControl();
             this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
@@ -75,12 +76,9 @@
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.timerForScrollListPatient = new System.Windows.Forms.Timer();
-            this.timerAutoLoadDataPatient = new System.Windows.Forms.Timer();
-            this.imageList1 = new System.Windows.Forms.ImageList();
-            this.timerSetDataToGridControl = new System.Windows.Forms.Timer();
-            this.timerForHightLightCallPatientLayout = new System.Windows.Forms.Timer();
-            this.timer1 = new System.Windows.Forms.Timer();
+            this.timerForScrollListPatient = new System.Windows.Forms.Timer(this.components);
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.timerSetDataToGridControl = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl5)).BeginInit();
@@ -149,6 +147,7 @@
             this.layoutControl5.Size = new System.Drawing.Size(1346, 187);
             this.layoutControl5.TabIndex = 7;
             this.layoutControl5.Text = "layoutControl5";
+            this.layoutControl5.Visible = false;
             // 
             // panelControl2
             // 
@@ -163,6 +162,7 @@
             this.panelControl2.Name = "panelControl2";
             this.panelControl2.Size = new System.Drawing.Size(1247, 187);
             this.panelControl2.TabIndex = 5;
+            this.panelControl2.Visible = false;
             // 
             // layoutControl3
             // 
@@ -176,6 +176,7 @@
             this.layoutControl3.Size = new System.Drawing.Size(1241, 181);
             this.layoutControl3.TabIndex = 0;
             this.layoutControl3.Text = "layoutControl3";
+            this.layoutControl3.Visible = false;
             // 
             // lblMoiNguoiBenh
             // 
@@ -190,6 +191,7 @@
             this.lblMoiNguoiBenh.StyleController = this.layoutControl3;
             this.lblMoiNguoiBenh.TabIndex = 6;
             this.lblMoiNguoiBenh.Text = "MỜI NGƯỜI BỆNH";
+            this.lblMoiNguoiBenh.Visible = false;
             // 
             // lblPatientName
             // 
@@ -202,6 +204,7 @@
             this.lblPatientName.Size = new System.Drawing.Size(1231, 56);
             this.lblPatientName.StyleController = this.layoutControl3;
             this.lblPatientName.TabIndex = 5;
+            this.lblPatientName.Visible = false;
             // 
             // lblCoSttNhoHon
             // 
@@ -215,6 +218,7 @@
             this.lblCoSttNhoHon.StyleController = this.layoutControl3;
             this.lblCoSttNhoHon.TabIndex = 4;
             this.lblCoSttNhoHon.Text = "HOẶC NGƯỜI BỆNH CÓ SỐ NHỎ HƠN";
+            this.lblCoSttNhoHon.Visible = false;
             // 
             // layoutControlGroupMoiBenhNhan
             // 
@@ -231,6 +235,7 @@
             this.layoutControlGroupMoiBenhNhan.OptionsItemText.TextToControlDistance = 5;
             this.layoutControlGroupMoiBenhNhan.Size = new System.Drawing.Size(1241, 181);
             this.layoutControlGroupMoiBenhNhan.TextVisible = false;
+            this.layoutControlGroupMoiBenhNhan.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // layoutControlItem8
             // 
@@ -240,6 +245,7 @@
             this.layoutControlItem8.Size = new System.Drawing.Size(1241, 60);
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem8.TextVisible = false;
+            this.layoutControlItem8.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // layoutControlItem9
             // 
@@ -249,6 +255,7 @@
             this.layoutControlItem9.Size = new System.Drawing.Size(1241, 66);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
+            this.layoutControlItem9.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // layoutControlItem10
             // 
@@ -258,6 +265,7 @@
             this.layoutControlItem10.Size = new System.Drawing.Size(1241, 55);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem10.TextVisible = false;
+            this.layoutControlItem10.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // panelControl1
             // 
@@ -360,6 +368,7 @@
             this.layoutControlGroup4.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
             this.layoutControlGroup4.Size = new System.Drawing.Size(1346, 187);
             this.layoutControlGroup4.TextVisible = false;
+            this.layoutControlGroup4.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // layoutControlItem2
             // 
@@ -383,6 +392,7 @@
             this.layoutControlItem6.Size = new System.Drawing.Size(1247, 187);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
+            this.layoutControlItem6.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // layoutControl4
             // 
@@ -410,7 +420,7 @@
             // 
             // lblRoomName
             // 
-            this.lblRoomName.Appearance.BackColor = System.Drawing.Color.Black;
+            this.lblRoomName.Appearance.BackColor = System.Drawing.Color.Transparent;
             this.lblRoomName.Appearance.Font = new System.Drawing.Font("Arial", 18F, System.Drawing.FontStyle.Bold);
             this.lblRoomName.Appearance.ForeColor = System.Drawing.Color.Red;
             this.lblRoomName.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
@@ -505,7 +515,6 @@
             // gridViewWaitingCls
             // 
             this.gridViewWaitingCls.Appearance.Empty.BackColor = System.Drawing.Color.Black;
-            this.gridViewWaitingCls.Appearance.Empty.BackColor2 = System.Drawing.Color.Black;
             this.gridViewWaitingCls.Appearance.Empty.BorderColor = System.Drawing.Color.Transparent;
             this.gridViewWaitingCls.Appearance.Empty.Options.UseBackColor = true;
             this.gridViewWaitingCls.Appearance.Empty.Options.UseBorderColor = true;
@@ -562,8 +571,9 @@
             // 
             // gridColumnSTT
             // 
-            this.gridColumnSTT.AppearanceCell.BackColor = System.Drawing.Color.Black;
-            this.gridColumnSTT.AppearanceCell.BorderColor = System.Drawing.Color.Black;
+            this.gridColumnSTT.AppearanceCell.BackColor = System.Drawing.Color.Transparent;
+            this.gridColumnSTT.AppearanceCell.BackColor2 = System.Drawing.Color.Transparent;
+            this.gridColumnSTT.AppearanceCell.BorderColor = System.Drawing.Color.Transparent;
             this.gridColumnSTT.AppearanceCell.Font = new System.Drawing.Font("Arial", 29F, System.Drawing.FontStyle.Bold);
             this.gridColumnSTT.AppearanceCell.ForeColor = System.Drawing.Color.Yellow;
             this.gridColumnSTT.AppearanceCell.Options.UseBackColor = true;
@@ -573,7 +583,7 @@
             this.gridColumnSTT.AppearanceCell.Options.UseTextOptions = true;
             this.gridColumnSTT.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.gridColumnSTT.AppearanceHeader.BackColor = System.Drawing.Color.Black;
-            this.gridColumnSTT.AppearanceHeader.BorderColor = System.Drawing.Color.Black;
+            this.gridColumnSTT.AppearanceHeader.BorderColor = System.Drawing.Color.Transparent;
             this.gridColumnSTT.AppearanceHeader.Font = new System.Drawing.Font("Arial", 29F, System.Drawing.FontStyle.Bold);
             this.gridColumnSTT.AppearanceHeader.ForeColor = System.Drawing.Color.Red;
             this.gridColumnSTT.AppearanceHeader.Options.UseBackColor = true;
@@ -596,8 +606,9 @@
             // 
             // gridColumnLastName
             // 
-            this.gridColumnLastName.AppearanceCell.BackColor = System.Drawing.Color.Black;
-            this.gridColumnLastName.AppearanceCell.BorderColor = System.Drawing.Color.Black;
+            this.gridColumnLastName.AppearanceCell.BackColor = System.Drawing.Color.Transparent;
+            this.gridColumnLastName.AppearanceCell.BackColor2 = System.Drawing.Color.Transparent;
+            this.gridColumnLastName.AppearanceCell.BorderColor = System.Drawing.Color.Transparent;
             this.gridColumnLastName.AppearanceCell.Font = new System.Drawing.Font("Arial", 29F, System.Drawing.FontStyle.Bold);
             this.gridColumnLastName.AppearanceCell.ForeColor = System.Drawing.Color.Yellow;
             this.gridColumnLastName.AppearanceCell.Options.UseBackColor = true;
@@ -607,13 +618,15 @@
             this.gridColumnLastName.AppearanceCell.Options.UseTextOptions = true;
             this.gridColumnLastName.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
             this.gridColumnLastName.AppearanceHeader.BackColor = System.Drawing.Color.Black;
-            this.gridColumnLastName.AppearanceHeader.BorderColor = System.Drawing.Color.Black;
+            this.gridColumnLastName.AppearanceHeader.BorderColor = System.Drawing.Color.Transparent;
             this.gridColumnLastName.AppearanceHeader.Font = new System.Drawing.Font("Arial", 29F, System.Drawing.FontStyle.Bold);
             this.gridColumnLastName.AppearanceHeader.ForeColor = System.Drawing.Color.Red;
             this.gridColumnLastName.AppearanceHeader.Options.UseBackColor = true;
             this.gridColumnLastName.AppearanceHeader.Options.UseBorderColor = true;
             this.gridColumnLastName.AppearanceHeader.Options.UseFont = true;
             this.gridColumnLastName.AppearanceHeader.Options.UseForeColor = true;
+            this.gridColumnLastName.AppearanceHeader.Options.UseTextOptions = true;
+            this.gridColumnLastName.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.gridColumnLastName.Caption = "HỌ TÊN";
             this.gridColumnLastName.FieldName = "TDL_PATIENT_NAME";
             this.gridColumnLastName.Name = "gridColumnLastName";
@@ -625,12 +638,13 @@
             this.gridColumnLastName.OptionsColumn.ReadOnly = true;
             this.gridColumnLastName.Visible = true;
             this.gridColumnLastName.VisibleIndex = 0;
-            this.gridColumnLastName.Width = 380;
+            this.gridColumnLastName.Width = 365;
             // 
             // gridColumnAge
             // 
-            this.gridColumnAge.AppearanceCell.BackColor = System.Drawing.Color.Black;
-            this.gridColumnAge.AppearanceCell.BorderColor = System.Drawing.Color.Black;
+            this.gridColumnAge.AppearanceCell.BackColor = System.Drawing.Color.Transparent;
+            this.gridColumnAge.AppearanceCell.BackColor2 = System.Drawing.Color.Transparent;
+            this.gridColumnAge.AppearanceCell.BorderColor = System.Drawing.Color.Transparent;
             this.gridColumnAge.AppearanceCell.Font = new System.Drawing.Font("Arial", 29F, System.Drawing.FontStyle.Bold);
             this.gridColumnAge.AppearanceCell.ForeColor = System.Drawing.Color.Yellow;
             this.gridColumnAge.AppearanceCell.Options.UseBackColor = true;
@@ -640,7 +654,7 @@
             this.gridColumnAge.AppearanceCell.Options.UseTextOptions = true;
             this.gridColumnAge.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.gridColumnAge.AppearanceHeader.BackColor = System.Drawing.Color.Black;
-            this.gridColumnAge.AppearanceHeader.BorderColor = System.Drawing.Color.Black;
+            this.gridColumnAge.AppearanceHeader.BorderColor = System.Drawing.Color.Transparent;
             this.gridColumnAge.AppearanceHeader.Font = new System.Drawing.Font("Arial", 29F, System.Drawing.FontStyle.Bold);
             this.gridColumnAge.AppearanceHeader.ForeColor = System.Drawing.Color.Red;
             this.gridColumnAge.AppearanceHeader.Options.UseBackColor = true;
@@ -649,7 +663,7 @@
             this.gridColumnAge.AppearanceHeader.Options.UseForeColor = true;
             this.gridColumnAge.AppearanceHeader.Options.UseTextOptions = true;
             this.gridColumnAge.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gridColumnAge.Caption = "NĂM SINH";
+            this.gridColumnAge.Caption = "N.S";
             this.gridColumnAge.FieldName = "AGE_DISPLAY";
             this.gridColumnAge.Name = "gridColumnAge";
             this.gridColumnAge.OptionsColumn.AllowEdit = false;
@@ -660,12 +674,13 @@
             this.gridColumnAge.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnAge.Visible = true;
             this.gridColumnAge.VisibleIndex = 1;
-            this.gridColumnAge.Width = 242;
+            this.gridColumnAge.Width = 148;
             // 
             // gridColumnAddress
             // 
-            this.gridColumnAddress.AppearanceCell.BackColor = System.Drawing.Color.Black;
-            this.gridColumnAddress.AppearanceCell.BorderColor = System.Drawing.Color.Black;
+            this.gridColumnAddress.AppearanceCell.BackColor = System.Drawing.Color.Transparent;
+            this.gridColumnAddress.AppearanceCell.BackColor2 = System.Drawing.Color.Transparent;
+            this.gridColumnAddress.AppearanceCell.BorderColor = System.Drawing.Color.Transparent;
             this.gridColumnAddress.AppearanceCell.Font = new System.Drawing.Font("Arial", 29F, System.Drawing.FontStyle.Bold);
             this.gridColumnAddress.AppearanceCell.ForeColor = System.Drawing.Color.Yellow;
             this.gridColumnAddress.AppearanceCell.Options.UseBackColor = true;
@@ -673,13 +688,15 @@
             this.gridColumnAddress.AppearanceCell.Options.UseFont = true;
             this.gridColumnAddress.AppearanceCell.Options.UseForeColor = true;
             this.gridColumnAddress.AppearanceHeader.BackColor = System.Drawing.Color.Black;
-            this.gridColumnAddress.AppearanceHeader.BorderColor = System.Drawing.Color.Black;
+            this.gridColumnAddress.AppearanceHeader.BorderColor = System.Drawing.Color.Transparent;
             this.gridColumnAddress.AppearanceHeader.Font = new System.Drawing.Font("Arial", 29F, System.Drawing.FontStyle.Bold);
             this.gridColumnAddress.AppearanceHeader.ForeColor = System.Drawing.Color.Red;
             this.gridColumnAddress.AppearanceHeader.Options.UseBackColor = true;
             this.gridColumnAddress.AppearanceHeader.Options.UseBorderColor = true;
             this.gridColumnAddress.AppearanceHeader.Options.UseFont = true;
             this.gridColumnAddress.AppearanceHeader.Options.UseForeColor = true;
+            this.gridColumnAddress.AppearanceHeader.Options.UseTextOptions = true;
+            this.gridColumnAddress.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.gridColumnAddress.Caption = "ĐỊA CHỈ";
             this.gridColumnAddress.FieldName = "TDL_PATIENT_ADDRESS";
             this.gridColumnAddress.Name = "gridColumnAddress";
@@ -688,16 +705,27 @@
             this.gridColumnAddress.OptionsColumn.AllowMove = false;
             this.gridColumnAddress.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumnAddress.OptionsColumn.ReadOnly = true;
-            this.gridColumnAddress.Width = 538;
+            this.gridColumnAddress.Visible = true;
+            this.gridColumnAddress.VisibleIndex = 2;
+            this.gridColumnAddress.Width = 648;
             // 
             // gridColumnFirstName
             // 
+            this.gridColumnFirstName.AppearanceCell.BackColor = System.Drawing.Color.Transparent;
+            this.gridColumnFirstName.AppearanceCell.BackColor2 = System.Drawing.Color.Transparent;
+            this.gridColumnFirstName.AppearanceCell.BorderColor = System.Drawing.Color.Transparent;
             this.gridColumnFirstName.AppearanceCell.Font = new System.Drawing.Font("Arial", 21.75F);
             this.gridColumnFirstName.AppearanceCell.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.gridColumnFirstName.AppearanceCell.Options.UseBackColor = true;
+            this.gridColumnFirstName.AppearanceCell.Options.UseBorderColor = true;
             this.gridColumnFirstName.AppearanceCell.Options.UseFont = true;
             this.gridColumnFirstName.AppearanceCell.Options.UseForeColor = true;
-            this.gridColumnFirstName.AppearanceHeader.Font = new System.Drawing.Font("Arial", 22F);
+            this.gridColumnFirstName.AppearanceHeader.BorderColor = System.Drawing.Color.Transparent;
+            this.gridColumnFirstName.AppearanceHeader.Font = new System.Drawing.Font("Arial", 29.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gridColumnFirstName.AppearanceHeader.Options.UseBorderColor = true;
             this.gridColumnFirstName.AppearanceHeader.Options.UseFont = true;
+            this.gridColumnFirstName.AppearanceHeader.Options.UseTextOptions = true;
+            this.gridColumnFirstName.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.gridColumnFirstName.Caption = "Tên";
             this.gridColumnFirstName.FieldName = "FIRST_NAME";
             this.gridColumnFirstName.Name = "gridColumnFirstName";
@@ -709,13 +737,20 @@
             // 
             // gridColumnServiceReqStt
             // 
+            this.gridColumnServiceReqStt.AppearanceCell.BackColor = System.Drawing.Color.Transparent;
+            this.gridColumnServiceReqStt.AppearanceCell.BackColor2 = System.Drawing.Color.Transparent;
+            this.gridColumnServiceReqStt.AppearanceCell.BorderColor = System.Drawing.Color.Transparent;
             this.gridColumnServiceReqStt.AppearanceCell.Font = new System.Drawing.Font("Arial", 22F);
             this.gridColumnServiceReqStt.AppearanceCell.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.gridColumnServiceReqStt.AppearanceCell.Options.UseBackColor = true;
+            this.gridColumnServiceReqStt.AppearanceCell.Options.UseBorderColor = true;
             this.gridColumnServiceReqStt.AppearanceCell.Options.UseFont = true;
             this.gridColumnServiceReqStt.AppearanceCell.Options.UseForeColor = true;
             this.gridColumnServiceReqStt.AppearanceCell.Options.UseTextOptions = true;
             this.gridColumnServiceReqStt.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gridColumnServiceReqStt.AppearanceHeader.Font = new System.Drawing.Font("Arial", 22F);
+            this.gridColumnServiceReqStt.AppearanceHeader.BorderColor = System.Drawing.Color.Transparent;
+            this.gridColumnServiceReqStt.AppearanceHeader.Font = new System.Drawing.Font("Arial", 29.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gridColumnServiceReqStt.AppearanceHeader.Options.UseBorderColor = true;
             this.gridColumnServiceReqStt.AppearanceHeader.Options.UseFont = true;
             this.gridColumnServiceReqStt.AppearanceHeader.Options.UseTextOptions = true;
             this.gridColumnServiceReqStt.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
@@ -728,13 +763,20 @@
             // 
             // gridColumnInstructionTime
             // 
+            this.gridColumnInstructionTime.AppearanceCell.BackColor = System.Drawing.Color.Transparent;
+            this.gridColumnInstructionTime.AppearanceCell.BackColor2 = System.Drawing.Color.Transparent;
+            this.gridColumnInstructionTime.AppearanceCell.BorderColor = System.Drawing.Color.Transparent;
             this.gridColumnInstructionTime.AppearanceCell.Font = new System.Drawing.Font("Arial", 22F);
             this.gridColumnInstructionTime.AppearanceCell.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.gridColumnInstructionTime.AppearanceCell.Options.UseBackColor = true;
+            this.gridColumnInstructionTime.AppearanceCell.Options.UseBorderColor = true;
             this.gridColumnInstructionTime.AppearanceCell.Options.UseFont = true;
             this.gridColumnInstructionTime.AppearanceCell.Options.UseForeColor = true;
             this.gridColumnInstructionTime.AppearanceCell.Options.UseTextOptions = true;
             this.gridColumnInstructionTime.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gridColumnInstructionTime.AppearanceHeader.Font = new System.Drawing.Font("Arial", 22F);
+            this.gridColumnInstructionTime.AppearanceHeader.BorderColor = System.Drawing.Color.Transparent;
+            this.gridColumnInstructionTime.AppearanceHeader.Font = new System.Drawing.Font("Arial", 29.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gridColumnInstructionTime.AppearanceHeader.Options.UseBorderColor = true;
             this.gridColumnInstructionTime.AppearanceHeader.Options.UseFont = true;
             this.gridColumnInstructionTime.AppearanceHeader.Options.UseTextOptions = true;
             this.gridColumnInstructionTime.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
@@ -747,28 +789,38 @@
             // 
             // gridColumnServiceReqType
             // 
+            this.gridColumnServiceReqType.AppearanceCell.BackColor = System.Drawing.Color.Transparent;
+            this.gridColumnServiceReqType.AppearanceCell.BackColor2 = System.Drawing.Color.Transparent;
+            this.gridColumnServiceReqType.AppearanceCell.BorderColor = System.Drawing.Color.Transparent;
             this.gridColumnServiceReqType.AppearanceCell.Font = new System.Drawing.Font("Tahoma", 22F);
             this.gridColumnServiceReqType.AppearanceCell.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.gridColumnServiceReqType.AppearanceCell.Options.UseBackColor = true;
+            this.gridColumnServiceReqType.AppearanceCell.Options.UseBorderColor = true;
             this.gridColumnServiceReqType.AppearanceCell.Options.UseFont = true;
             this.gridColumnServiceReqType.AppearanceCell.Options.UseForeColor = true;
             this.gridColumnServiceReqType.AppearanceCell.Options.UseTextOptions = true;
             this.gridColumnServiceReqType.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gridColumnServiceReqType.AppearanceHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.gridColumnServiceReqType.AppearanceHeader.Font = new System.Drawing.Font("Arial", 22F);
+            this.gridColumnServiceReqType.AppearanceHeader.BackColor = System.Drawing.Color.Transparent;
+            this.gridColumnServiceReqType.AppearanceHeader.BackColor2 = System.Drawing.Color.Transparent;
+            this.gridColumnServiceReqType.AppearanceHeader.BorderColor = System.Drawing.Color.Transparent;
+            this.gridColumnServiceReqType.AppearanceHeader.Font = new System.Drawing.Font("Arial", 29.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gridColumnServiceReqType.AppearanceHeader.ForeColor = System.Drawing.Color.Red;
             this.gridColumnServiceReqType.AppearanceHeader.Options.UseBackColor = true;
+            this.gridColumnServiceReqType.AppearanceHeader.Options.UseBorderColor = true;
             this.gridColumnServiceReqType.AppearanceHeader.Options.UseFont = true;
             this.gridColumnServiceReqType.AppearanceHeader.Options.UseForeColor = true;
             this.gridColumnServiceReqType.AppearanceHeader.Options.UseTextOptions = true;
             this.gridColumnServiceReqType.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gridColumnServiceReqType.Caption = "Loại";
-            this.gridColumnServiceReqType.FieldName = "SERVICE_REQ_TYPE_NAME";
+            this.gridColumnServiceReqType.Caption = "Ô";
+            this.gridColumnServiceReqType.FieldName = "SAMPLE_DESK_NAME";
             this.gridColumnServiceReqType.Name = "gridColumnServiceReqType";
             this.gridColumnServiceReqType.OptionsColumn.AllowEdit = false;
             this.gridColumnServiceReqType.OptionsColumn.AllowFocus = false;
             this.gridColumnServiceReqType.OptionsColumn.AllowShowHide = false;
             this.gridColumnServiceReqType.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gridColumnServiceReqType.Width = 270;
+            this.gridColumnServiceReqType.Visible = true;
+            this.gridColumnServiceReqType.VisibleIndex = 3;
+            this.gridColumnServiceReqType.Width = 216;
             // 
             // layoutControlGroup5
             // 
@@ -871,10 +923,6 @@
             this.timerForScrollListPatient.Interval = 2000;
             this.timerForScrollListPatient.Tick += new System.EventHandler(this.timerForScrollListPatient_Tick);
             // 
-            // timerAutoLoadDataPatient
-            // 
-            this.timerAutoLoadDataPatient.Tick += new System.EventHandler(this.timerAutoLoadDataPatient_Tick);
-            // 
             // imageList1
             // 
             this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
@@ -885,16 +933,6 @@
             // 
             this.timerSetDataToGridControl.Interval = 2000;
             this.timerSetDataToGridControl.Tick += new System.EventHandler(this.timerSetDataToGridControl_Tick);
-            // 
-            // timerForHightLightCallPatientLayout
-            // 
-            this.timerForHightLightCallPatientLayout.Interval = 2000;
-            this.timerForHightLightCallPatientLayout.Tick += new System.EventHandler(this.timerForHightLightCallPatientLayout_Tick);
-            // 
-            // timer1
-            // 
-            this.timer1.Interval = 2000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // frmWaitingScreenSample22
             // 
@@ -985,11 +1023,9 @@
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;
         private System.Windows.Forms.Timer timerForScrollListPatient;
-        private System.Windows.Forms.Timer timerAutoLoadDataPatient;
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.Timer timerSetDataToGridControl;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnAddress;
-        private System.Windows.Forms.Timer timerForHightLightCallPatientLayout;
         private DevExpress.XtraEditors.PanelControl panelControl2;
         private DevExpress.XtraEditors.PanelControl panelControl1;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
@@ -1008,7 +1044,6 @@
         private DevExpress.XtraEditors.LabelControl lblSo;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem11;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem13;
-        private System.Windows.Forms.Timer timer1;
         private DevExpress.XtraEditors.LabelControl lblDoctorName;
         private DevExpress.XtraLayout.LayoutControlItem lciDoctorName;
     }

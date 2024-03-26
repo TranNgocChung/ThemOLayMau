@@ -18,6 +18,9 @@ namespace HIS.Desktop.Plugins.CallPatientSample
         private const string THIS = "EXE.WAITING_SCREEN.ORGANIZATION_NAME";
         private const string ROOM_NAM_COLOR_CODES = "SAMPLE.WAITING_SCREEN.ROOM_NAME.COLOR_CODES";//Mã màu chữ phòng khám
         private const string USER_NAM_COLOR_CODES = "SAMPLE.WAITING_SCREEN.USER_NAME.COLOR_CODES";//Mã màu chữ tên bác sĩ
+        private const string ROOM_NAM_SIZE_CODES = "SAMPLE.WAITING_SCREEN.ROOM_NAME.SIZE_CODES";//Mã cỡ chữ phòng khám
+        private const string USER_NAM_SIZE_CODES = "SAMPLE.WAITING_SCREEN.USER_NAME.SIZE_CODES";//Mã cỡ chữ tên bác sĩ
+        private const string GRID_PATIENT_BODY_FONT_SIZE_CODES = "SAMPLE.WAITING_SCREEN.FONT_SIZE_GRID_PATIENT_BODY.SIZE_CODES";//Mã cỡ chữ body của danh sách bệnh nhân
         private const string BACKGROUND_PARENT_COLOR_CODES = "SAMPLE.WAITING_SCREEN.BACKGROUND_PARENT.COLOR_CODES";//Mã màu background form
         private const string ORGANIZATION_NAME_COLOR_CODES = "SAMPLE.WAITING_SCREEN.ORGANIZATION_NAME.COLOR_CODES";//Mã màu tên tổ chức
         private const string GRID_PATIENT_BACK_COLOR_CODES = "SAMPLE.WAITING_SCREEN.BACK_COLOR_GRID_PATIENT.COLOR_CODES";//Mã màu nền danh sách bệnh nhân
@@ -27,10 +30,8 @@ namespace HIS.Desktop.Plugins.CallPatientSample
         private const string PAGING_LABEL_FORCE_COLOR_CODES = "SAMPLE.WAITING_SCREEN.FORCE_COLOR_PAGING.COLOR_CODES";//Mã màu chữ phân trang
         private const string NEW_STATUS_FORCE_COLOR_CODES = "SAMPLE.WAITING_SCREEN.FORCE_COLOR_NEW_STATUS.COLOR_CODES";//Mã màu chữ trạng thái yêu cầu khám là mới
         private const string TIMER_FOR_AUTO_LOAD_WAITING_SCREEN = "SAMPLE.WAITING_SCREEN.TIMER_FOR_AUTO_LOAD_PATIENTS"; // thời gian tải lại màn hình chờ
-        private const string TIMER_FOR_HIGHT_LIGHT_CALL_A_PATIENT = "SAMPLE.WAITING_SCREEN.TIMER_FOR_HIGHT_LIGHT_CALL_A_PATIENT"; // thời gian nhấp nháy khi gọi bệnh nhân
         private const string WATING_EXAM_NAME_COLOR_CODES = "SAMPLE.WAITING_SCREEN.WATING_EXAM_NAME_COLOR_CODES";//Mã màu danh sách khám
         private const string WATING_CLS_NAME_COLOR_CODES = "SAMPLE.WAITING_SCREEN.WATING_CLS_NAME_COLOR_CODES";//Mã màu danh sách cls
-        private const string TIMER_FOR_SET_DATA_TO_GRID_PATIENT = "SAMPLE.WAITING_SCREEN.TIMER_FOR_SET_DATA_TO_GRID_PATIENT"; // thời gian set dữ liệu từ RAM vào danh sách bệnh nhân
 
         private static string callPatientDen;
         public static string CALL_PATIENT_DEN_STR
@@ -203,33 +204,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             }
         }
 
-        private static int timerForSetDataToGridPatient;
-        public static int TIMER_FOR_SET_DATA_TO_GRID_PATIENTS
-        {
-            get
-            {
-                timerForSetDataToGridPatient = GetId(TIMER_FOR_SET_DATA_TO_GRID_PATIENT);
-                return timerForSetDataToGridPatient;
-            }
-            set
-            {
-                timerForSetDataToGridPatient = value;
-            }
-        }
 
-        private static int timerForHightLightCallAPatient;
-        public static int TIMER_FOR_HIGHT_LIGHT_CALL_PATIENT
-        {
-            get
-            {
-                timerForHightLightCallAPatient = GetId(TIMER_FOR_HIGHT_LIGHT_CALL_A_PATIENT);
-                return timerForHightLightCallAPatient;
-            }
-            set
-            {
-                timerForHightLightCallAPatient = value;
-            }
-        }
         private static List<int> parentBackColorCodes;
         public static List<int> PARENT_BACK_COLOR_CODES
         {
@@ -282,6 +257,49 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                 organizationForceColorCodes = value;
             }
         }
+
+        private static int roomNameSizeCodes;
+        public static int ROOM_NAME_SIZE_CODES
+        {
+            get
+            {
+                roomNameSizeCodes = GetId(ROOM_NAM_SIZE_CODES);
+                return roomNameSizeCodes;
+            }
+            set
+            {
+                roomNameSizeCodes = value;
+            }
+        }
+
+        private static int userNameSizeCodes;
+        public static int USER_NAME_SIZE_CODES
+        {
+            get
+            {
+                userNameSizeCodes = GetId(USER_NAM_SIZE_CODES);
+                return userNameSizeCodes;
+            }
+            set
+            {
+                userNameSizeCodes = value;
+            }
+        }
+
+        private static int patientBodySizeCodes;
+        public static int PATIENT_BODY_SIZE_CODES
+        {
+            get
+            {
+                patientBodySizeCodes = GetId(GRID_PATIENT_BODY_FONT_SIZE_CODES);
+                return patientBodySizeCodes;
+            }
+            set
+            {
+                patientBodySizeCodes = value;
+            }
+        }
+
         private static string GetName(string code)
         {
             string result = "";

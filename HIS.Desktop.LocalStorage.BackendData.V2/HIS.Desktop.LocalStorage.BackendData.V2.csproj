@@ -210,11 +210,9 @@
     <Compile Include="Filter\HisTreatmentSampleDeskViewFilter.cs" />
     <Compile Include="EFMODEL\HIS_SAMPLE_DESK.cs" />
     <Compile Include="EFMODEL\HIS_TREATMENT_SAMPLE_DESK.cs" />
-    <Compile Include="ADO\SrADO.cs" />
     <Compile Include="EFMODEL\V_HIS_TREATMENT_SAMPLE_DESK.cs" />
     <Compile Include="CallPatient\CallPatientDataWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Worker\ServiceReq1ADOWorker.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
