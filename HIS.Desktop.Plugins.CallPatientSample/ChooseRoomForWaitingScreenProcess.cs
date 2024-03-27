@@ -74,7 +74,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                 else
                 {
                     Screen secondScreen = sc.FirstOrDefault(o => o != Screen.PrimaryScreen);
-                    control.FormBorderStyle = FormBorderStyle.None;
+                    //control.FormBorderStyle = FormBorderStyle.None;
                     control.Left = secondScreen.Bounds.Width;
                     control.Top = secondScreen.Bounds.Height;
                     control.StartPosition = FormStartPosition.Manual;

@@ -41,7 +41,6 @@ namespace HIS.Desktop.Plugins.CallPatientSample
         private int scrll { get; set; }
         string organizationName = "";
         List<int> newStatusForceColorCodes = new List<int>();
-        internal static string[] FilePath;
         List<int> gridpatientBodyForceColorCodes;
         int index = 0;
         int rowCount = 0;
@@ -67,7 +66,6 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                 SetDataToRoom(this.room);
                 GetCallTime();
                 SetDataToGridControlWaitingCLSs();
-                GetFilePath();
                 StartAllTimer();
                 SetFromConfigToControl();
                 var emp = BackendDataWorker.Get<HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName());
@@ -102,9 +100,6 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             try
             {
 
-                timerForScrollListPatient.Interval = 2000;
-                timerForScrollListPatient.Enabled = true;
-                timerForScrollListPatient.Start();
                 if (WaitingScreenCFG.TIMER_FOR_AUTO_LOAD_WAITING_SCREENS > 0)
                     timerSetDataToGridControl.Interval = WaitingScreenCFG.TIMER_FOR_AUTO_LOAD_WAITING_SCREENS * 1000;
                 timerSetDataToGridControl.Enabled = true;
@@ -147,54 +142,6 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             }
         }
 
-        private void timerForScrollListPatientProcess()
-        {
-            try
-            {
-                if (this.InvokeRequired)
-                {
-                    this.Invoke(new MethodInvoker(delegate { ScrollListPatientProcess(); }));
-                }
-                else
-                {
-                    ScrollListPatientProcess();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-        private void ScrollListPatientProcess()
-        {
-            try
-            {
-                index += 1;
-                gridViewWaitingCls.FocusedRowHandle = index;
-                if (index == rowCount)
-                {
-                    index = 0;
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
-        private void timerForScrollListPatient_Tick(object sender, EventArgs e)
-        {
-            try
-            {
-                Task ts = Task.Factory.StartNew(timerForScrollListPatientProcess);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
         private void SetFromConfigToControl()
         {
             try
@@ -202,11 +149,11 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                 organizationName = WaitingScreenCFG.ORGANIZATION_NAME;
                 // mau phong xu ly
                 List<int> roomNameColorCodes = WaitingScreenCFG.ROOM_NAME_FORCE_COLOR_CODES;
+                Inventec.Common.Logging.LogSystem.Debug("roomNameColorCodes:" + string.Join(",", roomNameColorCodes));
                 if (roomNameColorCodes != null && roomNameColorCodes.Count == 3)
                 {
                     lblRoomName.Appearance.ForeColor = System.Drawing.Color.FromArgb(roomNameColorCodes[0], roomNameColorCodes[1], roomNameColorCodes[2]);
                     lblMoiNguoiBenh.Appearance.ForeColor = System.Drawing.Color.FromArgb(roomNameColorCodes[0], roomNameColorCodes[1], roomNameColorCodes[2]);
-                    lblSo.Appearance.ForeColor = System.Drawing.Color.FromArgb(roomNameColorCodes[0], roomNameColorCodes[1], roomNameColorCodes[2]);
                 }
                 // co chu phong xu ly
                 int roomNameSizeCodes = WaitingScreenCFG.ROOM_NAME_SIZE_CODES;
@@ -217,6 +164,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
 
                 // màu tên bác sĩ
                 List<int> userNameColorCodes = WaitingScreenCFG.USER_NAME_FORCE_COLOR_CODES;
+                Inventec.Common.Logging.LogSystem.Debug("userNameColorCodes:" + string.Join(",", userNameColorCodes));
                 if (userNameColorCodes != null && userNameColorCodes.Count == 3)
                 {
                     lblDoctorName.Appearance.ForeColor = System.Drawing.Color.FromArgb(userNameColorCodes[0], userNameColorCodes[1], userNameColorCodes[2]);
@@ -232,20 +180,14 @@ namespace HIS.Desktop.Plugins.CallPatientSample
 
                 //mau background
                 List<int> parentBackColorCodes = WaitingScreenCFG.PARENT_BACK_COLOR_CODES;
+                Inventec.Common.Logging.LogSystem.Debug("parentBackColorCodes:" + string.Join(",", parentBackColorCodes));
                 if (parentBackColorCodes != null && parentBackColorCodes.Count == 3)
                 {
                     layoutControlGroup1.AppearanceGroup.BackColor = System.Drawing.Color.FromArgb(parentBackColorCodes[0], parentBackColorCodes[1], parentBackColorCodes[2]);
                     layoutControlGroup3.AppearanceGroup.BackColor = System.Drawing.Color.FromArgb(parentBackColorCodes[0], parentBackColorCodes[1], parentBackColorCodes[2]);
-                    layoutControlGroup4.AppearanceGroup.BackColor = System.Drawing.Color.FromArgb(parentBackColorCodes[0], parentBackColorCodes[1], parentBackColorCodes[2]);
                     layoutControlGroup5.AppearanceGroup.BackColor = System.Drawing.Color.FromArgb(parentBackColorCodes[0], parentBackColorCodes[1], parentBackColorCodes[2]);
                     Root.AppearanceGroup.BackColor = System.Drawing.Color.FromArgb(parentBackColorCodes[0], parentBackColorCodes[1], parentBackColorCodes[2]);
-                    layoutControlGroupMoiBenhNhan.AppearanceGroup.BackColor = System.Drawing.Color.FromArgb(parentBackColorCodes[0], parentBackColorCodes[1], parentBackColorCodes[2]);
-                    layoutControlGroupMoiBenhNhanSo.AppearanceGroup.BackColor = System.Drawing.Color.FromArgb(parentBackColorCodes[0], parentBackColorCodes[1], parentBackColorCodes[2]);
-                    lblCoSttNhoHon.BackColor = System.Drawing.Color.FromArgb(parentBackColorCodes[0], parentBackColorCodes[1], parentBackColorCodes[2]);
                     lblMoiNguoiBenh.BackColor = System.Drawing.Color.FromArgb(parentBackColorCodes[0], parentBackColorCodes[1], parentBackColorCodes[2]);
-                    lblPatientName.BackColor = System.Drawing.Color.FromArgb(parentBackColorCodes[0], parentBackColorCodes[1], parentBackColorCodes[2]);
-                    lblSoThuTuBenhNhan.BackColor = System.Drawing.Color.FromArgb(parentBackColorCodes[0], parentBackColorCodes[1], parentBackColorCodes[2]);
-                    lblSo.BackColor = System.Drawing.Color.FromArgb(parentBackColorCodes[0], parentBackColorCodes[1], parentBackColorCodes[2]);
                 }
 
                 //màu chữ tên tổ chức
@@ -257,6 +199,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                 //gridControlWaitngCls
                 //màu nền grid patients
                 List<int> gridpatientBackColorCodes = WaitingScreenCFG.GRID_PATIENTS_BACK_COLOR_CODES;//gridControlWaitingCls
+                Inventec.Common.Logging.LogSystem.Debug("gridpatientBackColorCodes:" + string.Join(",", gridpatientBackColorCodes));
                 if (gridpatientBackColorCodes != null && gridpatientBackColorCodes.Count == 3)
                 {
                     gridViewWaitingCls.Appearance.Empty.BackColor = System.Drawing.Color.FromArgb(gridpatientBackColorCodes[0], gridpatientBackColorCodes[1], gridpatientBackColorCodes[2]);
@@ -274,6 +217,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
 
                 //màu nền của header danh sách bệnh nhân
                 List<int> gridpatientHeaderBackColorCodes = WaitingScreenCFG.GRID_PATIENTS_HEADER_BACK_COLOR_CODES;
+                Inventec.Common.Logging.LogSystem.Debug("gridpatientHeaderBackColorCodes:" + string.Join(",", gridpatientHeaderBackColorCodes));
                 if (gridpatientHeaderBackColorCodes != null && gridpatientHeaderBackColorCodes.Count == 3)
                 {
                     gridColumnAge.AppearanceHeader.BackColor = System.Drawing.Color.FromArgb(gridpatientHeaderBackColorCodes[0], gridpatientHeaderBackColorCodes[1], gridpatientHeaderBackColorCodes[2]);
@@ -289,6 +233,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
 
                 //màu chữ của header danh sách bệnh nhân
                 List<int> gridpatientHeaderForceColorCodes = WaitingScreenCFG.GRID_PATIENTS_HEADER_FORCE_COLOR_CODES;
+                Inventec.Common.Logging.LogSystem.Debug("gridpatientHeaderForceColorCodes:" + string.Join(",", gridpatientHeaderForceColorCodes));
                 if (gridpatientHeaderForceColorCodes != null && gridpatientHeaderForceColorCodes.Count == 3)
                 {
                     gridColumnAge.AppearanceHeader.ForeColor = System.Drawing.Color.FromArgb(gridpatientHeaderForceColorCodes[0], gridpatientHeaderForceColorCodes[1], gridpatientHeaderForceColorCodes[2]);
@@ -303,6 +248,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
 
                 //màu chữ của body danh sách bệnh nhân
                 gridpatientBodyForceColorCodes = WaitingScreenCFG.GRID_PATIENTS_BODY_FORCE_COLOR_CODES;
+                Inventec.Common.Logging.LogSystem.Debug("gridpatientBodyForceColorCodes:" + string.Join(",", gridpatientBodyForceColorCodes));
                 if (gridpatientBodyForceColorCodes != null && gridpatientBodyForceColorCodes.Count == 3)
                 {
                     gridColumnAge.AppearanceCell.ForeColor = System.Drawing.Color.FromArgb(gridpatientBodyForceColorCodes[0], gridpatientBodyForceColorCodes[1], gridpatientBodyForceColorCodes[2]);
@@ -315,8 +261,6 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                     gridColumnServiceReqType.AppearanceCell.ForeColor = System.Drawing.Color.FromArgb(gridpatientBodyForceColorCodes[0], gridpatientBodyForceColorCodes[1], gridpatientBodyForceColorCodes[2]);
                     gridColumnSTT.AppearanceCell.ForeColor = System.Drawing.Color.FromArgb(gridpatientBodyForceColorCodes[0], gridpatientBodyForceColorCodes[1], gridpatientBodyForceColorCodes[2]);
                     gridColumnAddress.AppearanceCell.ForeColor = System.Drawing.Color.FromArgb(gridpatientBodyForceColorCodes[0], gridpatientBodyForceColorCodes[1], gridpatientBodyForceColorCodes[2]);
-                    lblPatientName.ForeColor = System.Drawing.Color.FromArgb(gridpatientBodyForceColorCodes[0], gridpatientBodyForceColorCodes[1], gridpatientBodyForceColorCodes[2]);
-                    lblSoThuTuBenhNhan.ForeColor = System.Drawing.Color.FromArgb(gridpatientBodyForceColorCodes[0], gridpatientBodyForceColorCodes[1], gridpatientBodyForceColorCodes[2]);
                 }
 
                 //màu chữ của trạng thái yêu cầu là mới
@@ -325,6 +269,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             }
             catch (Exception ex)
             {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
@@ -401,17 +346,17 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             try
             {
                 GridView View = sender as GridView;
-                //if (e.RowHandle >= 0)
-                //{
-                //    bool serviceReqStt = Inventec.Common.TypeConvert.Parse.ToBoolean((View.GetRowCellValue(e.RowHandle, "CallPatientSTT") ?? "").ToString());
-                //    if (serviceReqStt)
-                //    {
-                //        e.Appearance.Font = new System.Drawing.Font("Arial", 29, FontStyle.Bold);
-                //        e.HighPriority = true;
-                //        e.Appearance.BackColor = Color.Blue;
-                //        e.Appearance.ForeColor = Color.Yellow;
-                //    }
-                //}
+                if (e.RowHandle >= 0)
+                {
+                    bool IsCalling = Inventec.Common.TypeConvert.Parse.ToBoolean((View.GetRowCellValue(e.RowHandle, "IS_CALLING") ?? "").ToString());
+                    if (IsCalling)
+                    {
+                        e.Appearance.Font = new System.Drawing.Font("Arial", 29, FontStyle.Bold);
+                        e.HighPriority = true;
+                        e.Appearance.BackColor = Color.Blue;
+                        e.Appearance.ForeColor = Color.Yellow;
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -425,7 +370,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             {
 
                 // danh sách chờ kết quả cận lâm sàng
-                
+
                 if (CallPtDataWorker.DicCallPatient != null && CallPtDataWorker.DicCallPatient.Count > 0 && CallPtDataWorker.DicCallPatient[room.ROOM_ID] != null && CallPtDataWorker.DicCallPatient[room.ROOM_ID].Count > 0)
                 {
                     int countPatient = 0;
@@ -433,13 +378,39 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                     catch (Exception) { };
                     if (countPatient == 0)
                         countPatient = 10;
-                    var lisCallNew = CallPtDataWorker.DicCallPatient[room.ROOM_ID].Where(o => o.CALL_TIME > 0).OrderByDescending(p=>p.CALL_TIME).GroupBy(g=>g.ID).Select(q=>q.First()).Take(countPatient).ToList();
-                    gridControlWaitingCls.Invoke(new MethodInvoker(delegate
+                    var lisCallNew = CallPtDataWorker.DicCallPatient[room.ROOM_ID].Where(o => o.CALL_TIME > 0).OrderByDescending(p => p.CALL_TIME).GroupBy(g => g.ID).Select(q => q.First()).Take(countPatient).ToList();
+                    var listClearCall = new List<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK>();
+                    foreach (var item in lisCallNew)
                     {
-                        gridControlWaitingCls.BeginUpdate();
-                        gridControlWaitingCls.DataSource = lisCallNew;
-                        gridControlWaitingCls.EndUpdate();
-                    }));
+                        if (item.IS_CALLING)
+                        {
+                            listClearCall.Add(new HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK() { ID = item.ID, CALL_TIME = item.CALL_TIME,TDL_PATIENT_NAME = item.TDL_PATIENT_NAME,TDL_PATIENT_DOB = item.TDL_PATIENT_DOB,TDL_PATIENT_ADDRESS = item.TDL_PATIENT_ADDRESS });
+                        }
+                        else
+                        {
+                            listClearCall.Add(item);
+                        }
+                    }
+                    var now = DateTime.Now.Second;
+                    var s = (int)((now - now % (timerSetDataToGridControl.Interval / 1000)) / (timerSetDataToGridControl.Interval / 1000)) % 2;
+                    if (s == 1)
+                    {
+                        gridControlWaitingCls.Invoke(new MethodInvoker(delegate
+                        {
+                            gridControlWaitingCls.BeginUpdate();
+                            gridControlWaitingCls.DataSource = listClearCall;
+                            gridControlWaitingCls.EndUpdate();
+                        }));
+                    }
+                    else
+                    {
+                        gridControlWaitingCls.Invoke(new MethodInvoker(delegate
+                        {
+                            gridControlWaitingCls.BeginUpdate();
+                            gridControlWaitingCls.DataSource = lisCallNew;
+                            gridControlWaitingCls.EndUpdate();
+                        }));
+                    }
                     Inventec.Common.Logging.LogSystem.Info("Du lieu DicCallPatient:" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => CallPtDataWorker.DicCallPatient[room.ROOM_ID].Take(countPatient).ToList()), CallPtDataWorker.DicCallPatient[room.ROOM_ID].Take(countPatient).ToList()));
                 }
             }
@@ -456,11 +427,19 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                 CommonParam param = new CommonParam();
                 HIS.Desktop.LocalStorage.BackendData.V2.Filter.HisTreatmentSampleDeskViewFilter filter = new HIS.Desktop.LocalStorage.BackendData.V2.Filter.HisTreatmentSampleDeskViewFilter();
                 filter.SAMPLE_ROOM_ID = room.ID;
-                filter.CALL_TIME_FROM = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Today);
-                filter.CALL_TIME_TO = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Today) + 235959;
+                if (DateTime.Now.Hour >= 12)
+                {
+                    filter.CALL_TIME_FROM = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Today) + 120000;
+                    filter.CALL_TIME_TO = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Today) + 235959;
+                }
+                else
+                {
+                    filter.CALL_TIME_FROM = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Today);
+                    filter.CALL_TIME_TO = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Today) + 120000;
+                }
                 filter.ORDER_FIELD = "CALL_TIME";
                 filter.ORDER_DIRECTION = "DESC";
-
+                filter.HASNT_SAMPLE_DESK = true;
                 int countPatient = 0;
                 try { countPatient = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<int>(AppConfigKeys.CONFIG_KEY__SO_BENH_NHAN_TREN_DANH_SACH_CHO_KHAM_VA_CLS); }
                 catch (Exception) { };
@@ -477,7 +456,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                 if (result != null && result.Count > 0)
                 {
                     CallPtDataWorker.DicCallPatient[room.ROOM_ID] = result;
-                   
+
                 }
 
 
@@ -485,18 +464,6 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
-            }
-        }
-
-        void GetFilePath()
-        {
-            try
-            {
-                FilePath = Directory.GetFiles(ConfigApplicationWorker.Get<string>(AppConfigKeys.CONFIG_KEY__DUONG_DAN_CHAY_FILE_VIDEO));
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -554,28 +521,6 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             try
             {
                 isSetNum = true;
-                if (min == max)
-                {
-                    lblPatientName.Invoke(new MethodInvoker(delegate
-                    {
-                        lblPatientName.Text = "CÓ SỐ THỨ TỰ";
-                    }));
-                    lblSoThuTuBenhNhan.Invoke(new MethodInvoker(delegate
-                    {
-                        lblSoThuTuBenhNhan.Text = min + "";
-                    }));
-                }
-                else
-                {
-                    lblPatientName.Invoke(new MethodInvoker(delegate
-                    {
-                        lblPatientName.Text = "CÓ SỐ THỨ TỰ TỪ";
-                    }));
-                    lblSoThuTuBenhNhan.Invoke(new MethodInvoker(delegate
-                    {
-                        lblSoThuTuBenhNhan.Text = min + " - " + max;
-                    }));
-                }
             }
             catch (Exception ex)
             {
@@ -587,13 +532,10 @@ namespace HIS.Desktop.Plugins.CallPatientSample
         {
             try
             {
-                timerForScrollListPatient.Enabled = false;
                 timerSetDataToGridControl.Enabled = false;
 
-                timerForScrollListPatient.Stop();
                 timerSetDataToGridControl.Stop();
 
-                timerForScrollListPatient.Dispose();
                 timerSetDataToGridControl.Dispose();
             }
             catch (Exception ex)

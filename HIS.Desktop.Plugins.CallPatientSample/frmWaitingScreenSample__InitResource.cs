@@ -16,7 +16,6 @@ namespace HIS.Desktop.Plugins.CallPatientSample
 
                 ////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt
                 this.layoutControl1.Text = Inventec.Common.Resource.Get.Value("frmWaitingScreen_QY.layoutControl1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControl5.Text = Inventec.Common.Resource.Get.Value("frmWaitingScreen_QY.layoutControl5.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControl4.Text = Inventec.Common.Resource.Get.Value("frmWaitingScreen_QY.layoutControl4.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 //this.lblUserName.Text = Inventec.Common.Resource.Get.Value("frmWaitingScreen_QY.lblUserName.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lblRoomName.Text = Inventec.Common.Resource.Get.Value("frmWaitingScreen_QY.lblRoomName.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
