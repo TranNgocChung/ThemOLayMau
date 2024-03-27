@@ -33,5 +33,6 @@ namespace HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL
         public long? TDL_TREATMENT_TYPE_ID { get; set; }
         public long TREATMENT_ID { get; set; }
         public decimal? VIR_CREATE_DATE { get; set; }
+        public string TDL_ASSIGN_TURN_CODE { get; set; }
     }
 }
