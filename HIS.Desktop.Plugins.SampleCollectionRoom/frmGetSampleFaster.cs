@@ -199,45 +199,45 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                 if (rowSample.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHUA_LM
                     || rowSample.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TU_CHOI)
                 {
-                    //if (LisConfigCFG.SHOW_FORM_SAMPLE_INFO == "1")
-                    //{
-                    //    /*Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "LIS.Desktop.Plugins.SampleInfo").FirstOrDefault();
-                    //    if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'LIS.Desktop.Plugins.SampleInfo'");
-                    //    if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null) throw new NullReferenceException("Module 'LIS.Desktop.Plugins.SampleInfo' is not plugins");
-                    //    Mapper.CreateMap<V_LIS_SAMPLE, LIS_SAMPLE>();
-                    //    LIS_SAMPLE data = Mapper.Map<LIS_SAMPLE>(rowSample);
-                    //    List<object> listArgs = new List<object>();
-                    //    listArgs.Add(data);
-                    //    //listArgs.Add(this.currentModule);
-                    //    //var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(this.currentModule, listArgs);
-                    //    //if (extenceInstance == null) throw new ArgumentNullException("Khoi tao moduleData that bai. extenceInstance = null");
-                    //    //((Form)extenceInstance).ShowDialog();
-                    //    */
-                    //    Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "LIS.Desktop.Plugins.SampleInfo").FirstOrDefault();
-                    //    if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'LIS.Desktop.Plugins.SampleInfo'");
-                    //    if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null) throw new NullReferenceException("Module 'LIS.Desktop.Plugins.SampleInfo' is not plugins");
-                    //    List<object> listArgs = new List<object>();
-                    //    listArgs.Add(rowSample);
-                    //    listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId));
-                    //    var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
-                    //    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
-                    //    ((Form)extenceInstance).ShowDialog();
-                    //}
-                    //else
-                    //{
-                    //    LisSampleSampleSDO sdo = new LisSampleSampleSDO();
-                    //    sdo.SampleId = rowSample.ID;
-                    //    sdo.RequestRoomCode = room.ROOM_CODE;
-                    //    var curentSTT = new BackendAdapter(param).Post<LIS_SAMPLE>("api/LisSample/Sample", ApiConsumer.ApiConsumers.LisConsumer, sdo, param);
-                    //    if (curentSTT != null)
-                    //    {
-                    //        rowSample.SAMPLE_STT_ID = curentSTT.SAMPLE_STT_ID;
-                    //        rowSample.SAMPLE_TYPE_ID = curentSTT.SAMPLE_TYPE_ID;
-                    //        rowSample.SAMPLE_TIME = curentSTT.SAMPLE_TIME;
-                    //        rowSample.SAMPLE_LOGINNAME = curentSTT.SAMPLE_LOGINNAME;
-                    //        rowSample.SAMPLE_USERNAME = curentSTT.SAMPLE_USERNAME;
-                    //    }
-                    //}
+                    if (LisConfigCFG.SHOW_FORM_SAMPLE_INFO == "1")
+                    {
+                        /*Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "LIS.Desktop.Plugins.SampleInfo").FirstOrDefault();
+                        if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'LIS.Desktop.Plugins.SampleInfo'");
+                        if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null) throw new NullReferenceException("Module 'LIS.Desktop.Plugins.SampleInfo' is not plugins");
+                        Mapper.CreateMap<V_LIS_SAMPLE, LIS_SAMPLE>();
+                        LIS_SAMPLE data = Mapper.Map<LIS_SAMPLE>(rowSample);
+                        List<object> listArgs = new List<object>();
+                        listArgs.Add(data);
+                        //listArgs.Add(this.currentModule);
+                        //var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(this.currentModule, listArgs);
+                        //if (extenceInstance == null) throw new ArgumentNullException("Khoi tao moduleData that bai. extenceInstance = null");
+                        //((Form)extenceInstance).ShowDialog();
+                        */
+                        Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "LIS.Desktop.Plugins.SampleInfo").FirstOrDefault();
+                        if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'LIS.Desktop.Plugins.SampleInfo'");
+                        if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null) throw new NullReferenceException("Module 'LIS.Desktop.Plugins.SampleInfo' is not plugins");
+                        List<object> listArgs = new List<object>();
+                        listArgs.Add(rowSample);
+                        listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId));
+                        var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
+                        if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                        ((Form)extenceInstance).ShowDialog();
+                    }
+                    else
+                    {
+                        LisSampleSampleSDO sdo = new LisSampleSampleSDO();
+                        sdo.SampleId = rowSample.ID;
+                        sdo.RequestRoomCode = room.ROOM_CODE;
+                        var curentSTT = new BackendAdapter(param).Post<LIS_SAMPLE>("api/LisSample/Sample", ApiConsumer.ApiConsumers.LisConsumer, sdo, param);
+                        if (curentSTT != null)
+                        {
+                            rowSample.SAMPLE_STT_ID = curentSTT.SAMPLE_STT_ID;
+                            rowSample.SAMPLE_TYPE_ID = curentSTT.SAMPLE_TYPE_ID;
+                            rowSample.SAMPLE_TIME = curentSTT.SAMPLE_TIME;
+                            rowSample.SAMPLE_LOGINNAME = curentSTT.SAMPLE_LOGINNAME;
+                            rowSample.SAMPLE_USERNAME = curentSTT.SAMPLE_USERNAME;
+                        }
+                    }
                 }
 
                 MOS.Filter.HisServiceReqViewFilter ServiceReqViewFilter = new HisServiceReqViewFilter();
@@ -276,7 +276,52 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                     (this.rowSample.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHUA_LM
                     || this.rowSample.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TU_CHOI))
                 {
-                   
+                    if (LisConfigCFG.SHOW_FORM_SAMPLE_INFO == "1")
+                    {
+                       /* Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "LIS.Desktop.Plugins.SampleInfo").FirstOrDefault();
+                        if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'LIS.Desktop.Plugins.SampleInfo'");
+                        if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null) throw new NullReferenceException("Module 'LIS.Desktop.Plugins.SampleInfo' is not plugins");
+                        Mapper.CreateMap<V_LIS_SAMPLE, LIS_SAMPLE>();
+                        LIS_SAMPLE data = Mapper.Map<LIS_SAMPLE>(rowSample);
+                        List<object> listArgs = new List<object>();
+                        listArgs.Add(data);
+                        listArgs.Add(this.currentModule);
+                        var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(this.currentModule, listArgs);
+                        if (extenceInstance == null) throw new ArgumentNullException("Khoi tao moduleData that bai. extenceInstance = null");
+                        ((Form)extenceInstance).ShowDialog();*/
+                        Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "LIS.Desktop.Plugins.SampleInfo").FirstOrDefault();
+                        if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'LIS.Desktop.Plugins.SampleInfo'");
+                        if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null) throw new NullReferenceException("Module 'LIS.Desktop.Plugins.SampleInfo' is not plugins");
+                        List<object> listArgs = new List<object>();
+                        listArgs.Add(rowSample);
+                        listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId));
+                        var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
+                        if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                        ((Form)extenceInstance).ShowDialog();
+                    }
+                    else
+                    {
+                        WaitingManager.Show();
+                        LisSampleSampleSDO sdo = new LisSampleSampleSDO();
+                        sdo.SampleId = rowSample.ID;
+                        sdo.RequestRoomCode = room.ROOM_CODE;
+                        var curentSTT = new BackendAdapter(param).Post<LIS_SAMPLE>("api/LisSample/Sample", ApiConsumer.ApiConsumers.LisConsumer, sdo, param);
+                        if (curentSTT != null)
+                        {
+                            rowSample.SAMPLE_STT_ID = curentSTT.SAMPLE_STT_ID;
+                            rowSample.SAMPLE_TYPE_ID = curentSTT.SAMPLE_TYPE_ID;
+                            rowSample.SAMPLE_TIME = curentSTT.SAMPLE_TIME;
+                            rowSample.SAMPLE_LOGINNAME = curentSTT.SAMPLE_LOGINNAME;
+                            rowSample.SAMPLE_USERNAME = curentSTT.SAMPLE_USERNAME;
+                        }
+                        WaitingManager.Hide();
+                        #region Show message
+                        MessageManager.Show(this.ParentForm, param, result);
+                        #endregion
+                        #region Process has exception
+                        SessionManager.ProcessTokenLost(param);
+                        #endregion
+                    }
                 }
 
             }
@@ -316,7 +361,45 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                 if (rowSample.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHUA_LM
                     || rowSample.SAMPLE_STT_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TU_CHOI)
                 {
-                   
+                    if (LisConfigCFG.SHOW_FORM_SAMPLE_INFO == "1")
+                    {
+                       /* Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "LIS.Desktop.Plugins.SampleInfo").FirstOrDefault();
+                        if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'LIS.Desktop.Plugins.SampleInfo'");
+                        if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null) throw new NullReferenceException("Module 'LIS.Desktop.Plugins.SampleInfo' is not plugins");
+                        Mapper.CreateMap<V_LIS_SAMPLE, LIS_SAMPLE>();
+                        LIS_SAMPLE data = Mapper.Map<LIS_SAMPLE>(rowSample);
+                        List<object> listArgs = new List<object>();
+                        listArgs.Add(data);
+                        listArgs.Add(this.currentModule);
+                        var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(this.currentModule, listArgs);
+                        if (extenceInstance == null) throw new ArgumentNullException("Khoi tao moduleData that bai. extenceInstance = null");
+                        ((Form)extenceInstance).ShowDialog();*/
+                        Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "LIS.Desktop.Plugins.SampleInfo").FirstOrDefault();
+                        if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'LIS.Desktop.Plugins.SampleInfo'");
+                        if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null) throw new NullReferenceException("Module 'LIS.Desktop.Plugins.SampleInfo' is not plugins");
+                        List<object> listArgs = new List<object>();
+                        listArgs.Add(rowSample);
+                        listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId));
+                        var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
+                        if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                        ((Form)extenceInstance).ShowDialog();
+                    }
+                    else
+                    {
+                        WaitingManager.Show();
+                        LisSampleSampleSDO sdo = new LisSampleSampleSDO();
+                        sdo.SampleId = rowSample.ID;
+                        sdo.RequestRoomCode = room.ROOM_CODE;
+                        var curentSTT = new BackendAdapter(param).Post<LIS_SAMPLE>("api/LisSample/Sample", ApiConsumer.ApiConsumers.LisConsumer, sdo, param);
+                        if (curentSTT != null)
+                        {
+                            rowSample.SAMPLE_STT_ID = curentSTT.SAMPLE_STT_ID;
+                            rowSample.SAMPLE_TYPE_ID = curentSTT.SAMPLE_TYPE_ID;
+                            rowSample.SAMPLE_TIME = curentSTT.SAMPLE_TIME;
+                            rowSample.SAMPLE_LOGINNAME = curentSTT.SAMPLE_LOGINNAME;
+                            rowSample.SAMPLE_USERNAME = curentSTT.SAMPLE_USERNAME;
+                        }
+                    }
                 }
 
                 MOS.Filter.HisServiceReqViewFilter ServiceReqViewFilter = new HisServiceReqViewFilter();

@@ -484,15 +484,19 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                     var data = (List<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK>)apiResult.Data;
                     if (data != null)
                     {
+                        List<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK> distinctData = new List<V_HIS_TREATMENT_SAMPLE_DESK>();
+                        distinctData = data.GroupBy(p=> new { p.TREATMENT_ID, p.TDL_ASSIGN_TURN_CODE })
+                            .Select(g => g.First())
+                            .ToList();
                         lstAll = new List<TreatmentSampleListViewADO>();
-                        foreach (var item in data)
+                        foreach (var item in distinctData)
                         {
                             lstAll.Add(new TreatmentSampleListViewADO(item));
                         }
                         gridControlTreatmentSampleDesk.DataSource = lstAll;
-                        rowCount = (data == null ? 0 : data.Count);
+                        rowCount = (distinctData == null ? 0 : distinctData.Count);
                         dataTotal = (apiResult.Param == null ? 0 : apiResult.Param.Count ?? 0);
-                        if (data.Count == 1)
+                        if (distinctData.Count == 1)
                         {
                             gridViewTreatmentSampleDesk.FocusedRowHandle = 0;
                         }
@@ -638,7 +642,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                 if (row != null && (row.SAMPLE_DESK_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CHUA_LM
                     || row.SAMPLE_DESK_ID == IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TU_CHOI))
                 {
-                    
+
                     {
                         WaitingManager.Show();
                         LisSampleSampleSDO sdo = new LisSampleSampleSDO();
@@ -989,8 +993,8 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
         {
             try
             {
-                txtSearchKey.Focus();
-                txtSearchKey.SelectAll();
+                txtFindPatientCode.Focus();
+                txtFindPatientCode.SelectAll();
             }
             catch (Exception ex)
             {
@@ -1002,6 +1006,8 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
         {
             try
             {
+                txtFindTreamentCode.Focus();
+                txtFindTreamentCode.SelectAll();
             }
             catch (Exception ex)
             {
@@ -1022,7 +1028,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
             }
         }
 
-        private void ShotcurtReCall()
+        public void ShotcurtReCall()
         {
             try
             {
@@ -1034,10 +1040,11 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
             }
         }
 
-        private void ShotcurtCall()
+        public void ShotcurtCall()
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Debug("F6 call patient");
                 btnCallPatient_Click(null, null);
             }
             catch (Exception ex)
@@ -1050,6 +1057,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
         {
             try
             {
+                MessageBox.Show("In barcode");
                 btnPrintBarcode_Click(null, null);
             }
             catch (Exception ex)
@@ -1131,7 +1139,19 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
         {
             try
             {
-                CreateThreadCallPatient();
+                btnCallPatient.Focus();
+                if (gridControlTreatmentSampleDesk.DataSource != null && gridViewTreatmentSampleDesk.RowCount > 0)
+                {
+                    List<TreatmentSampleListViewADO> dataSource = (List<TreatmentSampleListViewADO>)(gridControlTreatmentSampleDesk.DataSource);
+                    List<TreatmentSampleListViewADO> selectData = dataSource.Where(o => o.IsChecked).ToList();
+                    if (selectData!=null&& selectData.Count>0)
+                    {
+                        UpdateDicCallPatient(selectData);
+                        LoadCallPatientByThread(selectData);
+                    }
+                    else
+                        MessageManager.Show("Chọn bệnh nhân");
+                }
             }
             catch (Exception ex)
             {

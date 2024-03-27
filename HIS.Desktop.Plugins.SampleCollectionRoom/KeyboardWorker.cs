@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace HIS.Desktop.Plugins.SampleCollectionRoom
 {
-    [KeyboardAction("SEARCH", "HIS.Desktop.Plugins.SampleCollectionRoom.SampleCollectionRoomUC", "SEARCH", KeyStroke = XKeys.Control | XKeys.F)]
     [KeyboardAction("FocusF1", "HIS.Desktop.Plugins.SampleCollectionRoom.SampleCollectionRoomUC", "FocusF1", KeyStroke = XKeys.F1)]
     [KeyboardAction("FocusF2", "HIS.Desktop.Plugins.SampleCollectionRoom.SampleCollectionRoomUC", "FocusF2", KeyStroke = XKeys.F2)]
     [KeyboardAction("FocusF3", "HIS.Desktop.Plugins.SampleCollectionRoom.SampleCollectionRoomUC", "FocusF3", KeyStroke = XKeys.F3)]

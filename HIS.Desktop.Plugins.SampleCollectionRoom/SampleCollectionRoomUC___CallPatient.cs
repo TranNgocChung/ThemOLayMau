@@ -71,13 +71,22 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
         {
             try
             {
-                if (param is TreatmentSampleListViewADO)
+                if (param is List<TreatmentSampleListViewADO>)
                 {
-                    var data = param as TreatmentSampleListViewADO;
+                    var data = param as List<TreatmentSampleListViewADO>;
                     if (data != null)
                     {
-                        CallPatientByNumOder(data.TDL_PATIENT_NAME, data.SAMPLE_ROOM_NAME);
+                        CallPatientByNumOder(data);
                     }
+                    else
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug("param Type 1.1 " + param.GetType());
+                    }
+                    Inventec.Common.Logging.LogSystem.Debug("param Type 1 " + param.GetType());
+                }
+                else
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("param Type 2 " + param.GetType());
                 }
             }
             catch (Exception ex)
@@ -86,21 +95,24 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
             }
         }
 
-        internal void CallPatientByNumOder(string patientName, string examRoomName)
+        internal void CallPatientByNumOder(List<TreatmentSampleListViewADO> patients)
         {
             try
             {
-                Inventec.Speech.SpeechPlayer.TypeSpeechCFG = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("Inventec.Speech.TypeSpeechCFG");
-                string moiBenhNhanStr = HisConfigs.Get<string>(SdaConfigKeys.CALL_PATIENT_MOI_BENH_NHAN);
-                //string coSoSttStr = HisConfigs.Get<string>(SdaConfigKeys.CALL_PATIENT_CO_STT);
-                string denStr = HisConfigs.Get<string>(SdaConfigKeys.CALL_PATIENT_DEN);
+                if (patients != null && patients.Count > 0)
+                {
+                    Inventec.Speech.SpeechPlayer.TypeSpeechCFG = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("Inventec.Speech.TypeSpeechCFG");
+                    string moiBenhNhanStr = HisConfigs.Get<string>(SdaConfigKeys.CALL_PATIENT_MOI_BENH_NHAN);
+                    //string coSoSttStr = HisConfigs.Get<string>(SdaConfigKeys.CALL_PATIENT_CO_STT);
+                    //string denStr = HisConfigs.Get<string>(SdaConfigKeys.CALL_PATIENT_DEN);
 
-                Inventec.Speech.SpeechPlayer.SpeakSingle(moiBenhNhanStr);
-                Inventec.Speech.SpeechPlayer.Speak(patientName);
-                //Inventec.Speech.SpeechPlayer.SpeakSingle(coSoSttStr);
-                //Inventec.Speech.SpeechPlayer.Speak(numOder);
-                Inventec.Speech.SpeechPlayer.SpeakSingle(denStr);
-                Inventec.Speech.SpeechPlayer.SpeakSingle(examRoomName);
+                    Inventec.Speech.SpeechPlayer.SpeakSingle(moiBenhNhanStr);
+                    Inventec.Speech.SpeechPlayer.Speak(patients.Select(o => o.TDL_PATIENT_NAME).ToArray());
+                    //Inventec.Speech.SpeechPlayer.SpeakSingle(coSoSttStr);
+                    //Inventec.Speech.SpeechPlayer.Speak(numOder);
+                    //Inventec.Speech.SpeechPlayer.SpeakSingle(denStr);
+                    //Inventec.Speech.SpeechPlayer.SpeakSingle(examRoomName);
+                }
             }
             catch (Exception ex)
             {
@@ -167,17 +179,20 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
             }
         }
 
-        private void UpdateDicCallPatient(TreatmentSampleListViewADO lisSample)
+        private void UpdateDicCallPatient(List<TreatmentSampleListViewADO> lisSample)
         {
             try
             {
-                if (lisSample != null)
+                if (lisSample != null && lisSample.Count > 0)
                 {
-
                     List<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK> listCallTime = new List<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK>();
-                    lisSample.CALL_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now);
-                    listCallTime.Add(lisSample);
-                    HIS.Desktop.LocalStorage.BackendData.V2.CallPatient.CallPtDataWorker.UpdateCallTime(listCallTime, currentModule.RoomId,mosUserConsummer);
+                    foreach (var item in lisSample)
+                    {
+                        item.CALL_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now);
+                        listCallTime.Add(item);
+                    }
+
+                    HIS.Desktop.LocalStorage.BackendData.V2.CallPatient.CallPtDataWorker.UpdateCallTime(listCallTime, currentModule.RoomId, mosUserConsummer);
                 }
             }
             catch (Exception ex)
@@ -193,8 +208,8 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                 var currentHisServiceReq = (TreatmentSampleListViewADO)gridViewTreatmentSampleDesk.GetFocusedRow();
                 if (currentHisServiceReq != null)
                 {
-                    UpdateDicCallPatient(currentHisServiceReq);
-                    LoadCallPatientByThread(currentHisServiceReq);
+                    UpdateDicCallPatient(new List<TreatmentSampleListViewADO> { currentHisServiceReq });
+                    LoadCallPatientByThread(new List<TreatmentSampleListViewADO> { currentHisServiceReq });
                 }
             }
             catch (Exception ex)
