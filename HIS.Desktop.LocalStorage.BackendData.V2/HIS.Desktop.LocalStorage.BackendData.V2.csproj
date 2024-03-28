@@ -204,8 +204,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EFMODEL\L_HIS_SAMPLE_DESK_COUNTER.cs" />
+    <Compile Include="EFMODEL\L_HIS_SERVICE_REQ_101.cs" />
     <Compile Include="Filter\HisSampleDeskFilter.cs" />
     <Compile Include="Filter\HisSampleDeskLViewCounterFilter.cs" />
+    <Compile Include="Filter\HisServiceReqLView101Filter.cs" />
     <Compile Include="Filter\HisTreatmentSampleDeskFilter.cs" />
     <Compile Include="Filter\HisTreatmentSampleDeskViewFilter.cs" />
     <Compile Include="EFMODEL\HIS_SAMPLE_DESK.cs" />
