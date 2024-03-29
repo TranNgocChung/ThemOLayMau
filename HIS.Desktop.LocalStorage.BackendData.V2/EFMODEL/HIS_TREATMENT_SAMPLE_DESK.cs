@@ -27,6 +27,7 @@ namespace HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL
         public string MODIFIER { get; set; }
         public long? MODIFY_TIME { get; set; }
         public long? SAMPLE_DESK_ID { get; set; }
+        public long? NUM_ORDER { get; set; }
         public long SAMPLE_ROOM_ID { get; set; }
         public short? TDL_IS_PRIORITY { get; set; }
         public long? TDL_PATIENT_TYPE_ID { get; set; }
