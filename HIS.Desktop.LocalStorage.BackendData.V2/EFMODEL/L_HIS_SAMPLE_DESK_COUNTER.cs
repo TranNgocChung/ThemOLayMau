@@ -24,5 +24,6 @@ namespace HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL
         public string SAMPLE_ROOM_NAME { get; set; }
         public Nullable<long> SAMPLE_ROOM_ID { get; set; }
         public Nullable<decimal> NUM_ORDER { get; set; }
+        public Nullable<decimal> CURRENT_NUM { get; set; }
     }
 }
