@@ -12,18 +12,14 @@ namespace HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL
     using System;
     using System.Collections.Generic;
     
-    public partial class L_HIS_SAMPLE_DESK_COUNTER
+    public partial class L_HIS_SERVICE_REQ_101
     {
         public long ID { get; set; }
-        public string SAMPLE_DESK_CODE { get; set; }
-        public string SAMPLE_DESK_NAME { get; set; }
-        public Nullable<short> IS_ACTIVE { get; set; }
-        public long BRANCH_ID { get; set; }
-        public string DEPARTMENT_NAME { get; set; }
-        public long DEPARTMENT_ID { get; set; }
-        public string SAMPLE_ROOM_NAME { get; set; }
+        public string SERVICE_REQ_CODE { get; set; }
+        public string ASSIGN_TURN_CODE { get; set; }
+        public long TREATMENT_ID { get; set; }
         public Nullable<long> SAMPLE_ROOM_ID { get; set; }
-        public Nullable<decimal> NUM_ORDER { get; set; }
-        public Nullable<decimal> CURRENT_NUM { get; set; }
+        public string TDL_SERVICE_CODE { get; set; }
+        public string TDL_SERVICE_NAME { get; set; }
     }
 }

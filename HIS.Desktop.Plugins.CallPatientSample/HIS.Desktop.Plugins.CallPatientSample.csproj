@@ -145,7 +145,6 @@
   <ItemGroup>
     <Compile Include="AppConfigKeys.cs" />
     <Compile Include="CallPatientCFG.cs" />
-    <Compile Include="CallPatientProcess.cs" />
     <Compile Include="CallPatientProsessor.cs" />
     <Compile Include="CallPatientRunSpeech.cs" />
     <Compile Include="CallPatientSample\CallPatientSampleBehavior.cs" />
