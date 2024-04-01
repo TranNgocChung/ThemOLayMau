@@ -179,13 +179,13 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
             }
         }
 
-        private void UpdateDicCallPatient(List<TreatmentSampleListViewADO> lisSample,List<TreatmentSampleListViewADO> dataSource)
+        private void UpdateDicCallPatient(List<TreatmentSampleListViewADO> lisSample, List<TreatmentSampleListViewADO> dataSource)
         {
             try
             {
                 if (lisSample != null && lisSample.Count > 0)
                 {
-                    dataSource.ForEach(o => o.IS_CALLING = lisSample.Exists(p=>p.ID == o.ID));
+                    dataSource.ForEach(o => o.IS_CALLING = lisSample.Exists(p => p.ID == o.ID));
                     gridControlTreatmentSampleDesk.BeginUpdate();
                     gridControlTreatmentSampleDesk.DataSource = dataSource;
                     gridControlTreatmentSampleDesk.EndUpdate();

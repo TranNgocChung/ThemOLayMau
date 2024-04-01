@@ -72,6 +72,10 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
         BarManager baManager = null;
         PopupMenuProcessor popupMenuProcessor = null;
         Inventec.Common.WebApiClient.ApiConsumer mosUserConsummer;
+        public static List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
+        public static HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
+        bool isNotLoadWhileChangeControlStateInFirst;
+
         #endregion
 
         #region Contructor
@@ -97,6 +101,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+
         }
 
         private void UC_SampleCollectionRoomUC_Load(object sender, EventArgs e)
@@ -107,7 +112,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                 {
                     SampleRoom = BackendDataWorker.Get<HIS_SAMPLE_ROOM>().FirstOrDefault(o => o.ROOM_ID == currentModule.RoomId);
                 }
-
+                InitControlState();
                 LoadDefaultData();
                 InitTreatmentArea();
                 InitCheck(cboTreatmentArea, SelectionGrid__TreatmentArea);
@@ -126,6 +131,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
 
         private void GetConsumer()
         {
@@ -268,6 +274,32 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
             }
         }
 
+        private void InitControlState()
+        {
+            try
+            {
+                isNotLoadWhileChangeControlStateInFirst = true;
+                SampleCollectionRoomUC.controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                SampleCollectionRoomUC.currentControlStateRDO = SampleCollectionRoomUC.controlStateWorker.GetData(ControlStateConstant.MODULE_LINK);
+                if (SampleCollectionRoomUC.currentControlStateRDO != null && SampleCollectionRoomUC.currentControlStateRDO.Count > 0)
+                {
+                    foreach (var item in SampleCollectionRoomUC.currentControlStateRDO)
+                    {
+                        if (item.KEY == ControlStateConstant.CHECK_PRINT_NOW)
+                        {
+                            chkPrintNow.Checked = item.VALUE == "1";
+                        }
+                    }
+                }
+
+                isNotLoadWhileChangeControlStateInFirst = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void LoadServiceReq(TreatmentSampleListViewADO treatmentSample)
         {
             try
@@ -355,7 +387,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
 
                     if (e.Column.FieldName == "CALL_PATIENT")
                     {
-                        if (data.IS_CALLING == true)
+                        if (data.IS_CALLING)
                             e.RepositoryItem = ButtonEdit_CallPatientDisable;
                         else
                             e.RepositoryItem = ButtonEdit_CallPatientEnable;
@@ -436,7 +468,19 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
 
 
                 HIS.Desktop.LocalStorage.BackendData.V2.Filter.HisTreatmentSampleDeskViewFilter lisSampleFilter = new HIS.Desktop.LocalStorage.BackendData.V2.Filter.HisTreatmentSampleDeskViewFilter();
-                lisSampleFilter.HASNT_SAMPLE_DESK = true;
+                if (chkChuaPhanO.Checked && chkDaPhanO.Checked)
+                {
+                    lisSampleFilter.HASNT_SAMPLE_DESK = null;
+                }
+                else if (chkDaPhanO.Checked)
+                {
+                    lisSampleFilter.HASNT_SAMPLE_DESK = false;
+                }
+                else if (chkChuaPhanO.Checked)
+                {
+                    lisSampleFilter.HASNT_SAMPLE_DESK = true;
+                }
+
                 lisSampleFilter.SAMPLE_ROOM_ID = SampleRoom.ID;
                 if (!String.IsNullOrWhiteSpace(txtFindTreamentCode.Text))
                 {
@@ -505,7 +549,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                     var data = (List<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK>)apiResult.Data;
                     if (data != null)
                     {
-                        List<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK> distinctData = new List<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK>();
+                        List<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK> distinctData = new List<V_HIS_TREATMENT_SAMPLE_DESK>();
                         distinctData = data.GroupBy(p => new { p.TREATMENT_ID, p.TDL_ASSIGN_TURN_CODE })
                             .Select(g => g.First())
                             .ToList();
@@ -1167,7 +1211,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                     List<TreatmentSampleListViewADO> selectData = dataSource.Where(o => o.IsChecked).ToList();
                     if (selectData != null && selectData.Count > 0)
                     {
-                        UpdateDicCallPatient(selectData,dataSource);
+                        UpdateDicCallPatient(selectData, dataSource);
                         LoadCallPatientByThread(selectData);
                     }
                     else
@@ -1542,6 +1586,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                     {
                         List<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK> listUpdateSampleDesk = new List<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK>();
                         treatmentSampleDesk.SAMPLE_DESK_ID = focus.ID;
+                        treatmentSampleDesk.NUM_ORDER = Convert.ToInt64(focus.CURRENT_NUM ?? 0 + 1);
                         listUpdateSampleDesk.Add(treatmentSampleDesk);
                         var rs = HIS.Desktop.LocalStorage.BackendData.V2.CallPatient.CallPtDataWorker.UpdateSampleDesk(listUpdateSampleDesk, currentModule.RoomId, mosUserConsummer, param);
 
@@ -1641,15 +1686,15 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
             {
                 var focus = (HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK)gridViewTreatmentSampleDesk.GetFocusedRow();
                 Inventec.Common.Logging.LogSystem.Debug("his treatment sample desk" + focus.TREATMENT_CODE);
-                //MPS.Processor.Mps000494.PDO.Mps000494PDO rdo = new MPS.Processor.Mps000494.PDO.Mps000494PDO(focus);
-                //if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
-                //{
-                //    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, ""));
-                //}
-                //else
-                //{
-                //    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, ""));
-                //}
+                MPS.Processor.Mps000494.PDO.Mps000494PDO rdo = new MPS.Processor.Mps000494.PDO.Mps000494PDO(focus);
+                if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                {
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, ""));
+                }
+                else
+                {
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, ""));
+                }
             }
             catch (Exception ex)
             {
@@ -1664,6 +1709,45 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
             {
                 Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
                 store.RunPrintTemplate("Mps000494", deletePrintTemplate);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void chkPrintNow_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+
+                WaitingManager.Show();
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (SampleCollectionRoomUC.currentControlStateRDO != null && SampleCollectionRoomUC.currentControlStateRDO.Count > 0) ? SampleCollectionRoomUC.currentControlStateRDO.Where(o => o.KEY == ControlStateConstant.CHECK_PRINT_NOW && o.MODULE_LINK == ControlStateConstant.MODULE_LINK).FirstOrDefault() : null;
+                //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => csAddOrUpdate), csAddOrUpdate));
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkPrintNow.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = ControlStateConstant.CHECK_PRINT_NOW;
+                    csAddOrUpdate.VALUE = (chkPrintNow.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = ControlStateConstant.MODULE_LINK;
+                    if (SampleCollectionRoomUC.currentControlStateRDO == null)
+                        SampleCollectionRoomUC.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    SampleCollectionRoomUC.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                SampleCollectionRoomUC.controlStateWorker.SetData(SampleCollectionRoomUC.currentControlStateRDO);
+                WaitingManager.Hide();
+                //if (this._RefreshCheckPrint != null)
+                //{
+                //    this._RefreshCheckPrint();
+                //}
             }
             catch (Exception ex)
             {
