@@ -44,6 +44,7 @@ using Bartender.PrintClient;
 using MOS.SDO;
 using HIS.Desktop.Utilities.Extensions;
 using HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL;
+using HIS.Desktop.LocalStorage.ConfigSystem;
 
 namespace HIS.Desktop.Plugins.SampleCollectionRoom
 {
@@ -256,12 +257,30 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                 rowSample = null;
                 rowSample = (TreatmentSampleListViewADO)gridViewTreatmentSampleDesk.GetFocusedRow();
                 LoadInformationPatient();
+                LoadServiceReq(rowSample);
 
                 WaitingManager.Hide();
             }
             catch (Exception ex)
             {
                 WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void LoadServiceReq(TreatmentSampleListViewADO treatmentSample)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                HIS.Desktop.LocalStorage.BackendData.V2.Filter.HisServiceReqLView101Filter filter = new LocalStorage.BackendData.V2.Filter.HisServiceReqLView101Filter();
+                filter.ASSIGN_TURN_CODE__EXACT = treatmentSample.TDL_ASSIGN_TURN_CODE;
+                filter.TREATMENT_ID = treatmentSample.TREATMENT_ID;
+                var data = new BackendAdapter(param).Get<List<LocalStorage.BackendData.V2.EFMODEL.L_HIS_SERVICE_REQ_101>>("api/HisServiceReq/GetLView", mosUserConsummer, filter, param);
+                gridControlSereServ.DataSource = data;
+            }
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
@@ -315,7 +334,6 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                     lblHeinMediOrgCode.Text = treatment[0].TDL_HEIN_MEDI_ORG_CODE;
                     lblHanTu.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(treatment[0].TDL_HEIN_CARD_FROM_TIME ?? 0) + " - " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(treatment[0].TDL_HEIN_CARD_TO_TIME ?? 0);
                 }
-
             }
             catch (Exception ex)
             {
@@ -485,7 +503,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                     if (data != null)
                     {
                         List<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK> distinctData = new List<V_HIS_TREATMENT_SAMPLE_DESK>();
-                        distinctData = data.GroupBy(p=> new { p.TREATMENT_ID, p.TDL_ASSIGN_TURN_CODE })
+                        distinctData = data.GroupBy(p => new { p.TREATMENT_ID, p.TDL_ASSIGN_TURN_CODE })
                             .Select(g => g.First())
                             .ToList();
                         lstAll = new List<TreatmentSampleListViewADO>();
@@ -1144,7 +1162,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                 {
                     List<TreatmentSampleListViewADO> dataSource = (List<TreatmentSampleListViewADO>)(gridControlTreatmentSampleDesk.DataSource);
                     List<TreatmentSampleListViewADO> selectData = dataSource.Where(o => o.IsChecked).ToList();
-                    if (selectData!=null&& selectData.Count>0)
+                    if (selectData != null && selectData.Count > 0)
                     {
                         UpdateDicCallPatient(selectData);
                         LoadCallPatientByThread(selectData);
@@ -1554,6 +1572,11 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
             btnSave_Click(null, null);
         }
 
+        public void ShotcurtPrint()
+        {
+            btnPrint_Click(null, null);
+        }
+
         private void repositoryItemChkChon_Click(object sender, EventArgs e)
         {
             try
@@ -1578,6 +1601,70 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private bool deletePrintTemplate(string printTypeCode, string fileName)
+        {
+            bool result = false;
+            try
+            {
+                if (!String.IsNullOrEmpty(printTypeCode) && !String.IsNullOrEmpty(fileName))
+                {
+                    switch (printTypeCode)
+                    {
+
+                        case "Mps000494":
+                            Mps000494(printTypeCode, fileName);
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = false;
+            }
+            return result;
+        }
+
+        private void Mps000494(string printTypeCode, string fileName)
+        {
+            bool result = false;
+            try
+            {
+                var focus = (HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK)gridViewTreatmentSampleDesk.GetFocusedRow();
+                Inventec.Common.Logging.LogSystem.Debug("his treatment sample desk" + focus.TREATMENT_CODE);
+                MPS.Processor.Mps000494.PDO.Mps000494PDO rdo = new MPS.Processor.Mps000494.PDO.Mps000494PDO(focus);
+                if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                {
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, ""));
+                }
+                else
+                {
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, ""));
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnPrint_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
+                store.RunPrintTemplate("Mps000494", deletePrintTemplate);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
     }

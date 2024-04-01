@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SampleCollectionRoomUC));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -96,7 +95,7 @@
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject64 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.chkBaoHiemTinhTien = new DevExpress.XtraEditors.CheckEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
@@ -119,7 +118,7 @@
             this.dtCreateTo = new DevExpress.XtraEditors.DateEdit();
             this.dtCreatefrom = new DevExpress.XtraEditors.DateEdit();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
-            this.chkLuuIn = new DevExpress.XtraEditors.CheckEdit();
+            this.chkPrintNow = new DevExpress.XtraEditors.CheckEdit();
             this.btnPrint = new DevExpress.XtraEditors.SimpleButton();
             this.gridControlSereServ = new DevExpress.XtraGrid.GridControl();
             this.gridViewSereServ = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -261,13 +260,13 @@
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem16 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
-            this.imageListIcon = new System.Windows.Forms.ImageList(this.components);
-            this.toolTipControllerGrid = new DevExpress.Utils.ToolTipController(this.components);
-            this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.popupMenu1 = new DevExpress.XtraBars.PopupMenu(this.components);
-            this.imageCollection2 = new DevExpress.Utils.ImageCollection(this.components);
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
+            this.imageListIcon = new System.Windows.Forms.ImageList();
+            this.toolTipControllerGrid = new DevExpress.Utils.ToolTipController();
+            this.toolTipController1 = new DevExpress.Utils.ToolTipController();
+            this.imageList1 = new System.Windows.Forms.ImageList();
+            this.popupMenu1 = new DevExpress.XtraBars.PopupMenu();
+            this.imageCollection2 = new DevExpress.Utils.ImageCollection();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chkBaoHiemTinhTien.Properties)).BeginInit();
@@ -285,7 +284,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dtCreatefrom.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chkLuuIn.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkPrintNow.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlSereServ)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewSereServ)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit4)).BeginInit();
@@ -645,7 +644,7 @@
             // 
             // layoutControl2
             // 
-            this.layoutControl2.Controls.Add(this.chkLuuIn);
+            this.layoutControl2.Controls.Add(this.chkPrintNow);
             this.layoutControl2.Controls.Add(this.btnPrint);
             this.layoutControl2.Controls.Add(this.gridControlSereServ);
             this.layoutControl2.Controls.Add(this.btnSave);
@@ -660,24 +659,25 @@
             this.layoutControl2.TabIndex = 16;
             this.layoutControl2.Text = "layoutControl2";
             // 
-            // chkLuuIn
+            // chkPrintNow
             // 
-            this.chkLuuIn.Location = new System.Drawing.Point(801, 925);
-            this.chkLuuIn.MenuManager = this.barManager1;
-            this.chkLuuIn.Name = "chkLuuIn";
-            this.chkLuuIn.Properties.Caption = "Lưu in";
-            this.chkLuuIn.Size = new System.Drawing.Size(88, 20);
-            this.chkLuuIn.StyleController = this.layoutControl2;
-            this.chkLuuIn.TabIndex = 48;
+            this.chkPrintNow.Location = new System.Drawing.Point(843, 925);
+            this.chkPrintNow.MenuManager = this.barManager1;
+            this.chkPrintNow.Name = "chkPrintNow";
+            this.chkPrintNow.Properties.Caption = "";
+            this.chkPrintNow.Size = new System.Drawing.Size(29, 19);
+            this.chkPrintNow.StyleController = this.layoutControl2;
+            this.chkPrintNow.TabIndex = 48;
             // 
             // btnPrint
             // 
-            this.btnPrint.Location = new System.Drawing.Point(895, 925);
+            this.btnPrint.Location = new System.Drawing.Point(878, 925);
             this.btnPrint.Name = "btnPrint";
-            this.btnPrint.Size = new System.Drawing.Size(80, 27);
+            this.btnPrint.Size = new System.Drawing.Size(99, 27);
             this.btnPrint.StyleController = this.layoutControl2;
             this.btnPrint.TabIndex = 47;
-            this.btnPrint.Text = "In phiếu";
+            this.btnPrint.Text = "In phiếu (F7)";
+            this.btnPrint.Click += new System.EventHandler(this.btnPrint_Click);
             // 
             // gridControlSereServ
             // 
@@ -698,7 +698,7 @@
             this.repositoryItemTextEdit5,
             this.repositoryItemCheckEdit3,
             this.repositoryItemCheckEdit4});
-            this.gridControlSereServ.Size = new System.Drawing.Size(1076, 257);
+            this.gridControlSereServ.Size = new System.Drawing.Size(1076, 289);
             this.gridControlSereServ.TabIndex = 46;
             this.gridControlSereServ.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewSereServ});
@@ -721,7 +721,7 @@
             // gridColumn9
             // 
             this.gridColumn9.Caption = "Mã dịch vụ";
-            this.gridColumn9.FieldName = "SERVICE_CODE";
+            this.gridColumn9.FieldName = "TDL_SERVICE_CODE";
             this.gridColumn9.Name = "gridColumn9";
             this.gridColumn9.OptionsColumn.AllowEdit = false;
             this.gridColumn9.Visible = true;
@@ -731,7 +731,7 @@
             // gridColumn23
             // 
             this.gridColumn23.Caption = "Tên dịch vụ";
-            this.gridColumn23.FieldName = "SERVICE_NAME";
+            this.gridColumn23.FieldName = "TDL_SERVICE_NAME";
             this.gridColumn23.Name = "gridColumn23";
             this.gridColumn23.OptionsColumn.AllowEdit = false;
             this.gridColumn23.Visible = true;
@@ -841,9 +841,9 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(981, 925);
+            this.btnSave.Location = new System.Drawing.Point(983, 925);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(98, 27);
+            this.btnSave.Size = new System.Drawing.Size(96, 27);
             this.btnSave.StyleController = this.layoutControl2;
             this.btnSave.TabIndex = 45;
             this.btnSave.Text = "Lưu (Ctrl S)";
@@ -1170,7 +1170,7 @@
             // gridControlSampleDeskCounter
             // 
             this.gridControlSampleDeskCounter.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
-            this.gridControlSampleDeskCounter.Location = new System.Drawing.Point(4, 467);
+            this.gridControlSampleDeskCounter.Location = new System.Drawing.Point(4, 499);
             this.gridControlSampleDeskCounter.MainView = this.gridViewSampleDeskCounter;
             this.gridControlSampleDeskCounter.Margin = new System.Windows.Forms.Padding(4);
             this.gridControlSampleDeskCounter.Name = "gridControlSampleDeskCounter";
@@ -1186,7 +1186,7 @@
             this.repositoryItemText__OldValue,
             this.repositoryItemChkChon,
             this.repositoryItemChkUuTien});
-            this.gridControlSampleDeskCounter.Size = new System.Drawing.Size(1074, 451);
+            this.gridControlSampleDeskCounter.Size = new System.Drawing.Size(1074, 419);
             this.gridControlSampleDeskCounter.TabIndex = 43;
             this.gridControlSampleDeskCounter.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewSampleDeskCounter});
@@ -1388,10 +1388,10 @@
             // layoutControlItem10
             // 
             this.layoutControlItem10.Control = this.gridControlSampleDeskCounter;
-            this.layoutControlItem10.Location = new System.Drawing.Point(0, 463);
+            this.layoutControlItem10.Location = new System.Drawing.Point(0, 495);
             this.layoutControlItem10.Name = "layoutControlItem10";
             this.layoutControlItem10.Padding = new DevExpress.XtraLayout.Utils.Padding(4, 4, 4, 4);
-            this.layoutControlItem10.Size = new System.Drawing.Size(1082, 459);
+            this.layoutControlItem10.Size = new System.Drawing.Size(1082, 427);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem10.TextVisible = false;
             // 
@@ -1409,9 +1409,9 @@
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.btnSave;
-            this.layoutControlItem2.Location = new System.Drawing.Point(978, 922);
+            this.layoutControlItem2.Location = new System.Drawing.Point(980, 922);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(104, 33);
+            this.layoutControlItem2.Size = new System.Drawing.Size(102, 33);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
@@ -1420,7 +1420,7 @@
             this.emptySpaceItem3.AllowHotTrack = false;
             this.emptySpaceItem3.Location = new System.Drawing.Point(0, 922);
             this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(798, 33);
+            this.emptySpaceItem3.Size = new System.Drawing.Size(735, 33);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem8
@@ -1428,27 +1428,31 @@
             this.layoutControlItem8.Control = this.gridControlSereServ;
             this.layoutControlItem8.Location = new System.Drawing.Point(0, 200);
             this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(1082, 263);
+            this.layoutControlItem8.Size = new System.Drawing.Size(1082, 295);
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem8.TextVisible = false;
             // 
             // layoutControlItem19
             // 
             this.layoutControlItem19.Control = this.btnPrint;
-            this.layoutControlItem19.Location = new System.Drawing.Point(892, 922);
+            this.layoutControlItem19.Location = new System.Drawing.Point(875, 922);
             this.layoutControlItem19.Name = "layoutControlItem19";
-            this.layoutControlItem19.Size = new System.Drawing.Size(86, 33);
+            this.layoutControlItem19.Size = new System.Drawing.Size(105, 33);
             this.layoutControlItem19.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem19.TextVisible = false;
             // 
             // layoutControlItem29
             // 
-            this.layoutControlItem29.Control = this.chkLuuIn;
-            this.layoutControlItem29.Location = new System.Drawing.Point(798, 922);
+            this.layoutControlItem29.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem29.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem29.Control = this.chkPrintNow;
+            this.layoutControlItem29.Location = new System.Drawing.Point(735, 922);
             this.layoutControlItem29.Name = "layoutControlItem29";
-            this.layoutControlItem29.Size = new System.Drawing.Size(94, 33);
-            this.layoutControlItem29.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem29.TextVisible = false;
+            this.layoutControlItem29.Size = new System.Drawing.Size(140, 33);
+            this.layoutControlItem29.Text = "Xem trước khi in";
+            this.layoutControlItem29.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem29.TextSize = new System.Drawing.Size(100, 20);
+            this.layoutControlItem29.TextToControlDistance = 5;
             // 
             // btnSearch
             // 
@@ -2251,7 +2255,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dtCreatefrom.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
             this.layoutControl2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.chkLuuIn.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkPrintNow.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlSereServ)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewSereServ)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit4)).EndInit();
@@ -2531,7 +2535,7 @@
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem8;
         private DevExpress.XtraEditors.SimpleButton btnPrint;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem19;
-        private DevExpress.XtraEditors.CheckEdit chkLuuIn;
+        private DevExpress.XtraEditors.CheckEdit chkPrintNow;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem29;
     }
 }

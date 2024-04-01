@@ -283,6 +283,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\REPORT\MPSv2\MPS.Processor\MPS.Processor.Mps000494.PDO\MPS.Processor.Mps000494.PDO.csproj">
+      <Project>{38f14b44-3897-4edc-8a4a-a62a9b0fe196}</Project>
+      <Name>MPS.Processor.Mps000494.PDO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>
