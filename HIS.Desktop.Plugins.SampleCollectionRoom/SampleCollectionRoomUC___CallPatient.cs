@@ -179,12 +179,16 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
             }
         }
 
-        private void UpdateDicCallPatient(List<TreatmentSampleListViewADO> lisSample)
+        private void UpdateDicCallPatient(List<TreatmentSampleListViewADO> lisSample,List<TreatmentSampleListViewADO> dataSource)
         {
             try
             {
                 if (lisSample != null && lisSample.Count > 0)
                 {
+                    dataSource.ForEach(o => o.IS_CALLING = lisSample.Exists(p=>p.ID == o.ID));
+                    gridControlTreatmentSampleDesk.BeginUpdate();
+                    gridControlTreatmentSampleDesk.DataSource = dataSource;
+                    gridControlTreatmentSampleDesk.EndUpdate();
                     List<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK> listCallTime = new List<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK>();
                     foreach (var item in lisSample)
                     {
@@ -208,7 +212,8 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                 var currentHisServiceReq = (TreatmentSampleListViewADO)gridViewTreatmentSampleDesk.GetFocusedRow();
                 if (currentHisServiceReq != null)
                 {
-                    UpdateDicCallPatient(new List<TreatmentSampleListViewADO> { currentHisServiceReq });
+                    List<TreatmentSampleListViewADO> dataSource = (List<TreatmentSampleListViewADO>)(gridControlTreatmentSampleDesk.DataSource);
+                    UpdateDicCallPatient(new List<TreatmentSampleListViewADO> { currentHisServiceReq }, dataSource);
                     LoadCallPatientByThread(new List<TreatmentSampleListViewADO> { currentHisServiceReq });
                 }
             }

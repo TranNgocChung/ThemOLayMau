@@ -276,7 +276,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                 HIS.Desktop.LocalStorage.BackendData.V2.Filter.HisServiceReqLView101Filter filter = new LocalStorage.BackendData.V2.Filter.HisServiceReqLView101Filter();
                 filter.ASSIGN_TURN_CODE__EXACT = treatmentSample.TDL_ASSIGN_TURN_CODE;
                 filter.TREATMENT_ID = treatmentSample.TREATMENT_ID;
-                var data = new BackendAdapter(param).Get<List<LocalStorage.BackendData.V2.EFMODEL.L_HIS_SERVICE_REQ_101>>("api/HisServiceReq/GetLView", mosUserConsummer, filter, param);
+                var data = new BackendAdapter(param).Get<List<LocalStorage.BackendData.V2.EFMODEL.L_HIS_SERVICE_REQ_101>>("api/HisServiceReq/GetLView101", mosUserConsummer, filter, param);
                 gridControlSereServ.DataSource = data;
             }
             catch (Exception ex)
@@ -350,12 +350,15 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                 if (e.RowHandle >= 0)
                 {
                     //var sampleStt = Inventec.Common.TypeConvert.Parse.ToInt64((gridViewTreatmentSampleDesk.GetRowCellValue(e.RowHandle, "SAMPLE_STT_ID")).ToString());
-                    //var data = (TreatmentSampleListViewADO)gridViewTreatmentSampleDesk.GetRow(e.RowHandle);
-                    //if (data == null) return;
+                    var data = (TreatmentSampleListViewADO)gridViewTreatmentSampleDesk.GetRow(e.RowHandle);
+                    if (data == null) return;
 
                     if (e.Column.FieldName == "CALL_PATIENT")
                     {
-                        e.RepositoryItem = ButtonEdit_CallPatientEnable;
+                        if (data.IS_CALLING == true)
+                            e.RepositoryItem = ButtonEdit_CallPatientDisable;
+                        else
+                            e.RepositoryItem = ButtonEdit_CallPatientEnable;
                     }
                 }
             }
@@ -502,7 +505,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                     var data = (List<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK>)apiResult.Data;
                     if (data != null)
                     {
-                        List<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK> distinctData = new List<V_HIS_TREATMENT_SAMPLE_DESK>();
+                        List<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK> distinctData = new List<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK>();
                         distinctData = data.GroupBy(p => new { p.TREATMENT_ID, p.TDL_ASSIGN_TURN_CODE })
                             .Select(g => g.First())
                             .ToList();
@@ -1164,7 +1167,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                     List<TreatmentSampleListViewADO> selectData = dataSource.Where(o => o.IsChecked).ToList();
                     if (selectData != null && selectData.Count > 0)
                     {
-                        UpdateDicCallPatient(selectData);
+                        UpdateDicCallPatient(selectData,dataSource);
                         LoadCallPatientByThread(selectData);
                     }
                     else
@@ -1638,15 +1641,15 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
             {
                 var focus = (HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK)gridViewTreatmentSampleDesk.GetFocusedRow();
                 Inventec.Common.Logging.LogSystem.Debug("his treatment sample desk" + focus.TREATMENT_CODE);
-                MPS.Processor.Mps000494.PDO.Mps000494PDO rdo = new MPS.Processor.Mps000494.PDO.Mps000494PDO(focus);
-                if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
-                {
-                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, ""));
-                }
-                else
-                {
-                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, ""));
-                }
+                //MPS.Processor.Mps000494.PDO.Mps000494PDO rdo = new MPS.Processor.Mps000494.PDO.Mps000494PDO(focus);
+                //if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                //{
+                //    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, ""));
+                //}
+                //else
+                //{
+                //    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, ""));
+                //}
             }
             catch (Exception ex)
             {
