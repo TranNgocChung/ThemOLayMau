@@ -432,6 +432,7 @@
             this.chkChuaPhanO.Size = new System.Drawing.Size(114, 20);
             this.chkChuaPhanO.StyleController = this.layoutControl1;
             this.chkChuaPhanO.TabIndex = 34;
+            this.chkChuaPhanO.CheckedChanged += new System.EventHandler(this.chkChuaPhanO_CheckedChanged);
             // 
             // barManager1
             // 
@@ -525,6 +526,7 @@
             this.chkDaPhanO.Size = new System.Drawing.Size(100, 20);
             this.chkDaPhanO.StyleController = this.layoutControl1;
             this.chkDaPhanO.TabIndex = 33;
+            this.chkDaPhanO.CheckedChanged += new System.EventHandler(this.chkDaPhanO_CheckedChanged);
             // 
             // chkBaoHiemTinhTien
             // 
@@ -535,6 +537,7 @@
             this.chkBaoHiemTinhTien.Size = new System.Drawing.Size(318, 21);
             this.chkBaoHiemTinhTien.StyleController = this.layoutControl1;
             this.chkBaoHiemTinhTien.TabIndex = 32;
+            this.chkBaoHiemTinhTien.CheckedChanged += new System.EventHandler(this.chkBaoHiemTinhTien_CheckedChanged);
             // 
             // cboTreatmentArea
             // 

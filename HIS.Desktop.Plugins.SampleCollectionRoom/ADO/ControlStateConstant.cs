@@ -9,6 +9,9 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom.ADO
     class ControlStateConstant
     {
         internal const string CHECK_PRINT_NOW = "chkPrintNow";
+        internal const string CHECK_DA_PHAN_O = "chkDaPhanO";
+        internal const string CHECK_CHUA_PHAN_O = "chkChuaPhanO";
+        internal const string CHECK_CO_BHYT = "chkBaoHiemTinhTien";
         internal const string MODULE_LINK = "HIS.Desktop.Plugins.SampleCollectionRoom";
 
         internal const string CHK_CREATE_BILL = "CHECK_CREATE_BILL";

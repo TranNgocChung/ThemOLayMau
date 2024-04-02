@@ -75,6 +75,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
         public static List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         public static HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         bool isNotLoadWhileChangeControlStateInFirst;
+        List<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK> listUpdateSampleDesk;
 
         #endregion
 
@@ -288,6 +289,18 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                         if (item.KEY == ControlStateConstant.CHECK_PRINT_NOW)
                         {
                             chkPrintNow.Checked = item.VALUE == "1";
+                        }
+                        if (item.KEY == ControlStateConstant.CHECK_DA_PHAN_O)
+                        {
+                            chkDaPhanO.Checked = item.VALUE == "1";
+                        }
+                        if (item.KEY == ControlStateConstant.CHECK_CHUA_PHAN_O)
+                        {
+                            chkChuaPhanO.Checked = item.VALUE == "1";
+                        }
+                        if (item.KEY == ControlStateConstant.CHECK_CO_BHYT)
+                        {
+                            chkBaoHiemTinhTien.Checked = item.VALUE == "1";
                         }
                     }
                 }
@@ -1584,9 +1597,9 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                     var focus = DeskCounters.FirstOrDefault(o => o.IsChecked == true);
                     if (focus != null)
                     {
-                        List<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK> listUpdateSampleDesk = new List<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK>();
+                        listUpdateSampleDesk = new List<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK>();
                         treatmentSampleDesk.SAMPLE_DESK_ID = focus.ID;
-                        treatmentSampleDesk.NUM_ORDER = Convert.ToInt64(focus.CURRENT_NUM ?? 0 + 1);
+                        treatmentSampleDesk.NUM_ORDER = Convert.ToInt64(focus.CURRENT_NUM ?? 0) + 1;
                         listUpdateSampleDesk.Add(treatmentSampleDesk);
                         var rs = HIS.Desktop.LocalStorage.BackendData.V2.CallPatient.CallPtDataWorker.UpdateSampleDesk(listUpdateSampleDesk, currentModule.RoomId, mosUserConsummer, param);
 
@@ -1598,7 +1611,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                             gridViewTreatmentSampleDesk.EndDataUpdate();
                             gridViewSampleDeskCounter.BeginDataUpdate();
                             gridViewSampleDeskCounter.EndDataUpdate();
-                            FillDataToGridControl();
+                            LoadDataToGridSampleDeskCounter();
                         }
                     }
                 }
@@ -1737,6 +1750,123 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                     csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
                     csAddOrUpdate.KEY = ControlStateConstant.CHECK_PRINT_NOW;
                     csAddOrUpdate.VALUE = (chkPrintNow.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = ControlStateConstant.MODULE_LINK;
+                    if (SampleCollectionRoomUC.currentControlStateRDO == null)
+                        SampleCollectionRoomUC.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    SampleCollectionRoomUC.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                SampleCollectionRoomUC.controlStateWorker.SetData(SampleCollectionRoomUC.currentControlStateRDO);
+                WaitingManager.Hide();
+                //if (this._RefreshCheckPrint != null)
+                //{
+                //    this._RefreshCheckPrint();
+                //}
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void chkDaPhanO_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+
+                WaitingManager.Show();
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (SampleCollectionRoomUC.currentControlStateRDO != null && SampleCollectionRoomUC.currentControlStateRDO.Count > 0) ? SampleCollectionRoomUC.currentControlStateRDO.Where(o => o.KEY == ControlStateConstant.CHECK_DA_PHAN_O && o.MODULE_LINK == ControlStateConstant.MODULE_LINK).FirstOrDefault() : null;
+                //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => csAddOrUpdate), csAddOrUpdate));
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkDaPhanO.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = ControlStateConstant.CHECK_DA_PHAN_O;
+                    csAddOrUpdate.VALUE = (chkDaPhanO.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = ControlStateConstant.MODULE_LINK;
+                    if (SampleCollectionRoomUC.currentControlStateRDO == null)
+                        SampleCollectionRoomUC.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    SampleCollectionRoomUC.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                SampleCollectionRoomUC.controlStateWorker.SetData(SampleCollectionRoomUC.currentControlStateRDO);
+                WaitingManager.Hide();
+                //if (this._RefreshCheckPrint != null)
+                //{
+                //    this._RefreshCheckPrint();
+                //}
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void chkChuaPhanO_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+
+                WaitingManager.Show();
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (SampleCollectionRoomUC.currentControlStateRDO != null && SampleCollectionRoomUC.currentControlStateRDO.Count > 0) ? SampleCollectionRoomUC.currentControlStateRDO.Where(o => o.KEY == ControlStateConstant.CHECK_CHUA_PHAN_O && o.MODULE_LINK == ControlStateConstant.MODULE_LINK).FirstOrDefault() : null;
+                //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => csAddOrUpdate), csAddOrUpdate));
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkChuaPhanO.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = ControlStateConstant.CHECK_CHUA_PHAN_O;
+                    csAddOrUpdate.VALUE = (chkChuaPhanO.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = ControlStateConstant.MODULE_LINK;
+                    if (SampleCollectionRoomUC.currentControlStateRDO == null)
+                        SampleCollectionRoomUC.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    SampleCollectionRoomUC.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                SampleCollectionRoomUC.controlStateWorker.SetData(SampleCollectionRoomUC.currentControlStateRDO);
+                WaitingManager.Hide();
+                //if (this._RefreshCheckPrint != null)
+                //{
+                //    this._RefreshCheckPrint();
+                //}
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void chkBaoHiemTinhTien_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+
+                WaitingManager.Show();
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (SampleCollectionRoomUC.currentControlStateRDO != null && SampleCollectionRoomUC.currentControlStateRDO.Count > 0) ? SampleCollectionRoomUC.currentControlStateRDO.Where(o => o.KEY == ControlStateConstant.CHECK_CO_BHYT && o.MODULE_LINK == ControlStateConstant.MODULE_LINK).FirstOrDefault() : null;
+                //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => csAddOrUpdate), csAddOrUpdate));
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkBaoHiemTinhTien.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = ControlStateConstant.CHECK_CO_BHYT;
+                    csAddOrUpdate.VALUE = (chkBaoHiemTinhTien.Checked ? "1" : "");
                     csAddOrUpdate.MODULE_LINK = ControlStateConstant.MODULE_LINK;
                     if (SampleCollectionRoomUC.currentControlStateRDO == null)
                         SampleCollectionRoomUC.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
