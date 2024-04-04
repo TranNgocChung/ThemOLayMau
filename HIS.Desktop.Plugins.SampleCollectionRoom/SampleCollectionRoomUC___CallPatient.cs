@@ -205,6 +205,11 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
             }
         }
 
+        public void CallFocusPatient()
+        {
+            ButtonEdit_CallPatient_ButtonClick(null, null);
+        }
+
         private void ButtonEdit_CallPatient_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
             try

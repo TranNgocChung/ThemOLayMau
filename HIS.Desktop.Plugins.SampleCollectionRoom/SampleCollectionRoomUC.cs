@@ -76,6 +76,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
         public static HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         bool isNotLoadWhileChangeControlStateInFirst;
         List<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK> listUpdateSampleDesk;
+        int numPageSize;
 
         #endregion
 
@@ -176,6 +177,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                 if (gridCheckMark != null)
                 {
                     gridCheckMark.ClearSelection(cbo.Properties.View);
+                    gridCheckMark.SelectAll(this.listTreatmentType);
                 }
             }
             catch (Exception ex)
@@ -188,12 +190,38 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
         {
             try
             {
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
                 _DienDieuTriSelecteds = new List<HIS_TREATMENT_TYPE>();
                 foreach (HIS_TREATMENT_TYPE rv in (sender as GridCheckMarksSelection).Selection)
                 {
                     if (rv != null)
+                    {
                         _DienDieuTriSelecteds.Add(rv);
+                        if (rv != null)
+                        {
+                            if (sb.ToString().Length > 0) { sb.Append(", "); }
+                            sb.Append(rv.TREATMENT_TYPE_NAME);
+                        }
+                    }
                 }
+
+               
+                //GridCheckMarksSelection gridCheckMark = sender as GridCheckMarksSelection;
+                //if (gridCheckMark != null)
+                //{
+                //    List<HIS_TREATMENT_TYPE> erSelectedNews = new List<HIS_TREATMENT_TYPE>();
+                //    foreach (HIS_TREATMENT_TYPE er in (sender as GridCheckMarksSelection).Selection)
+                //    {
+                //        if (er != null)
+                //        {
+                //            if (sb.ToString().Length > 0) { sb.Append(", "); }
+                //            sb.Append(er.TREATMENT_TYPE_NAME);
+                //            erSelectedNews.Add(er);
+                //        }
+
+                //    }
+                //}
+                this.cboTreatmentArea.Text = sb.ToString();
             }
             catch (Exception ex)
             {
@@ -366,6 +394,14 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                 lblDOB.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(rowSample.TDL_PATIENT_DOB.ToString());
 
                 lblTreatmentType.Text = rowSample.PATIENT_TYPE_NAME;
+                if (rowSample.IsBhytOrPaid)
+                {
+                    lblDaThanhToan.Text = "Đã thanh toán";
+                }
+                else
+                {
+                    lblDaThanhToan.Text = "";
+                }
                 HisTreatmentViewFilter Filter = new HisTreatmentViewFilter();
                 Filter.ID = rowSample.TREATMENT_ID;
                 var treatment = new BackendAdapter(param).Get<List<V_HIS_TREATMENT>>("api/HisTreatment/GetView", this.mosUserConsummer, Filter, param);
@@ -456,15 +492,24 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
 
         internal void FillDataToGridControl()
         {
-            txtSearchKey.Focus();
-            txtSearchKey.SelectAll();
+            txtFindTreamentCode.Focus();
+            txtFindTreamentCode.SelectAll();
+
+            if (ucPaging1.pagingGrid != null)
+            {
+                numPageSize = ucPaging1.pagingGrid.PageSize;
+            }
+            else
+            {
+                numPageSize = (int)ConfigApplications.NumPageSize;
+            }
 
             FillDataToGridSample(new CommonParam(0, (int)ConfigApplications.NumPageSize));
 
             CommonParam param = new CommonParam();
             param.Limit = rowCount;
             param.Count = dataTotal;
-            ucPaging1.Init(FillDataToGridSample, param, (int)ConfigApplications.NumPageSize, this.gridControlTreatmentSampleDesk);
+            ucPaging1.Init(FillDataToGridSample, param, numPageSize, this.gridControlTreatmentSampleDesk);
             LoadDataToGridSampleDeskCounter();
         }
 
@@ -1599,10 +1644,10 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                     {
                         listUpdateSampleDesk = new List<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK>();
                         treatmentSampleDesk.SAMPLE_DESK_ID = focus.ID;
+                        treatmentSampleDesk.SAMPLE_DESK_NAME = focus.SAMPLE_DESK_NAME;
                         treatmentSampleDesk.NUM_ORDER = Convert.ToInt64(focus.CURRENT_NUM ?? 0) + 1;
                         listUpdateSampleDesk.Add(treatmentSampleDesk);
                         var rs = HIS.Desktop.LocalStorage.BackendData.V2.CallPatient.CallPtDataWorker.UpdateSampleDesk(listUpdateSampleDesk, currentModule.RoomId, mosUserConsummer, param);
-
 
                         if (rs)
                         {
@@ -1612,6 +1657,8 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                             gridViewSampleDeskCounter.BeginDataUpdate();
                             gridViewSampleDeskCounter.EndDataUpdate();
                             LoadDataToGridSampleDeskCounter();
+                            txtFindTreamentCode.Focus();
+                            txtFindTreamentCode.SelectAll();
                         }
                     }
                 }
@@ -1883,6 +1930,27 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        public void ShortCutSaveAndPrint()
+        {
+            btnSaveAndPrint_Click(null, null);
+        }
+
+        private void btnSaveAndPrint_Click(object sender, EventArgs e)
+        {
+            updateOLayMau();
+            btnPrint_Click(null, null);
+        }
+
+        private void btnRecall_Click(object sender, EventArgs e)
+        {
+            CallFocusPatient();
+        }
+
+        public void ShortCutRecall()
+        {
+            btnRecall_Click(null, null);
         }
     }
 }
