@@ -66,6 +66,9 @@
     <Reference Include="His.EventLog">
       <HintPath>..\..\..\..\..\..\RELEASE\HIS\His.EventLog\His.EventLog.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.UC.TreeSereServ7V2">
+      <HintPath>..\..\..\..\..\..\..\DkNA\HIS\2.276.0\ReferencedAssemblies\HIS.UC.TreeSereServ7V2.dll</HintPath>
+    </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\..\..\RELEASE\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
@@ -99,6 +102,9 @@
     <Reference Include="Inventec.Common.String, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.String\Inventec.Common.String.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.ThreadCustom">
+      <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.ThreadCustom\Inventec.Common.ThreadCustom.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.TypeConvert">
       <HintPath>..\..\..\..\..\..\RELEASE\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.dll</HintPath>
@@ -215,6 +221,7 @@
     <Compile Include="ADO\ControlStateConstant.cs" />
     <Compile Include="ADO\SampleDeskCounterADO.cs" />
     <Compile Include="ADO\SampleListViewADO.cs" />
+    <Compile Include="ADO\ServiceADO.cs" />
     <Compile Include="AppConfigKey.cs" />
     <Compile Include="ComboADO.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />

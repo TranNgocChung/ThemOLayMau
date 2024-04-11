@@ -45,6 +45,7 @@ using MOS.SDO;
 using HIS.Desktop.Utilities.Extensions;
 using HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL;
 using HIS.Desktop.LocalStorage.ConfigSystem;
+using HIS.UC.TreeSereServ7V2;
 
 namespace HIS.Desktop.Plugins.SampleCollectionRoom
 {
@@ -77,7 +78,8 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
         bool isNotLoadWhileChangeControlStateInFirst;
         List<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK> listUpdateSampleDesk;
         int numPageSize;
-
+        //List<L_HIS_SERVICE_REQ> ServiceReqCurrentTreatment { get; set; }
+        List<LocalStorage.BackendData.V2.EFMODEL.L_HIS_SERVICE_REQ_101> hisServiceReq101List;
         #endregion
 
         #region Contructor
@@ -85,6 +87,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
         public SampleCollectionRoomUC()
         {
             InitializeComponent();
+            lblDaThanhToan.Text = "";
             HisConfigCFG.LoadConfig();
             GetConsumer();
         }
@@ -95,6 +98,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
             InitializeComponent();
             try
             {
+                lblDaThanhToan.Text = "";
                 this.currentModule = currentModule;
                 HisConfigCFG.LoadConfig();
                 GetConsumer();
@@ -133,7 +137,6 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
 
         private void GetConsumer()
         {
@@ -205,7 +208,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                     }
                 }
 
-               
+
                 //GridCheckMarksSelection gridCheckMark = sender as GridCheckMarksSelection;
                 //if (gridCheckMark != null)
                 //{
@@ -293,6 +296,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                 rowSample = (TreatmentSampleListViewADO)gridViewTreatmentSampleDesk.GetFocusedRow();
                 LoadInformationPatient();
                 LoadServiceReq(rowSample);
+                //LoadDataToPanelRight(this.hisServiceReq101List);
 
                 WaitingManager.Hide();
             }
@@ -345,12 +349,42 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
         {
             try
             {
+                List<ServiceADO> ServiceAll = new List<ServiceADO>();
+
                 CommonParam param = new CommonParam();
                 HIS.Desktop.LocalStorage.BackendData.V2.Filter.HisServiceReqLView101Filter filter = new LocalStorage.BackendData.V2.Filter.HisServiceReqLView101Filter();
                 filter.ASSIGN_TURN_CODE__EXACT = treatmentSample.TDL_ASSIGN_TURN_CODE;
                 filter.TREATMENT_ID = treatmentSample.TREATMENT_ID;
-                var data = new BackendAdapter(param).Get<List<LocalStorage.BackendData.V2.EFMODEL.L_HIS_SERVICE_REQ_101>>("api/HisServiceReq/GetLView101", mosUserConsummer, filter, param);
-                gridControlSereServ.DataSource = data;
+                this.hisServiceReq101List = new BackendAdapter(param).Get<List<LocalStorage.BackendData.V2.EFMODEL.L_HIS_SERVICE_REQ_101>>("api/HisServiceReq/GetLView101", mosUserConsummer, filter, param);
+
+                var parentListTemp = this.hisServiceReq101List.Where(o => o.PARENT_SERVICE_ID.HasValue && o.PARENT_SERVICE_ID.Value > 0).ToList();
+                var groupParent = parentListTemp.GroupBy(o => o.PARENT_SERVICE_ID).ToList();
+
+                var maxId = this.hisServiceReq101List.Max(o => o.ID);
+                foreach (var item in groupParent)
+                {
+                    ServiceADO s1 = new ServiceADO();
+                    s1.IdService = item.First().PARENT_SERVICE_ID ?? 0;
+                    s1.ServiceCode = item.First().PARENT_SERVICE_CODE;
+                    s1.ServiceName = item.First().PARENT_SERVICE_NAME;
+                    s1.ParentServiceId = null;
+                    ServiceAll.Add(s1);
+                }
+                foreach (var item in this.hisServiceReq101List)
+                {
+                    maxId++;
+                    ServiceADO s1 = new ServiceADO();
+                    s1.IdService = maxId;
+                    s1.ServiceCode = item.TDL_SERVICE_CODE;
+                    s1.ServiceName = item.TDL_SERVICE_NAME;
+                    s1.ParentServiceId = item.PARENT_SERVICE_ID;
+                    ServiceAll.Add(s1);
+                }
+
+                treeListService.DataSource = ServiceAll;
+                treeListService.ParentFieldName = "ParentServiceId";
+                treeListService.KeyFieldName = "IdService";
+                treeListService.ExpandAll();
             }
             catch (Exception ex)
             {
@@ -396,7 +430,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                 lblTreatmentType.Text = rowSample.PATIENT_TYPE_NAME;
                 if (rowSample.IsBhytOrPaid)
                 {
-                    lblDaThanhToan.Text = "Đã thanh toán";
+                    lblDaThanhToan.Text = "Đã đóng tiền";
                 }
                 else
                 {
@@ -642,7 +676,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
             try
             {
                 this.grcChecked.ImageAlignment = StringAlignment.Center;
-                this.grcChecked.Image = (state ? this.imageCollection2.Images[1] : this.imageCollection2.Images[0]);
+                this.grcChecked.Image = (state ? this.imageCollectionV2.Images[1] : this.imageCollectionV2.Images[0]);
             }
             catch (Exception ex)
             {
@@ -1747,13 +1781,13 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                 var focus = (HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK)gridViewTreatmentSampleDesk.GetFocusedRow();
                 Inventec.Common.Logging.LogSystem.Debug("his treatment sample desk" + focus.TREATMENT_CODE);
                 MPS.Processor.Mps000494.PDO.Mps000494PDO rdo = new MPS.Processor.Mps000494.PDO.Mps000494PDO(focus);
-                if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                if (chkPrintNow.Checked)
                 {
-                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, ""));
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, ""));
                 }
                 else
                 {
-                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, ""));
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, ""));
                 }
             }
             catch (Exception ex)
@@ -1945,12 +1979,35 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
 
         private void btnRecall_Click(object sender, EventArgs e)
         {
-            CallFocusPatient();
+            try
+            {
+                var currentHisServiceReq = (TreatmentSampleListViewADO)gridViewTreatmentSampleDesk.GetFocusedRow();
+                LoadCallPatientByThread(new List<TreatmentSampleListViewADO> { currentHisServiceReq });
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         public void ShortCutRecall()
         {
             btnRecall_Click(null, null);
+        }
+
+        private void treeListService_NodeCellStyle(object sender, DevExpress.XtraTreeList.GetCustomNodeCellStyleEventArgs e)
+        {
+            try
+            {
+                if (e.Node.HasChildren)
+                {
+                    e.Appearance.FontStyleDelta = FontStyle.Bold;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
     }
 }
