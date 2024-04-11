@@ -21,5 +21,9 @@ namespace HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL
         public Nullable<long> SAMPLE_ROOM_ID { get; set; }
         public string TDL_SERVICE_CODE { get; set; }
         public string TDL_SERVICE_NAME { get; set; }
+        public Nullable<long> PARENT_SERVICE_ID { get; set; }
+        public string PARENT_SERVICE_CODE { get; set; }
+        public string PARENT_SERVICE_NAME { get; set; }
+        public Nullable<long> TDL_TREATMENT_TYPE_ID { get; set; }
     }
 }
