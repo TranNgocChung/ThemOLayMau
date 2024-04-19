@@ -31,6 +31,25 @@ namespace HIS.Desktop.LocalStorage.BackendData.V2.CallPatient
                 dicCallPatient = value;
             }
         }
+        private static Dictionary<long, List<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK>> dicDeskPatient;
+
+        public static Dictionary<long, List<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK>> DicDeskPatient
+        {
+            get
+            {
+                if (dicDeskPatient == null)
+                {
+                    dicDeskPatient = new Dictionary<long, List<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK>>();
+                }
+                lock (dicDeskPatient);
+                return dicDeskPatient;
+            }
+            set
+            {
+                lock (dicDeskPatient) ;
+                dicDeskPatient = value;
+            }
+        }
 
         private static Dictionary<long, DelegateSelectData> dicDelegateCallingPatient;
 
@@ -96,6 +115,7 @@ namespace HIS.Desktop.LocalStorage.BackendData.V2.CallPatient
             }
             if (listUpdate.Count > 0)
             {
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("listUpdate", listUpdate));
                 var resultData = new BackendAdapter(param).Post<List<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK>>("api/HisTreatmentSampleDesk/UpdateSampleDesk", mosUserConsummer, listUpdate, param);
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("resultData", resultData));
                 if (resultData != null && resultData.Count > 0)
@@ -103,10 +123,24 @@ namespace HIS.Desktop.LocalStorage.BackendData.V2.CallPatient
                     result = true;
                     if (dicCallPatient != null && dicCallPatient.ContainsKey(roomId) && dicCallPatient[roomId] != null)
                     {
-                        dicCallPatient[roomId] = dicCallPatient[roomId].Where(o => !resultData.Exists(p => p.ID == o.ID)).ToList() ;
+                        dicCallPatient[roomId] = dicCallPatient[roomId].Where(o => !resultData.Exists(p => p.ID == o.ID)).ToList();
                     }
-                   
+
                 }
+                if (DicDeskPatient == null)
+                {
+                    DicDeskPatient = new Dictionary<long, List<EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK>>();
+                }
+                if (!DicDeskPatient.ContainsKey(roomId))
+                {
+                    DicDeskPatient.Add(roomId, new List<EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK>());
+                }
+                if (DicDeskPatient[roomId] == null)
+                {
+                    DicDeskPatient[roomId] = new List<EFMODEL.V_HIS_TREATMENT_SAMPLE_DESK>();
+                }
+                DicDeskPatient[roomId].AddRange(resultData);
+                DicDeskPatient[roomId] = DicDeskPatient[roomId].Where(o=>o.CALL_TIME!=null && o.CALL_TIME > Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Today)).OrderByDescending(o => o.CALL_TIME ?? 0).GroupBy(p => p.ID).Select(q => q.First()).ToList();
             }
             return result;
         }
