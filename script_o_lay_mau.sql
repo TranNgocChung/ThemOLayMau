@@ -243,7 +243,7 @@ LEFT JOIN LATERAL
 (SELECT /*+ NO_RESULT_CACHE */SUM(SSB.PRICE) PAID, SUM(SS.VIR_TOTAL_PATIENT_PRICE) PAYMENT, SUM(SS.VIR_TOTAL_PATIENT_PRICE_BHYT) PAYMENT_BHYT, MAX(CASE WHEN SR.IS_EMERGENCY = 1 OR SR.IS_NOT_REQUIRE_FEE = 1 THEN 1 END) IS_NOT_REQ_FEE
 FROM HIS_SERE_SERV SS
 JOIN HIS_SERVICE_REQ SR ON SR.ID = SS.SERVICE_REQ_ID
-LEFT JOIN HIS_SERE_SERV_BILL SSB ON SSB.SERE_SERV_ID = SS.ID AND SSB.TDL_TREATMENT_ID = TSD.TREATMENT_ID
+LEFT JOIN HIS_SERE_SERV_BILL SSB ON SSB.SERE_SERV_ID = SS.ID AND SSB.TDL_TREATMENT_ID = TREA.ID AND SSB.TDL_SERVICE_TYPE_ID = 2
 WHERE SS.IS_DELETE=0 AND SS.IS_NO_EXECUTE IS NULL AND SSB.IS_CANCEL IS NULL
 AND SR.IS_DELETE=0 AND SR.IS_NO_EXECUTE IS NULL
 AND SR.SAMPLE_ROOM_ID = TSD.SAMPLE_ROOM_ID
@@ -278,6 +278,13 @@ insert into his_sample_desk (sample_desk_code,sample_desk_name,sample_room_id) v
 insert into his_sample_desk (sample_desk_code,sample_desk_name,sample_room_id) values('03','Ô số 3',(select id from his_sample_room where sample_room_code='02'));
 insert into his_sample_desk (sample_desk_code,sample_desk_name,sample_room_id) values('04','Ô số 4',(select id from his_sample_room where sample_room_code='02'));
 insert into his_sample_desk (sample_desk_code,sample_desk_name,sample_room_id) values('05','Ô số 5',(select id from his_sample_room where sample_room_code='02'));
+insert into his_sample_desk (sample_desk_code,sample_desk_name,sample_room_id) values('11','Ô số 1',(select id from his_sample_room where sample_room_code='03'));
+insert into his_sample_desk (sample_desk_code,sample_desk_name,sample_room_id) values('12','Ô số 2',(select id from his_sample_room where sample_room_code='03'));
+insert into his_sample_desk (sample_desk_code,sample_desk_name,sample_room_id) values('13','Ô số 3',(select id from his_sample_room where sample_room_code='03'));
+insert into his_sample_desk (sample_desk_code,sample_desk_name,sample_room_id) values('14','Ô số 4',(select id from his_sample_room where sample_room_code='03'));
+insert into his_sample_desk (sample_desk_code,sample_desk_name,sample_room_id) values('15','Ô số 5',(select id from his_sample_room where sample_room_code='03'));
+insert into his_sample_desk (sample_desk_code,sample_desk_name,sample_room_id) values('16','Ô số 6',(select id from his_sample_room where sample_room_code='03'));
+insert into his_sample_desk (sample_desk_code,sample_desk_name,sample_room_id) values('17','Ô số 7',(select id from his_sample_room where sample_room_code='03'));
 commit;
 insert into his_config (key,value,default_value,description) select replace(key,'EXE.','SAMPLE.'),value,default_value,description from his_config where key in ('EXE.WAITING_SCREEN.ROOM_NAME.COLOR_CODES',
 'EXE.WAITING_SCREEN.ROOM_NAME.COLOR_CODES',
@@ -310,4 +317,18 @@ LEFT JOIN HIS_SERVICE PR ON PR.ID = SV.PARENT_ID
 JOIN HIS_TREATMENT_SAMPLE_DESK TSD ON TSD.TREATMENT_ID = SR.TREATMENT_ID AND TSD.SAMPLE_ROOM_ID = SR.SAMPLE_ROOM_ID AND TSD.TDL_ASSIGN_TURN_CODE = SR.ASSIGN_TURN_CODE
 WHERE SR.ASSIGN_TURN_CODE IS NOT NULL
 AND SR.IS_DELETE=0
-AND SR.SAMPLE_ROOM_ID IS NOT NULL;
+AND SR.SAMPLE_ROOM_ID IS NOT NULL;  
+CREATE OR REPLACE EDITIONABLE TRIGGER "HIS_RS"."HIS_SERVICE_REQ_102" BEFORE DELETE ON HIS_SERVICE_REQ FOR EACH ROW
+DECLARE 
+BEGIN
+DELETE HIS_TREATMENT_SAMPLE_DESK WHERE TDL_ASSIGN_TURN_CODE = :OLD.ASSIGN_TURN_CODE AND SAMPLE_ROOM_ID = :OLD.SAMPLE_ROOM_ID;
+END;
+/
+ALTER TRIGGER "HIS_RS"."HIS_SERVICE_REQ_102" ENABLE;
+
+  CREATE INDEX "HIS_RS"."HIS_TMT_SAMPLE_DESK_INDEX9" ON "HIS_RS"."HIS_TREATMENT_SAMPLE_DESK" ("CREATE_TIME") 
+  PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS 
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "HIS_RS" ;

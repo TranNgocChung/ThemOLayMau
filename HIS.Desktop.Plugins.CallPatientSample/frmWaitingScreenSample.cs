@@ -177,12 +177,6 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                 {
                     this.lblDoctorName.Appearance.Font = new System.Drawing.Font("Arial", userSizeCodes, System.Drawing.FontStyle.Bold);
                 }
-                int patientBodySizeCodes = WaitingScreenCFG.PATIENT_BODY_SIZE_CODES;
-                if (patientBodySizeCodes != null && patientBodySizeCodes > 0)
-                {
-                    this.gridViewWaiting.Appearance.HeaderPanel.Font = new System.Drawing.Font("Arial", patientBodySizeCodes, System.Drawing.FontStyle.Bold);
-                    this.gridViewInDesk.Appearance.HeaderPanel.Font = new System.Drawing.Font("Arial", patientBodySizeCodes, System.Drawing.FontStyle.Bold);
-                }
 
                 //mau background
                 List<int> parentBackColorCodes = WaitingScreenCFG.PARENT_BACK_COLOR_CODES;
@@ -208,13 +202,13 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                 Inventec.Common.Logging.LogSystem.Debug("gridpatientBackColorCodes:" + string.Join(",", gridpatientBackColorCodes));
                 if (gridpatientBackColorCodes != null && gridpatientBackColorCodes.Count == 3)
                 {
-                    this.gridViewWaiting.Appearance.HeaderPanel.BackColor = System.Drawing.Color.FromArgb(gridpatientBackColorCodes[0], gridpatientBackColorCodes[1], gridpatientBackColorCodes[2]);
-                    this.gridViewWaiting.Appearance.HeaderPanel.BackColor2 = System.Drawing.Color.FromArgb(gridpatientBackColorCodes[0], gridpatientBackColorCodes[1], gridpatientBackColorCodes[2]);
+                    this.gridViewWaiting.Appearance.Row.BackColor = System.Drawing.Color.FromArgb(gridpatientBackColorCodes[0], gridpatientBackColorCodes[1], gridpatientBackColorCodes[2]);
+                    this.gridViewWaiting.Appearance.Row.BackColor2 = System.Drawing.Color.FromArgb(gridpatientBackColorCodes[0], gridpatientBackColorCodes[1], gridpatientBackColorCodes[2]);
                     this.gridViewWaiting.Appearance.Empty.BackColor = System.Drawing.Color.FromArgb(gridpatientBackColorCodes[0], gridpatientBackColorCodes[1], gridpatientBackColorCodes[2]);
-                   
-                    this.gridViewInDesk.Appearance.HeaderPanel.BackColor = System.Drawing.Color.FromArgb(gridpatientBackColorCodes[0], gridpatientBackColorCodes[1], gridpatientBackColorCodes[2]);
-                    this.gridViewInDesk.Appearance.HeaderPanel.BackColor2 = System.Drawing.Color.FromArgb(gridpatientBackColorCodes[0], gridpatientBackColorCodes[1], gridpatientBackColorCodes[2]);
-                    gridViewInDesk.Appearance.Empty.BackColor = System.Drawing.Color.FromArgb(gridpatientBackColorCodes[0], gridpatientBackColorCodes[1], gridpatientBackColorCodes[2]);
+
+                    this.gridViewInDesk.Appearance.Row.BackColor = System.Drawing.Color.FromArgb(gridpatientBackColorCodes[0], gridpatientBackColorCodes[1], gridpatientBackColorCodes[2]);
+                    this.gridViewInDesk.Appearance.Row.BackColor2 = System.Drawing.Color.FromArgb(gridpatientBackColorCodes[0], gridpatientBackColorCodes[1], gridpatientBackColorCodes[2]);
+                    this.gridViewInDesk.Appearance.Empty.BackColor = System.Drawing.Color.FromArgb(gridpatientBackColorCodes[0], gridpatientBackColorCodes[1], gridpatientBackColorCodes[2]);
                    
                 }
 
@@ -224,19 +218,10 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                 Inventec.Common.Logging.LogSystem.Debug("gridpatientHeaderBackColorCodes:" + string.Join(",", gridpatientHeaderBackColorCodes));
                 if (gridpatientHeaderBackColorCodes != null && gridpatientHeaderBackColorCodes.Count == 3)
                 {
-                    gridColumnAge.AppearanceHeader.BackColor = System.Drawing.Color.FromArgb(gridpatientHeaderBackColorCodes[0], gridpatientHeaderBackColorCodes[1], gridpatientHeaderBackColorCodes[2]);
-                    gridColumnFirstName.AppearanceHeader.BackColor = System.Drawing.Color.FromArgb(gridpatientHeaderBackColorCodes[0], gridpatientHeaderBackColorCodes[1], gridpatientHeaderBackColorCodes[2]);
-                    gridColumnInstructionTime.AppearanceHeader.BackColor = System.Drawing.Color.FromArgb(gridpatientHeaderBackColorCodes[0], gridpatientHeaderBackColorCodes[1], gridpatientHeaderBackColorCodes[2]);
-                    gridColumnLastName.AppearanceHeader.BackColor = System.Drawing.Color.FromArgb(gridpatientHeaderBackColorCodes[0], gridpatientHeaderBackColorCodes[1], gridpatientHeaderBackColorCodes[2]);
-                    gridColumnServiceReqStt.AppearanceHeader.BackColor = System.Drawing.Color.FromArgb(gridpatientHeaderBackColorCodes[0], gridpatientHeaderBackColorCodes[1], gridpatientHeaderBackColorCodes[2]);
-                    gridColumnServiceReqType.AppearanceHeader.BackColor = System.Drawing.Color.FromArgb(gridpatientHeaderBackColorCodes[0], gridpatientHeaderBackColorCodes[1], gridpatientHeaderBackColorCodes[2]);
-                    gridColumnSTT.AppearanceHeader.BackColor = System.Drawing.Color.FromArgb(gridpatientHeaderBackColorCodes[0], gridpatientHeaderBackColorCodes[1], gridpatientHeaderBackColorCodes[2]);
-                    gridColumnAddress.AppearanceHeader.BackColor = System.Drawing.Color.FromArgb(gridpatientHeaderBackColorCodes[0], gridpatientHeaderBackColorCodes[1], gridpatientHeaderBackColorCodes[2]);
-                    gridColumn2.AppearanceHeader.BackColor = System.Drawing.Color.FromArgb(gridpatientHeaderBackColorCodes[0], gridpatientHeaderBackColorCodes[1], gridpatientHeaderBackColorCodes[2]);
-                    gridColumn4.AppearanceHeader.BackColor = System.Drawing.Color.FromArgb(gridpatientHeaderBackColorCodes[0], gridpatientHeaderBackColorCodes[1], gridpatientHeaderBackColorCodes[2]);
-                    gridColumn3.AppearanceHeader.BackColor = System.Drawing.Color.FromArgb(gridpatientHeaderBackColorCodes[0], gridpatientHeaderBackColorCodes[1], gridpatientHeaderBackColorCodes[2]);
-                    gridColumn5.AppearanceHeader.BackColor = System.Drawing.Color.FromArgb(gridpatientHeaderBackColorCodes[0], gridpatientHeaderBackColorCodes[1], gridpatientHeaderBackColorCodes[2]);
-
+                    this.gridViewWaiting.Appearance.HeaderPanel.BackColor = System.Drawing.Color.FromArgb(gridpatientHeaderBackColorCodes[0], gridpatientHeaderBackColorCodes[1], gridpatientHeaderBackColorCodes[2]);
+                    this.gridViewWaiting.Appearance.HeaderPanel.BackColor2 = System.Drawing.Color.FromArgb(gridpatientHeaderBackColorCodes[0], gridpatientHeaderBackColorCodes[1], gridpatientHeaderBackColorCodes[2]);
+                    this.gridViewWaiting.Appearance.HeaderPanel.BackColor = System.Drawing.Color.FromArgb(gridpatientHeaderBackColorCodes[0], gridpatientHeaderBackColorCodes[1], gridpatientHeaderBackColorCodes[2]);
+                    this.gridViewWaiting.Appearance.HeaderPanel.BackColor2 = System.Drawing.Color.FromArgb(gridpatientHeaderBackColorCodes[0], gridpatientHeaderBackColorCodes[1], gridpatientHeaderBackColorCodes[2]);
                 }
 
                 //màu chữ của header danh sách bệnh nhân
@@ -277,6 +262,25 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                     gridColumn4.AppearanceCell.ForeColor = System.Drawing.Color.FromArgb(gridpatientBodyForceColorCodes[0], gridpatientBodyForceColorCodes[1], gridpatientBodyForceColorCodes[2]);
                     gridColumn3.AppearanceCell.ForeColor = System.Drawing.Color.FromArgb(gridpatientBodyForceColorCodes[0], gridpatientBodyForceColorCodes[1], gridpatientBodyForceColorCodes[2]);
                     gridColumn5.AppearanceCell.ForeColor = System.Drawing.Color.FromArgb(gridpatientBodyForceColorCodes[0], gridpatientBodyForceColorCodes[1], gridpatientBodyForceColorCodes[2]);
+                }
+
+                //cỡ chữ của body danh sách bệnh nhân
+                int patientBodySizeCodes = WaitingScreenCFG.PATIENT_BODY_SIZE_CODES;
+               
+                if (patientBodySizeCodes != null && patientBodySizeCodes > 0)
+                {
+                    gridColumnAge.AppearanceCell.Font = new System.Drawing.Font("Arial", patientBodySizeCodes, System.Drawing.FontStyle.Bold);
+                    gridColumnFirstName.AppearanceCell.Font = new System.Drawing.Font("Arial", patientBodySizeCodes, System.Drawing.FontStyle.Bold);
+                    gridColumnInstructionTime.AppearanceCell.Font = new System.Drawing.Font("Arial", patientBodySizeCodes, System.Drawing.FontStyle.Bold);
+                    gridColumnLastName.AppearanceCell.Font = new System.Drawing.Font("Arial", patientBodySizeCodes, System.Drawing.FontStyle.Bold);
+                    gridColumnServiceReqStt.AppearanceCell.Font = new System.Drawing.Font("Arial", patientBodySizeCodes, System.Drawing.FontStyle.Bold);
+                    gridColumnServiceReqType.AppearanceCell.Font = new System.Drawing.Font("Arial", patientBodySizeCodes, System.Drawing.FontStyle.Bold);
+                    gridColumnSTT.AppearanceCell.Font = new System.Drawing.Font("Arial", patientBodySizeCodes, System.Drawing.FontStyle.Bold);
+                    gridColumnAddress.AppearanceCell.Font = new System.Drawing.Font("Arial", patientBodySizeCodes, System.Drawing.FontStyle.Bold);
+                    gridColumn2.AppearanceCell.Font = new System.Drawing.Font("Arial", patientBodySizeCodes, System.Drawing.FontStyle.Bold);
+                    gridColumn4.AppearanceCell.Font = new System.Drawing.Font("Arial", patientBodySizeCodes, System.Drawing.FontStyle.Bold);
+                    gridColumn3.AppearanceCell.Font = new System.Drawing.Font("Arial", patientBodySizeCodes, System.Drawing.FontStyle.Bold);
+                    gridColumn5.AppearanceCell.Font = new System.Drawing.Font("Arial", patientBodySizeCodes, System.Drawing.FontStyle.Bold);
                 }
 
                 //màu chữ của trạng thái yêu cầu là mới

@@ -291,8 +291,9 @@
             this.gridViewInDesk.Appearance.Preview.BorderColor = System.Drawing.Color.Silver;
             this.gridViewInDesk.Appearance.Preview.Options.UseBackColor = true;
             this.gridViewInDesk.Appearance.Preview.Options.UseBorderColor = true;
-            this.gridViewInDesk.Appearance.Row.BackColor = System.Drawing.Color.Transparent;
+            this.gridViewInDesk.Appearance.Row.BackColor = System.Drawing.Color.Green;
             this.gridViewInDesk.Appearance.Row.ForeColor = System.Drawing.Color.Gray;
+            this.gridViewInDesk.Appearance.Row.Options.UseBackColor = true;
             this.gridViewInDesk.Appearance.Row.Options.UseFont = true;
             this.gridViewInDesk.Appearance.Row.Options.UseForeColor = true;
             this.gridViewInDesk.Appearance.Row.Options.UseTextOptions = true;
@@ -631,7 +632,7 @@
             this.gridViewWaiting.Appearance.OddRow.Options.UseBackColor = true;
             this.gridViewWaiting.Appearance.Preview.BackColor = System.Drawing.Color.Transparent;
             this.gridViewWaiting.Appearance.Preview.Options.UseBackColor = true;
-            this.gridViewWaiting.Appearance.Row.BackColor = System.Drawing.Color.Transparent;
+            this.gridViewWaiting.Appearance.Row.BackColor = System.Drawing.Color.Green;
             this.gridViewWaiting.Appearance.Row.ForeColor = System.Drawing.Color.Transparent;
             this.gridViewWaiting.Appearance.Row.Options.UseBackColor = true;
             this.gridViewWaiting.Appearance.Row.Options.UseForeColor = true;
