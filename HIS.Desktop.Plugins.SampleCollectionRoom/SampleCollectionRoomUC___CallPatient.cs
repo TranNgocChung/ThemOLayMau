@@ -105,9 +105,8 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                     string moiBenhNhanStr = HisConfigs.Get<string>(SdaConfigKeys.CALL_PATIENT_MOI_BENH_NHAN);
                     //string coSoSttStr = HisConfigs.Get<string>(SdaConfigKeys.CALL_PATIENT_CO_STT);
                     //string denStr = HisConfigs.Get<string>(SdaConfigKeys.CALL_PATIENT_DEN);
-
                     Inventec.Speech.SpeechPlayer.SpeakSingle(moiBenhNhanStr);
-                    Inventec.Speech.SpeechPlayer.Speak(patients.Select(o => o.TDL_PATIENT_NAME).ToArray());
+                    Inventec.Speech.SpeechPlayer.Speak(patients.Select(o => o.PATIENT_NAME_AND_DOB).ToArray());
                     //Inventec.Speech.SpeechPlayer.SpeakSingle(coSoSttStr);
                     //Inventec.Speech.SpeechPlayer.Speak(numOder);
                     //Inventec.Speech.SpeechPlayer.SpeakSingle(denStr);

@@ -23,9 +23,12 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom.ADO
             {
                 this.IsBhytOrPaid = data.IS_BHYT_OR_PAID.Value == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE ? true : false;
             }
-          
+            var dobStr = data.TDL_PATIENT_DOB.ToString();
+            var dobArr = dobStr.ToArray();
+            this.PATIENT_NAME_AND_DOB = data.TDL_PATIENT_NAME + " " + (dobArr[0] + " " + dobArr[1] + " " + dobArr[2] + " " + dobArr[3]);
         }
         public bool IsChecked { get; set; }
         public bool IsBhytOrPaid { get; set; }
+        public string PATIENT_NAME_AND_DOB { get; set; }
     }
 }

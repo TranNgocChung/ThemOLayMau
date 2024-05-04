@@ -334,6 +334,10 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                         {
                             chkBaoHiemTinhTien.Checked = item.VALUE == "1";
                         }
+                        if (item.KEY == ControlStateConstant.CHECK_GOI_SAU_KHI_QUET)
+                        {
+                            chkGoiSauKhiQuet.Checked = item.VALUE == "1";
+                        }
                     }
                 }
 
@@ -421,6 +425,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
         {
             try
             {
+                rowSample = (TreatmentSampleListViewADO)gridViewTreatmentSampleDesk.GetFocusedRow();
                 CommonParam param = new CommonParam();
                 lblPatientCode.Text = rowSample.TDL_PATIENT_CODE;
                 lblPatientName.Text = rowSample.TDL_PATIENT_NAME;
@@ -545,6 +550,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
             param.Count = dataTotal;
             ucPaging1.Init(FillDataToGridSample, param, numPageSize, this.gridControlTreatmentSampleDesk);
             LoadDataToGridSampleDeskCounter();
+
         }
 
         internal void FillDataToGridSample(object param)
@@ -973,6 +979,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                 filter.SAMPLE_ROOM_ID = this.SampleRoom.ID;
                 filter.ORDER_FIELD = "NUM_ORDER";
                 filter.ORDER_DIRECTION = "ASC";
+                filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
                 sampleDeskCounter = new BackendAdapter(param).Get<List<HIS.Desktop.LocalStorage.BackendData.V2.EFMODEL.L_HIS_SAMPLE_DESK_COUNTER>>("api/HisSampleDesk/GetLViewCounter", this.mosUserConsummer, filter, param);
                 if (sampleDeskCounter != null && sampleDeskCounter.Count > 0)
                 {
@@ -1512,10 +1519,16 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                 if (e.KeyCode == Keys.Enter)
                 {
                     btnFind_Click(null, null);
+                    if (chkGoiSauKhiQuet.Checked)
+                    {
+                        LoadInformationPatient();
+                        CallFocusPatient();
+                    }
                     if (String.IsNullOrWhiteSpace(txtFindPatientCode.Text))
                     {
                         txtFindTreamentCode.Focus();
                     }
+
                 }
             }
             catch (Exception ex)
@@ -1531,6 +1544,11 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                 if (e.KeyCode == Keys.Enter)
                 {
                     btnFind_Click(null, null);
+                    if (chkGoiSauKhiQuet.Checked)
+                    {
+                        LoadInformationPatient();
+                        CallFocusPatient();
+                    }
                     if (String.IsNullOrWhiteSpace(txtFindTreamentCode.Text))
                     {
                         dtCreatefrom.Focus();
@@ -1690,9 +1708,10 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                             gridViewTreatmentSampleDesk.EndDataUpdate();
                             gridViewSampleDeskCounter.BeginDataUpdate();
                             gridViewSampleDeskCounter.EndDataUpdate();
-                            LoadDataToGridSampleDeskCounter();
+                            FillDataToGridControl();
                             txtFindTreamentCode.Focus();
                             txtFindTreamentCode.SelectAll();
+                            LoadInformationPatient();
                         }
                     }
                 }
@@ -2003,6 +2022,45 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                 {
                     e.Appearance.FontStyleDelta = FontStyle.Bold;
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void chkGoiSauKhiQuet_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+
+                WaitingManager.Show();
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (SampleCollectionRoomUC.currentControlStateRDO != null && SampleCollectionRoomUC.currentControlStateRDO.Count > 0) ? SampleCollectionRoomUC.currentControlStateRDO.Where(o => o.KEY == ControlStateConstant.CHECK_GOI_SAU_KHI_QUET && o.MODULE_LINK == ControlStateConstant.MODULE_LINK).FirstOrDefault() : null;
+                //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => csAddOrUpdate), csAddOrUpdate));
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkGoiSauKhiQuet.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = ControlStateConstant.CHECK_GOI_SAU_KHI_QUET;
+                    csAddOrUpdate.VALUE = (chkGoiSauKhiQuet.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = ControlStateConstant.MODULE_LINK;
+                    if (SampleCollectionRoomUC.currentControlStateRDO == null)
+                        SampleCollectionRoomUC.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    SampleCollectionRoomUC.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                SampleCollectionRoomUC.controlStateWorker.SetData(SampleCollectionRoomUC.currentControlStateRDO);
+                WaitingManager.Hide();
+                //if (this._RefreshCheckPrint != null)
+                //{
+                //    this._RefreshCheckPrint();
+                //}
             }
             catch (Exception ex)
             {
