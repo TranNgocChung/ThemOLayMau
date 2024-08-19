@@ -42,7 +42,6 @@ namespace HIS.Desktop.Plugins.CallPatientSample
         string organizationName = "";
         List<int> newStatusForceColorCodes = new List<int>();
         List<int> gridpatientBodyForceColorCodes;
-        int index = 0;
         int rowCount = 0;
         bool isSetNum = false;
         bool? chkIsNotInDebt;
@@ -53,6 +52,7 @@ namespace HIS.Desktop.Plugins.CallPatientSample
             : base(module)
         {
             InitializeComponent();
+            lblCallPatient.Text = "";
             this.lisSample = sample;
             this.room = r;
             this.chkIsNotInDebt = _chkIsNotInDebt;
@@ -104,6 +104,8 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                     timerSetDataToGridControl.Interval = WaitingScreenCFG.TIMER_FOR_AUTO_LOAD_WAITING_SCREENS * 1000;
                 timerSetDataToGridControl.Enabled = true;
                 timerSetDataToGridControl.Start();
+                timerCalling.Enabled = true;
+                timerCalling.Start();
             }
             catch (Exception ex)
             {
@@ -205,11 +207,6 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                     this.gridViewWaiting.Appearance.Row.BackColor = System.Drawing.Color.FromArgb(gridpatientBackColorCodes[0], gridpatientBackColorCodes[1], gridpatientBackColorCodes[2]);
                     this.gridViewWaiting.Appearance.Row.BackColor2 = System.Drawing.Color.FromArgb(gridpatientBackColorCodes[0], gridpatientBackColorCodes[1], gridpatientBackColorCodes[2]);
                     this.gridViewWaiting.Appearance.Empty.BackColor = System.Drawing.Color.FromArgb(gridpatientBackColorCodes[0], gridpatientBackColorCodes[1], gridpatientBackColorCodes[2]);
-
-                    this.gridViewInDesk.Appearance.Row.BackColor = System.Drawing.Color.FromArgb(gridpatientBackColorCodes[0], gridpatientBackColorCodes[1], gridpatientBackColorCodes[2]);
-                    this.gridViewInDesk.Appearance.Row.BackColor2 = System.Drawing.Color.FromArgb(gridpatientBackColorCodes[0], gridpatientBackColorCodes[1], gridpatientBackColorCodes[2]);
-                    this.gridViewInDesk.Appearance.Empty.BackColor = System.Drawing.Color.FromArgb(gridpatientBackColorCodes[0], gridpatientBackColorCodes[1], gridpatientBackColorCodes[2]);
-                   
                 }
 
 
@@ -237,10 +234,6 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                     gridColumnServiceReqType.AppearanceHeader.ForeColor = System.Drawing.Color.FromArgb(gridpatientHeaderForceColorCodes[0], gridpatientHeaderForceColorCodes[1], gridpatientHeaderForceColorCodes[2]);
                     gridColumnSTT.AppearanceHeader.ForeColor = System.Drawing.Color.FromArgb(gridpatientHeaderForceColorCodes[0], gridpatientHeaderForceColorCodes[1], gridpatientHeaderForceColorCodes[2]);
                     gridColumnAddress.AppearanceHeader.ForeColor = System.Drawing.Color.FromArgb(gridpatientHeaderForceColorCodes[0], gridpatientHeaderForceColorCodes[1], gridpatientHeaderForceColorCodes[2]);
-                    gridColumn2.AppearanceHeader.ForeColor = System.Drawing.Color.FromArgb(gridpatientHeaderForceColorCodes[0], gridpatientHeaderForceColorCodes[1], gridpatientHeaderForceColorCodes[2]);
-                    gridColumn4.AppearanceHeader.ForeColor = System.Drawing.Color.FromArgb(gridpatientHeaderForceColorCodes[0], gridpatientHeaderForceColorCodes[1], gridpatientHeaderForceColorCodes[2]);
-                    gridColumn3.AppearanceHeader.ForeColor = System.Drawing.Color.FromArgb(gridpatientHeaderForceColorCodes[0], gridpatientHeaderForceColorCodes[1], gridpatientHeaderForceColorCodes[2]);
-                    gridColumn5.AppearanceHeader.ForeColor = System.Drawing.Color.FromArgb(gridpatientHeaderForceColorCodes[0], gridpatientHeaderForceColorCodes[1], gridpatientHeaderForceColorCodes[2]);
                 }
 
                 //màu chữ của body danh sách bệnh nhân
@@ -258,15 +251,11 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                     gridColumnServiceReqType.AppearanceCell.ForeColor = System.Drawing.Color.FromArgb(gridpatientBodyForceColorCodes[0], gridpatientBodyForceColorCodes[1], gridpatientBodyForceColorCodes[2]);
                     gridColumnSTT.AppearanceCell.ForeColor = System.Drawing.Color.FromArgb(gridpatientBodyForceColorCodes[0], gridpatientBodyForceColorCodes[1], gridpatientBodyForceColorCodes[2]);
                     gridColumnAddress.AppearanceCell.ForeColor = System.Drawing.Color.FromArgb(gridpatientBodyForceColorCodes[0], gridpatientBodyForceColorCodes[1], gridpatientBodyForceColorCodes[2]);
-                    gridColumn2.AppearanceCell.ForeColor = System.Drawing.Color.FromArgb(gridpatientBodyForceColorCodes[0], gridpatientBodyForceColorCodes[1], gridpatientBodyForceColorCodes[2]);
-                    gridColumn4.AppearanceCell.ForeColor = System.Drawing.Color.FromArgb(gridpatientBodyForceColorCodes[0], gridpatientBodyForceColorCodes[1], gridpatientBodyForceColorCodes[2]);
-                    gridColumn3.AppearanceCell.ForeColor = System.Drawing.Color.FromArgb(gridpatientBodyForceColorCodes[0], gridpatientBodyForceColorCodes[1], gridpatientBodyForceColorCodes[2]);
-                    gridColumn5.AppearanceCell.ForeColor = System.Drawing.Color.FromArgb(gridpatientBodyForceColorCodes[0], gridpatientBodyForceColorCodes[1], gridpatientBodyForceColorCodes[2]);
                 }
 
                 //cỡ chữ của body danh sách bệnh nhân
                 int patientBodySizeCodes = WaitingScreenCFG.PATIENT_BODY_SIZE_CODES;
-               
+
                 if (patientBodySizeCodes != null && patientBodySizeCodes > 0)
                 {
                     gridColumnAge.AppearanceCell.Font = new System.Drawing.Font("Arial", patientBodySizeCodes, System.Drawing.FontStyle.Bold);
@@ -277,10 +266,6 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                     gridColumnServiceReqType.AppearanceCell.Font = new System.Drawing.Font("Arial", patientBodySizeCodes, System.Drawing.FontStyle.Bold);
                     gridColumnSTT.AppearanceCell.Font = new System.Drawing.Font("Arial", patientBodySizeCodes, System.Drawing.FontStyle.Bold);
                     gridColumnAddress.AppearanceCell.Font = new System.Drawing.Font("Arial", patientBodySizeCodes, System.Drawing.FontStyle.Bold);
-                    gridColumn2.AppearanceCell.Font = new System.Drawing.Font("Arial", patientBodySizeCodes, System.Drawing.FontStyle.Bold);
-                    gridColumn4.AppearanceCell.Font = new System.Drawing.Font("Arial", patientBodySizeCodes, System.Drawing.FontStyle.Bold);
-                    gridColumn3.AppearanceCell.Font = new System.Drawing.Font("Arial", patientBodySizeCodes, System.Drawing.FontStyle.Bold);
-                    gridColumn5.AppearanceCell.Font = new System.Drawing.Font("Arial", patientBodySizeCodes, System.Drawing.FontStyle.Bold);
                 }
 
                 //màu chữ của trạng thái yêu cầu là mới
@@ -439,21 +424,21 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                 }
                 if (CallPtDataWorker.DicDeskPatient != null && CallPtDataWorker.DicDeskPatient.Count > 0 && CallPtDataWorker.DicDeskPatient[room.ROOM_ID] != null && CallPtDataWorker.DicDeskPatient[room.ROOM_ID].Count > 0)
                 {
-                    gridControlInDesk.Invoke(new MethodInvoker(delegate
-                    {
-                        gridControlInDesk.BeginUpdate();
-                        gridControlInDesk.DataSource = CallPtDataWorker.DicDeskPatient[room.ROOM_ID];
-                        gridControlInDesk.EndUpdate();
-                    }));
+                    //gridControlInDesk.Invoke(new MethodInvoker(delegate
+                    //{
+                    //    gridControlInDesk.BeginUpdate();
+                    //    gridControlInDesk.DataSource = CallPtDataWorker.DicDeskPatient[room.ROOM_ID];
+                    //    gridControlInDesk.EndUpdate();
+                    //}));
                 }
                 else
                 {
-                    gridControlInDesk.Invoke(new MethodInvoker(delegate
-                    {
-                        gridControlInDesk.BeginUpdate();
-                        gridControlInDesk.DataSource = null;
-                        gridControlInDesk.EndUpdate();
-                    }));
+                    //gridControlInDesk.Invoke(new MethodInvoker(delegate
+                    //{
+                    //    gridControlInDesk.BeginUpdate();
+                    //    gridControlInDesk.DataSource = null;
+                    //    gridControlInDesk.EndUpdate();
+                    //}));
                 }
             }
             catch (Exception ex)
@@ -548,6 +533,17 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                 LogSystem.Error(ex);
             }
         }
+        void CallingPatient()
+        {
+            try
+            {
+                Task ts = Task.Factory.StartNew(excuteThreadCalling);
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
 
         void executeThreadSetDataToGridControl()
         {
@@ -567,10 +563,53 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        void excuteThreadCalling()
+        {
+            try
+            {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new MethodInvoker(delegate { StartThreadCalling(); }));
+                }
+                else
+                {
+                    StartThreadCalling();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
 
         void StartTheadSetDataToGridControl()
         {
             SetDataToGridControlWaitingCLSs();
+        }
+
+        void StartThreadCalling()
+        {
+            SetDataLabelPatient();
+        }
+        void SetDataLabelPatient()
+        {
+            try
+            {
+                var CallNew = CallPtDataWorker.DicCallPatient[room.ROOM_ID].Where(o => o.CALL_TIME > 0).OrderByDescending(p => p.CALL_TIME).GroupBy(g => g.ID).Select(q => q.First()).FirstOrDefault();
+                if (CallNew != null && CallNew.IS_CALLING)
+                {
+                    lblCallPatient.Text = CallNew.TDL_PATIENT_NAME.ToUpper() + " " + CallNew.TDL_PATIENT_DOB.ToString().Substring(0, 4);
+                }
+                else
+                {
+                    lblCallPatient.Text = "";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         public void CallNumOrder(int min, int max)
@@ -594,11 +633,20 @@ namespace HIS.Desktop.Plugins.CallPatientSample
                 timerSetDataToGridControl.Stop();
 
                 timerSetDataToGridControl.Dispose();
+
+                timerCalling.Enabled = false;
+                timerCalling.Stop();
+                timerCalling.Dispose();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private void timerCalling_Tick(object sender, EventArgs e)
+        {
+            CallingPatient();
         }
     }
 }
